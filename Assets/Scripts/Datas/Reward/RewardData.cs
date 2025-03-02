@@ -11,18 +11,23 @@ namespace VertigoGames.Datas.Reward
         public RewardInfo RewardInfo => rewardInfo;
         [SerializeField] private RewardInfo rewardInfo;
         
-        public RewardWeight RewardWeight => _rewardWeight;
+        [Title("Weight Settings")]
         [SerializeField] private RewardWeight _rewardWeight;
+        public RewardWeight RewardWeight => _rewardWeight;
     }
     
     [System.Serializable]
     public class RewardInfo
     {
+        [Title("General Info")]
         public string Title;
         public RewardType RewardType;
+    
+        [Title("Reward Calculation")] 
         public int InitialRewardCount;
         public float RewardIncrementMultiplier;
         
+        [Title("Visuals")]
         [PreviewField(Height = 100)] 
         public Sprite Icon;
     }
