@@ -10,6 +10,9 @@ namespace VertigoGames.Datas.Reward
     {
         public RewardInfo RewardInfo => rewardInfo;
         [SerializeField] private RewardInfo rewardInfo;
+        
+        public RewardWeight RewardWeight => _rewardWeight;
+        [SerializeField] private RewardWeight _rewardWeight;
     }
     
     [System.Serializable]

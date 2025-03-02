@@ -45,6 +45,15 @@ public enum RewardType
     VectPoints= 34,
 }
 
+public enum RewardWeight
+{
+    VeryLow = 0,    
+    Low = 3,       
+    Medium = 5,     
+    High = 7,      
+    VeryHigh = 9    
+}
+
 public enum ZoneType
 {
     Normal,
