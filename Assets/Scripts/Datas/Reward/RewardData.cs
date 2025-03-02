@@ -19,11 +19,12 @@ namespace VertigoGames.Datas.Reward
     public class RewardInfo
     {
         public string Title;
+        public RewardType RewardType;
+        public int InitialRewardCount;
+        public float RewardIncrementMultiplier;
         
         [PreviewField(Height = 100)] 
         public Sprite Icon;
-        
-        public RewardType RewardType;
     }
 }
 
