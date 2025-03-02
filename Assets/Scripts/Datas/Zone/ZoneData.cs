@@ -10,12 +10,12 @@ public class ZoneData : ScriptableObject
     public ZoneType ZoneType => zoneType;
     public List<RewardData> GuaranteedRewards => _guaranteedRewards;
     public List<RewardData> RandomRewards=> _randomRewards;
-    public List<RewardWeightEntry> WeightDistribution=> _weightDistribution;
+    public RewardWeight RewardWeight=> _rewardWeight;
     
     [SerializeField] private ZoneType zoneType;
     [SerializeField] private List<RewardData> _guaranteedRewards;
     [SerializeField] private List<RewardData> _randomRewards;
-    [SerializeField] private List<RewardWeightEntry> _weightDistribution;
+    [SerializeField] private RewardWeight _rewardWeight;
 }
 
 [Serializable]

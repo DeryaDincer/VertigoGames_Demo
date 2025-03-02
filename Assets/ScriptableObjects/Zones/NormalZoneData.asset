@@ -20,6 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 158b607fb223a48a69f094fd0e452eb6, type: 2}
   - {fileID: 11400000, guid: 93072fe2c213e4cf48c135a3bd85b669, type: 2}
   - {fileID: 11400000, guid: eb670d595d3a64a0daa4729294171db4, type: 2}
+  - {fileID: 11400000, guid: d5f7d0ad32a044fcc9105383428b0327, type: 2}
   - {fileID: 11400000, guid: ce3330364d03c42fb99fe5dd9393c25b, type: 2}
   - {fileID: 11400000, guid: 43994f28038d742e28aa6baa721cfc22, type: 2}
   - {fileID: 11400000, guid: 97ddf8e89c8f44e348b8877bc31520c1, type: 2}
@@ -48,9 +49,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8f57396184cbc45a2bc1dbb7fd15a312, type: 2}
   - {fileID: 11400000, guid: 41d2942cf0c214af1a0afebc44265d59, type: 2}
   - {fileID: 11400000, guid: 992bb8c715ddc4b379e44cfa09b5fa34, type: 2}
-  - {fileID: 11400000, guid: d5f7d0ad32a044fcc9105383428b0327, type: 2}
-  _weightDistribution:
-  - RewardWeight: 3
-    Value: 40
-  - RewardWeight: 5
-    Value: 60
+  _rewardWeight: 5

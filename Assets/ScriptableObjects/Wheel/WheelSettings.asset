@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WheelSettings
   m_EditorClassIdentifier: 
   RewardInfo: 0
-  spinRotationCountValue: 3
-  spinDurationValue: 3
-  wheelRadiusValue: 205
-  spinEaseValue: 9
+  _wheelSlotCountValue: 8
+  _spinRotationCountValue: 3
+  _spinDurationValue: 3
+  _wheelRadiusValue: 205
+  _spinEaseValue: 6

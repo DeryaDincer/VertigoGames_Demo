@@ -16,3 +16,4 @@ MonoBehaviour:
     Title: Armor Point
     Icon: {fileID: 21300000, guid: a3851fa6f433b4ee3b401b308360c239, type: 3}
     RewardType: 0
+  _rewardWeight: 7
