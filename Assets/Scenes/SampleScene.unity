@@ -698,6 +698,8 @@ MonoBehaviour:
   _wheelController: {fileID: 544543851}
   _zoneDatas:
   - {fileID: 11400000, guid: 79562a97abdd94fb0aea01d22e6b4e7a, type: 2}
+  - {fileID: 11400000, guid: c715f828f2d494103969d421799ad8e1, type: 2}
+  - {fileID: 11400000, guid: 94ef60b36abe64238a7520b0d9f3008a, type: 2}
 --- !u!1 &1435900110
 GameObject:
   m_ObjectHideFlags: 0

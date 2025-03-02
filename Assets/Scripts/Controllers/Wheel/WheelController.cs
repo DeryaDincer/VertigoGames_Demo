@@ -26,7 +26,7 @@ namespace VertigoGames.Controllers.Wheel
         
         private WheelAnimationController _wheelAnimationController;
         private RewardSelectController _rewardSelectController;
-        private ZoneData zoneData;
+        private ZoneData _zoneData;
         private int _currentZoneIndex;
         private List<WheelItem> items = new List<WheelItem>();
         
@@ -55,18 +55,13 @@ namespace VertigoGames.Controllers.Wheel
             ObserverManager.Unregister<OnUpdateZoneDataEvent>(OnUpdateZoneData);
         }
 
-        public void StartGame(ZoneData zoneData)
-        {
-            this.zoneData = zoneData;
-        }
-
-
         private void OnZoneStateReady(OnZoneStateReadyEvent obj)
         {
             DestroyAllItems();
             _wheelAnimationController.ResetWheelAnimation();
-
-            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(zoneData, _wheelSettings.WheelSlotCountValue);
+            _zoneData = obj.ZoneData;
+            
+            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(_zoneData, _wheelSettings.WheelSlotCountValue);
             StartCoroutine(InstantiateWheelItemsWithAnimation(selectedRewards, 0));
         }
         
