@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.Mathematics;
 using UnityEngine;
 using VertigoGames.Settings;
 using Random = UnityEngine.Random;
@@ -11,20 +12,25 @@ namespace VertigoGames.Controllers.Wheel
     public class WheelAnimationController
     {
         private RectTransform wheelContainer;
-        private int itemCount;
-        private int spinRotationCount;
-        private float spinDuration;
-        private Ease ease;
+        private int _wheelSlotCountValue;
+        private int _spinRotationCount;
+        private float _spinDuration;
+        private Ease _ease;
         
-        public WheelAnimationController(RectTransform wheelContainer, WheelSettings wheelSettings, int itemCount)
+        public WheelAnimationController(RectTransform wheelContainer, WheelSettings wheelSettings)
         {
             this.wheelContainer = wheelContainer;
-            this.itemCount = itemCount;
-            spinRotationCount = wheelSettings.SpinRotationCountValue;
-            spinDuration = wheelSettings.SpinDurationValue;
-            ease = wheelSettings.SpinEaseValue;
+            _wheelSlotCountValue = wheelSettings.WheelSlotCountValue;
+            _spinRotationCount = wheelSettings.SpinRotationCountValue;
+            _spinDuration = wheelSettings.SpinDurationValue;
+            _ease = wheelSettings.SpinEaseValue;
         }
        
+        public void ResetWheelAnimation()
+        {
+            wheelContainer.rotation = quaternion.identity;
+        }
+        
         public void SpinWheel(Action completeAction)
         {
             int randomIndex = GetRandomItemIndex();
@@ -36,23 +42,23 @@ namespace VertigoGames.Controllers.Wheel
 
         private int GetRandomItemIndex()
         {
-            return Random.Range(0, itemCount);
+            return Random.Range(0, _wheelSlotCountValue);
         }
 
         private float CalculateTargetAngle(int index)
         {
-            return index * (360f / itemCount);
+            return index * (360f / _wheelSlotCountValue);
         }
 
         private float CalculateTotalRotation(float targetAngle)
         {
-            return 360 * spinRotationCount + targetAngle;
+            return 360 * _spinRotationCount + targetAngle;
         }
 
         private Tween RotateWheel(float totalRotation)
         {
-            Tween tween = wheelContainer.DORotate(new Vector3(0, 0, -totalRotation), spinDuration, RotateMode.FastBeyond360)
-                .SetEase(ease)
+            Tween tween = wheelContainer.DORotate(new Vector3(0, 0, -totalRotation), _spinDuration, RotateMode.FastBeyond360)
+                .SetEase(_ease)
                 .SetRelative();
 
             return tween;

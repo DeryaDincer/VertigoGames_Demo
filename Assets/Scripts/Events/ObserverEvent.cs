@@ -13,4 +13,31 @@ namespace VertigoGames.Events
     {
         public SpinWheelEvent() { }
     }
+    
+    public class OnZoneStateReadyEvent : ObserverEvent
+    {
+        public ZoneData ZoneData;
+
+        public OnZoneStateReadyEvent(ZoneData zoneData)
+        {
+            ZoneData = zoneData;
+        }
+    }
+    
+    public class OnWheelSpinCompletedEvent : ObserverEvent
+    {
+        public OnWheelSpinCompletedEvent() { }
+    }
+    
+    public class OnUpdateZoneDataEvent : ObserverEvent
+    {
+        public ZoneType ZoneType;
+        public int CurrentZoneIndex;
+
+        public OnUpdateZoneDataEvent(ZoneType zoneType, int currentZoneIndex)
+        {
+            ZoneType = zoneType;
+            CurrentZoneIndex = currentZoneIndex;
+        }
+    }
 }

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1235bceb1d8c443cad6a016812b8027, type: 3}
   m_Name: WheelSettings
   m_EditorClassIdentifier: 
-  RewardInfo: 0
   _wheelSlotCountValue: 8
+  _wheelSpawnDelayBetweenItems: 0.05
+  _wheelSpawnDelay: 0.3
   _spinRotationCountValue: 3
   _spinDurationValue: 3
   _wheelRadiusValue: 205

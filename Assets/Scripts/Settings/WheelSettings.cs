@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace VertigoGames.Settings
 {
@@ -10,13 +11,17 @@ namespace VertigoGames.Settings
     public class WheelSettings : ScriptableObject
     {
         public int WheelSlotCountValue => _wheelSlotCountValue;
+        public float WheelSpawnDelayBetweenItemsValue => wheelSpawnDelayBetweenItemsValueValue;
+        public float WheelSpawnDelayValue => wheelSpawnDelayValueValue;
         public int SpinRotationCountValue => _spinRotationCountValue;
         public float SpinDurationValue => _spinDurationValue;
         public float WheelRadiusValue => _wheelRadiusValue;
         public Ease SpinEaseValue => _spinEaseValue;
       
         [Title("Wheel Settings")]
-        [SerializeField] private int _wheelSlotCountValue = 8;
+        [SerializeField] private int _wheelSlotCountValue = 8; 
+        [SerializeField] private float wheelSpawnDelayBetweenItemsValueValue = .1f;
+        [SerializeField] private float wheelSpawnDelayValueValue = .3f;
         
         [Title("Wheel Animation Settings")]
         

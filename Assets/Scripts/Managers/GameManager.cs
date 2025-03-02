@@ -14,19 +14,22 @@ namespace VertigoGames.Managers
         public void Initialize()
         {
             zoneManager.Initialize();
-            StartGame();
         }
         
-        public void Deinitialize()
+        public void Deinitialize() 
         {
+            zoneManager.Deinitialize();
         }
         
         public void Register()
         {
+            zoneManager.Register();
+            StartGame();
         }
         
         public void Unregister()
         {
+            zoneManager.Unregister();
         }
 
         public void StartGame()

@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using VertigoGames.Controllers.Reward;
 using VertigoGames.Datas.Reward;
+using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Managers;
 using VertigoGames.Settings;
 using VertigoGames.UI.Item.Wheel;
 using Random = UnityEngine.Random;
@@ -24,6 +27,7 @@ namespace VertigoGames.Controllers.Wheel
         private WheelAnimationController _wheelAnimationController;
         private RewardSelectController _rewardSelectController;
         private ZoneData zoneData;
+        private int _currentZoneIndex;
         private List<WheelItem> items = new List<WheelItem>();
         
         public void Initialize()
@@ -39,31 +43,73 @@ namespace VertigoGames.Controllers.Wheel
 
         public void Register()
         {
-           
+            ObserverManager.Register<SpinWheelEvent>(OnSpinWheel);
+            ObserverManager.Register<OnZoneStateReadyEvent>(OnZoneStateReady);
+            ObserverManager.Register<OnUpdateZoneDataEvent>(OnUpdateZoneData);
         }
 
         public void Unregister()
         {
-           
+            ObserverManager.Unregister<SpinWheelEvent>(OnSpinWheel);
+            ObserverManager.Unregister<OnZoneStateReadyEvent>(OnZoneStateReady);
+            ObserverManager.Unregister<OnUpdateZoneDataEvent>(OnUpdateZoneData);
         }
-        
+
         public void StartGame(ZoneData zoneData)
         {
             this.zoneData = zoneData;
-            
+        }
+
+
+        private void OnZoneStateReady(OnZoneStateReadyEvent obj)
+        {
+            DestroyAllItems();
+            _wheelAnimationController.ResetWheelAnimation();
+
             List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(zoneData, _wheelSettings.WheelSlotCountValue);
-            InstantiateWheelItems(selectedRewards);
+            StartCoroutine(InstantiateWheelItemsWithAnimation(selectedRewards, 0));
         }
         
-        private void InstantiateWheelItems(List<RewardData> selectedRewards)
+        private IEnumerator InstantiateWheelItemsWithAnimation(List<RewardData> selectedRewards, int currentZoneIndex)
         {
-            for (int i = 0; i < selectedRewards.Count; i++)
+            yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayValue);
+            
+            foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
             {
-                var rewardSo = selectedRewards[i];
                 var item = Instantiate(_wheelItem, _wheelItemContainer);
-                 item.SetItem(rewardSo, 1, i, _wheelSettings.WheelRadiusValue);
-                 items.Add(item);
+                int rewardAmount = CalculateRewardAmount(rewardData);
+                item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue);
+                items.Add(item);
+
+                yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayBetweenItemsValue); 
             }
+        }
+
+        private void DestroyAllItems()
+        {
+            items.ForEach(item => Destroy(item.gameObject));
+            items.Clear(); 
+        }
+        
+        private int CalculateRewardAmount(RewardData rewardData)
+        {
+            return rewardData.RewardInfo.InitialRewardCount * (_currentZoneIndex + 1);
+        }
+        
+        private void OnSpinWheel(SpinWheelEvent obj)
+        {
+            _wheelAnimationController.SpinWheel(OpenRewardWindow);
+        }
+        
+        private void OpenRewardWindow()
+        {
+          //new spin ready
+          ObserverManager.Notify(new OnWheelSpinCompletedEvent());
+        }
+        
+        private void OnUpdateZoneData(OnUpdateZoneDataEvent obj)
+        {
+            _currentZoneIndex = obj.CurrentZoneIndex;
         }
     }
 }
