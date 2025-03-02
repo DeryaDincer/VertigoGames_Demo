@@ -31,12 +31,12 @@ namespace VertigoGames.Events
     
     public class OnUpdateZoneDataEvent : ObserverEvent
     {
-        public ZoneType ZoneType;
+        public ZoneData ZoneData;
         public int CurrentZoneIndex;
 
-        public OnUpdateZoneDataEvent(ZoneType zoneType, int currentZoneIndex)
+        public OnUpdateZoneDataEvent(ZoneData zoneData, int currentZoneIndex)
         {
-            ZoneType = zoneType;
+            ZoneData = zoneData;
             CurrentZoneIndex = currentZoneIndex;
         }
     }

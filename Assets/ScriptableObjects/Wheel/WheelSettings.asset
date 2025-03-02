@@ -13,9 +13,21 @@ MonoBehaviour:
   m_Name: WheelSettings
   m_EditorClassIdentifier: 
   _wheelSlotCountValue: 8
-  _wheelSpawnDelayBetweenItems: 0.05
-  _wheelSpawnDelay: 0.3
+  wheelSpawnDelayBetweenItemsValueValue: 0.02
+  wheelSpawnDelayValueValue: 0.1
   _spinRotationCountValue: 3
   _spinDurationValue: 3
   _wheelRadiusValue: 205
   _spinEaseValue: 6
+  _wheelScaleUpValue: 1.2
+  _wheelBumpDurationValue: 0.15
+  _wheelZoneAppearances:
+  - ZoneType: 0
+    WheelBaseSprite: {fileID: 21300000, guid: 7ac688b51752642818301a93116aa8eb, type: 3}
+    WheelIndicatorSprite: {fileID: 21300000, guid: 03dd9e4caed054371ac1b6ed38a15068, type: 3}
+  - ZoneType: 1
+    WheelBaseSprite: {fileID: 21300000, guid: 061b4aa99642c438d8b68398ce9eb73c, type: 3}
+    WheelIndicatorSprite: {fileID: 21300000, guid: 815cafc9a1d5a40a1beafc2965f0a6ee, type: 3}
+  - ZoneType: 2
+    WheelBaseSprite: {fileID: 21300000, guid: a7c892276bf9546b3a7eb9121922a9fc, type: 3}
+    WheelIndicatorSprite: {fileID: 21300000, guid: cf329d4836ec244b4bf2bcfa5b7e8138, type: 3}

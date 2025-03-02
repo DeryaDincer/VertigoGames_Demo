@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace VertigoGames.Controllers
+namespace VertigoGames.Controllers.Zone
 {
     public class ZoneStateController
     {

@@ -5,31 +5,38 @@ using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
 using VertigoGames.Settings;
+using VertigoGames.Utility;
 using Random = UnityEngine.Random;
 
 namespace VertigoGames.Controllers.Wheel
 {
     public class WheelAnimationController
     {
-        private RectTransform wheelContainer;
+        private RectTransform _wheelContainer;
         private int _wheelSlotCountValue;
         private int _spinRotationCount;
         private float _spinDuration;
         private Ease _ease;
+        private float _wheelScaleUpValue;
+        private float _wheelBumpDurationValue;
         
         public WheelAnimationController(RectTransform wheelContainer, WheelSettings wheelSettings)
         {
-            this.wheelContainer = wheelContainer;
+            _wheelContainer = wheelContainer;
             _wheelSlotCountValue = wheelSettings.WheelSlotCountValue;
             _spinRotationCount = wheelSettings.SpinRotationCountValue;
             _spinDuration = wheelSettings.SpinDurationValue;
             _ease = wheelSettings.SpinEaseValue;
+            _wheelScaleUpValue = wheelSettings.WheelScaleUpValue;
+            _wheelBumpDurationValue = wheelSettings.WheelBumpDurationValue;
         }
        
         public void ResetWheelAnimation()
         {
-            wheelContainer.rotation = quaternion.identity;
+            _wheelContainer.rotation = quaternion.identity;
+            _wheelContainer.transform.DoBump(_wheelScaleUpValue, _wheelBumpDurationValue);
         }
+     
         
         public void SpinWheel(Action completeAction)
         {
@@ -57,7 +64,7 @@ namespace VertigoGames.Controllers.Wheel
 
         private Tween RotateWheel(float totalRotation)
         {
-            Tween tween = wheelContainer.DORotate(new Vector3(0, 0, -totalRotation), _spinDuration, RotateMode.FastBeyond360)
+            Tween tween = _wheelContainer.DORotate(new Vector3(0, 0, -totalRotation), _spinDuration, RotateMode.FastBeyond360)
                 .SetEase(_ease)
                 .SetRelative();
 

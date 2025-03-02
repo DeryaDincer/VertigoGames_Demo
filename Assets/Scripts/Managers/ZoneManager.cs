@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using VertigoGames.Controllers;
 using VertigoGames.Controllers.Wheel;
+using VertigoGames.Controllers.Zone;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 
@@ -58,18 +59,17 @@ namespace VertigoGames.Managers
             _zoneStateController.UpdateCurrentZoneIndex();
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
             
-            ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData.ZoneType, _zoneStateController.CurrentZoneIndex));
+            ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData, _zoneStateController.CurrentZoneIndex));
 
             await Task.Delay(300);
-            //blok kalkacak
             
             ObserverManager.Notify(new InputBlockerEvent(false));
-            
             ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
         }
 
         private void OnSpinWheel(SpinWheelEvent obj)
         {
+            return;
             ObserverManager.Notify(new InputBlockerEvent(true));
         }
     }

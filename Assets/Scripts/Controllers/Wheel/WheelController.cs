@@ -20,11 +20,13 @@ namespace VertigoGames.Controllers.Wheel
     {
         [SerializeField] private RectTransform _wheelContainer;
         [SerializeField] private Image _spinWheelImageValue;
+        [SerializeField] private Image _indicatorWheelImageValue;
         [SerializeField] private RectTransform _wheelItemContainer;
         [SerializeField] private WheelItem _wheelItem;
         [SerializeField] private WheelSettings _wheelSettings;
         
         private WheelAnimationController _wheelAnimationController;
+        private WheelVisualController _wheelVisualController;
         private RewardSelectController _rewardSelectController;
         private ZoneData _zoneData;
         private int _currentZoneIndex;
@@ -32,8 +34,9 @@ namespace VertigoGames.Controllers.Wheel
         
         public void Initialize()
         {
-            _rewardSelectController = new RewardSelectController();
             _wheelAnimationController = new WheelAnimationController(_wheelContainer, _wheelSettings);
+            _wheelVisualController = new WheelVisualController(_spinWheelImageValue, _indicatorWheelImageValue);
+            _rewardSelectController = new RewardSelectController();
         }
 
         public void Deinitialize()
@@ -105,7 +108,8 @@ namespace VertigoGames.Controllers.Wheel
         private void OnUpdateZoneData(OnUpdateZoneDataEvent obj)
         {
             _currentZoneIndex = obj.CurrentZoneIndex;
-  //wheel visual controller wheel settings listesidnen zone taype göre seçecek
+            WheelZoneAppearance wheelZoneAppearance = _wheelSettings.GetWheelZoneAppearanceByZoneType(obj.ZoneData.ZoneType);
+            _wheelVisualController.SetWheelVisual(wheelZoneAppearance);
         }
     }
 }
