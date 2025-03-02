@@ -73,7 +73,7 @@ namespace VertigoGames.Controllers.Wheel
             {
                 var item = Instantiate(_wheelItem, _wheelItemContainer);
                 int rewardAmount = CalculateRewardAmount(rewardData);
-                item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue);
+                item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue, _wheelSettings.WheelSlotCountValue);
                 items.Add(item);
 
                 yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayBetweenItemsValue); 
@@ -105,6 +105,7 @@ namespace VertigoGames.Controllers.Wheel
         private void OnUpdateZoneData(OnUpdateZoneDataEvent obj)
         {
             _currentZoneIndex = obj.CurrentZoneIndex;
+  //wheel visual controller wheel settings listesidnen zone taype göre seçecek
         }
     }
 }

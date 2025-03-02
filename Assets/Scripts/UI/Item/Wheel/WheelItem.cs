@@ -8,28 +8,27 @@ namespace VertigoGames.UI.Item.Wheel
 {
     public class WheelItem : BaseItem
     {
-        private readonly float _itemAngleOffset = 45f;
-        
-        public void SetItem(RewardData rewardData, int rewardAmount, int itemIndex, float wheelRadius)
+        public void SetItem(RewardData rewardData, int rewardAmount, int itemIndex, float wheelRadius, int wheelSlotCount)
         {
             SetRewardData(rewardData);
             SetItemSprite();
             SetRewardAmount(rewardAmount);
-            PositionAndRotateItemOnWheel(itemIndex, wheelRadius);
+            PositionAndRotateItemOnWheel(itemIndex, wheelRadius,wheelSlotCount);
         }
 
-        private void PositionAndRotateItemOnWheel(int itemIndex, float wheelRadius)
+        private void PositionAndRotateItemOnWheel(int itemIndex, float wheelRadius, int wheelSlotCount)
         {
-            Vector2 itemPosition = CalculateItemPosition(itemIndex, wheelRadius);
+            Vector2 itemPosition = CalculateItemPosition(itemIndex, wheelRadius, wheelSlotCount);
             transform.localPosition = itemPosition;
 
             float itemRotation = CalculateItemRotation(itemPosition);
             transform.localRotation = Quaternion.Euler(0, 0, itemRotation - 90);
         }
 
-        private Vector2 CalculateItemPosition(int itemIndex, float wheelRadius)
+        private Vector2 CalculateItemPosition(int itemIndex, float wheelRadius, int wheelSlotCount)
         {
-            float itemAngle = itemIndex * _itemAngleOffset; 
+            float itemAngleOffset = (360f / wheelSlotCount);
+            float itemAngle = itemIndex * itemAngleOffset; 
             float itemRadian = itemAngle * Mathf.Deg2Rad;
 
             float itemX = Mathf.Cos(itemRadian) * wheelRadius;

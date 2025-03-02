@@ -13,9 +13,10 @@ namespace VertigoGames.Managers
     public class ZoneManager : MonoBehaviour, IInitializable, IRegisterable
     {
         [SerializeField] private WheelController _wheelController;
-        [SerializeField] private ZoneStateController _zoneStateController;
         [SerializeField] private List<ZoneData> _zoneDatas;
-        
+       
+        private ZoneStateController _zoneStateController;
+
         public void Initialize()
         {
             _zoneStateController = new ZoneStateController(_zoneDatas);
@@ -32,12 +33,14 @@ namespace VertigoGames.Managers
             _wheelController.Register();
             
             ObserverManager.Register<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
+            ObserverManager.Register<SpinWheelEvent>(OnSpinWheel);
         }
 
         public void Unregister()
         {
             _wheelController.Unregister();
             ObserverManager.Unregister<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
+            ObserverManager.Unregister<SpinWheelEvent>(OnSpinWheel);
         }
 
         public void StartGame()
@@ -56,9 +59,18 @@ namespace VertigoGames.Managers
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
             
             ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData.ZoneType, _zoneStateController.CurrentZoneIndex));
-            await Task.Delay(300);
 
+            await Task.Delay(300);
+            //blok kalkacak
+            
+            ObserverManager.Notify(new InputBlockerEvent(false));
+            
             ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
+        }
+
+        private void OnSpinWheel(SpinWheelEvent obj)
+        {
+            ObserverManager.Notify(new InputBlockerEvent(true));
         }
     }
 }

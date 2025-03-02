@@ -6,7 +6,7 @@ using VertigoGames.Datas.Reward;
 
 namespace VertigoGames.Controllers.Reward
 {
-    public class RewardSelectController : MonoBehaviour
+    public class RewardSelectController
     {
         private System.Random _random;
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SafeZoneData
   m_EditorClassIdentifier: 
   zoneType: 1
-  _zoneActivationInterval: 2
+  _zoneActivationInterval: 5
   _guaranteedRewards: []
   _randomRewards:
   - {fileID: 11400000, guid: 5774c85f0117a45c89cea34ef9f0be91, type: 2}

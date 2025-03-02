@@ -40,4 +40,14 @@ namespace VertigoGames.Events
             CurrentZoneIndex = currentZoneIndex;
         }
     }
+    
+    public class InputBlockerEvent : ObserverEvent
+    {
+        public bool IsBlock { get; private set; }
+
+        public InputBlockerEvent(bool isBlock)
+        {
+            IsBlock = isBlock;
+        }
+    }
 }

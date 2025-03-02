@@ -5,11 +5,11 @@ using UnityEngine.UI;
 using VertigoGames.Events;
 using VertigoGames.Managers;
 
-namespace VertigoGames.UI
+namespace VertigoGames.UI.Button
 {
     public class SpinButton : MonoBehaviour
     {
-        private Button button => GetComponent<Button>();
+        private UnityEngine.UI.Button button => GetComponent<UnityEngine.UI.Button>();
         
         private void OnValidate()
         {
