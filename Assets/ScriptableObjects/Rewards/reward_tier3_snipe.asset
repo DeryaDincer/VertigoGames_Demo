@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Sniper
-    Icon: {fileID: 21300000, guid: c2b7db04b3c664c52b9d39f4e512a5dc, type: 3}
     RewardType: 33
+    InitialRewardCount: 2
+    RewardIncrementMultiplier: 0.04
+    Icon: {fileID: 21300000, guid: c2b7db04b3c664c52b9d39f4e512a5dc, type: 3}
+  _rewardWeight: 7

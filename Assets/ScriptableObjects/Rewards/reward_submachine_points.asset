@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Submachine Points
-    Icon: {fileID: 21300000, guid: 51a021efaa0d344dfbd1a3c38cfd7270, type: 3}
     RewardType: 27
+    InitialRewardCount: 2
+    RewardIncrementMultiplier: 0.05
+    Icon: {fileID: 21300000, guid: 51a021efaa0d344dfbd1a3c38cfd7270, type: 3}
+  _rewardWeight: 9

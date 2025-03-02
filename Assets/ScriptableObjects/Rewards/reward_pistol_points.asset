@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Pistol Points
-    Icon: {fileID: 21300000, guid: f0954522cb27a4be98a16e3376a35992, type: 3}
     RewardType: 21
+    InitialRewardCount: 5
+    RewardIncrementMultiplier: 0.01
+    Icon: {fileID: 21300000, guid: f0954522cb27a4be98a16e3376a35992, type: 3}
+  _rewardWeight: 3

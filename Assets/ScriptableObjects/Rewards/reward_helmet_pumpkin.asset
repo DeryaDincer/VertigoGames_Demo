@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Pumpkin
-    Icon: {fileID: 21300000, guid: 3ac5084eabe3e4955af85a2fefe2883b, type: 3}
     RewardType: 19
+    InitialRewardCount: 5
+    RewardIncrementMultiplier: 0.01
+    Icon: {fileID: 21300000, guid: 3ac5084eabe3e4955af85a2fefe2883b, type: 3}
+  _rewardWeight: 3

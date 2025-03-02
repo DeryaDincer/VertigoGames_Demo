@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Bomb
-    Icon: {fileID: 21300000, guid: 3e5d62578b0b740cd8348754e7ee94eb, type: 3}
     RewardType: 4
+    InitialRewardCount: 1
+    RewardIncrementMultiplier: 0
+    Icon: {fileID: 21300000, guid: 3e5d62578b0b740cd8348754e7ee94eb, type: 3}
+  _rewardWeight: 0

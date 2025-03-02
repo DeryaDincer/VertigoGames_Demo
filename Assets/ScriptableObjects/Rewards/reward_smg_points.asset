@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Smg Points
-    Icon: {fileID: 21300000, guid: 29f8989b004ce41839040cb13de777ae, type: 3}
     RewardType: 24
+    InitialRewardCount: 2
+    RewardIncrementMultiplier: 0.05
+    Icon: {fileID: 21300000, guid: 29f8989b004ce41839040cb13de777ae, type: 3}
+  _rewardWeight: 9

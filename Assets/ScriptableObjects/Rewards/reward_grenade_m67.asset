@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Grenade M67
-    Icon: {fileID: 21300000, guid: b43aaeb9eaedc4ac9b617f006eabb757, type: 3}
     RewardType: 16
+    InitialRewardCount: 5
+    RewardIncrementMultiplier: 0.01
+    Icon: {fileID: 21300000, guid: b43aaeb9eaedc4ac9b617f006eabb757, type: 3}
+  _rewardWeight: 3

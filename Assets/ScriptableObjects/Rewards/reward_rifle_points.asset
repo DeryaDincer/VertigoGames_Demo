@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Rifle Points
-    Icon: {fileID: 21300000, guid: 5ec074090d628411e9cedff3cba22e73, type: 3}
     RewardType: 22
+    InitialRewardCount: 5
+    RewardIncrementMultiplier: 0.01
+    Icon: {fileID: 21300000, guid: 5ec074090d628411e9cedff3cba22e73, type: 3}
+  _rewardWeight: 3

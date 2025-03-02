@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Chest Big
-    Icon: {fileID: 21300000, guid: 7eb8912a111224a3fa25e2e8abff9dd2, type: 3}
     RewardType: 6
+    InitialRewardCount: 2
+    RewardIncrementMultiplier: 0.04
+    Icon: {fileID: 21300000, guid: 7eb8912a111224a3fa25e2e8abff9dd2, type: 3}
+  _rewardWeight: 0

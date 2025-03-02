@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardInfo:
     Title: Shotgun
-    Icon: {fileID: 21300000, guid: 7f117f7dbb0b34abd9390961b8e3e132, type: 3}
     RewardType: 23
+    InitialRewardCount: 2
+    RewardIncrementMultiplier: 0.05
+    Icon: {fileID: 21300000, guid: 7f117f7dbb0b34abd9390961b8e3e132, type: 3}
+  _rewardWeight: 9
