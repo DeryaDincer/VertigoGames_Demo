@@ -12,6 +12,7 @@ namespace VertigoGames.UI.Item.Base
     {
         public RewardData RewardData => _rewardData;
 
+        [SerializeField] protected RectTransform _itemRoot;
         [SerializeField] protected Image _itemImageValue;
         [SerializeField] protected TextMeshProUGUI _rewardAmountTextValue;
 
