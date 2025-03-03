@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace VertigoGames.TaskService
+namespace VertigoGames.GameTasks
 {
     public class RewardAreaTask : BaseTask
     {

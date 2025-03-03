@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace VertigoGames.TaskService
+namespace VertigoGames.GameTasks
 {
     public class BaseTask : ITask
     {
@@ -15,12 +15,11 @@ namespace VertigoGames.TaskService
             TaskAction = taskAction;
         }
 
-        // ExecuteAsync metodu virtual olarak işaretlendi
         public virtual async Task ExecuteAsync()
         {
             if (TaskAction != null)
             {
-                await TaskAction(); // TaskAction'ı await ile çağırın
+                await TaskAction(); 
             }
             else
             {
@@ -28,10 +27,8 @@ namespace VertigoGames.TaskService
             }
         }
 
-        // Complete metodu virtual olarak işaretlendi
         public virtual void Complete()
         {
-            // Görev tamamlandığında yapılacak işlemler
             Debug.Log($"Task of type {TaskType} completed.");
         }
     }

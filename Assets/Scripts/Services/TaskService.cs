@@ -4,62 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using VertigoGames.Events;
+using VertigoGames.GameTasks;
 using VertigoGames.Managers;
+using VertigoGames.Utility;
 
-namespace VertigoGames.TaskService
+namespace VertigoGames.Services
 {
-    public class TaskService //singlekton ekle
+    /// <summary>
+    /// Manages the execution of tasks in a queue, ensuring they are processed in order.
+    /// </summary>
+    public sealed class TaskService : Singleton<TaskService>
     {
-        public static TaskService Instance { get; private set; }
-
         private Queue<ITask> _taskQueue = new();
-        private ITask _currentTask;
         private TaskType _currentCompletedTaskType;
-        private TaskType _currentActionTaskType;
         private bool _isProcessing;
-
-        public TaskService()
-        {
-            if (Instance != null)
-            {
-                Debug.LogWarning("You are trying to create another instance of TaskService.");
-                return;
-            }
-
-            Instance = this;
-        }
 
         public void StartTaskProcessing()
         {
             if (!_isProcessing)
                 ProcessTaskQueueAsync();
-        }
-
-        private async void ProcessTaskQueueAsync()
-        {
-            ObserverManager.Notify(new InputBlockerEvent(true));
-            
-            while (_taskQueue.Count > 0)
-            {
-                _isProcessing = true;
-
-                _currentCompletedTaskType = TaskType.None;
-                _currentActionTaskType = TaskType.None;
-
-                ITask currentTask = _taskQueue.Dequeue();
-                _currentTask = currentTask;
-
-                await currentTask.ExecuteAsync();
-
-                _currentActionTaskType = currentTask.TaskType;
-
-                await WaitUntilAsync(() => _currentCompletedTaskType == currentTask.TaskType);
-
-                currentTask.Complete();
-                _currentTask = null;
-            }
-
-            ClearTasks();
         }
 
         public void AddTask(ITask task)
@@ -72,23 +35,37 @@ namespace VertigoGames.TaskService
             _taskQueue = new Queue<ITask>(_taskQueue.OrderBy(x => x.TaskType));
         }
 
-        private void ClearTasks()
-        {
-            Debug.LogError("ClearTasks input ac");
-            _currentTask = null;
-            _taskQueue.Clear();
-            _isProcessing = false;
-            ObserverManager.Notify(new InputBlockerEvent(false));
-        }
-
         public void CompleteTask(TaskType taskType)
         {
             _currentCompletedTaskType = taskType;
         }
 
-        public bool IsCurrentAction(TaskType taskType)
+        private async void ProcessTaskQueueAsync()
         {
-            return _currentActionTaskType == taskType;
+            ObserverManager.Notify(new InputBlockerEvent(true));
+
+            while (_taskQueue.Count > 0)
+            {
+                _isProcessing = true;
+
+                _currentCompletedTaskType = TaskType.None;
+
+                ITask currentTask = _taskQueue.Dequeue();
+
+                await currentTask.ExecuteAsync();
+                await WaitUntilAsync(() => _currentCompletedTaskType == currentTask.TaskType);
+
+                currentTask.Complete();
+            }
+
+            ClearTasks();
+        }
+
+        private void ClearTasks()
+        {
+            _taskQueue.Clear();
+            _isProcessing = false;
+            ObserverManager.Notify(new InputBlockerEvent(false));
         }
 
         private async Task WaitUntilAsync(Func<bool> condition)

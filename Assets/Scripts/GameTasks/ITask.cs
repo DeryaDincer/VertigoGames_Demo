@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace VertigoGames.TaskService
+namespace VertigoGames.GameTasks
 {
     public interface ITask
     {

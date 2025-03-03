@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
+using VertigoGames.GameTasks;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
-using VertigoGames.TaskService;
+using VertigoGames.Services;
 
 namespace VertigoGames.Controllers.Zone
 {
@@ -44,7 +45,7 @@ namespace VertigoGames.Controllers.Zone
                 InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
             });
             
-            TaskService.TaskService.Instance.AddTask(rewardAreaTask);
+            TaskService.Instance.AddTask(rewardAreaTask);
         }
 
         private async void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
@@ -63,7 +64,7 @@ namespace VertigoGames.Controllers.Zone
 
         private void AnimationCompleted()
         {
-            TaskService.TaskService.Instance.CompleteTask(TaskType.RewardArea);
+            TaskService.Instance.CompleteTask(TaskType.RewardArea);
         }
     }
 }

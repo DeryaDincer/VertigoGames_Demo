@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
+using VertigoGames.Services;
 
 namespace VertigoGames.Managers
 {
@@ -14,7 +14,7 @@ namespace VertigoGames.Managers
         [SerializeField] private GameManager _gameManager;
         [SerializeField] private WindowManager _windowManager;
         [SerializeField] private ObjectPoolManager _objectPoolManager;
-        private TaskService.TaskService _taskService;
+        private TaskService _taskService;
 
         #region Unity Lifecycle Methods
 
@@ -43,7 +43,7 @@ namespace VertigoGames.Managers
         /// </summary>
         public void Initialize()
         {
-            _taskService = new TaskService.TaskService();
+            _taskService = new();
             _gameManager.Initialize();
             _windowManager.Initialize();
             _objectPoolManager.Initialize();

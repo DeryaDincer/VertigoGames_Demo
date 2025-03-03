@@ -6,6 +6,7 @@ using VertigoGames.Controllers.Zone;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Services;
 
 namespace VertigoGames.Managers
 {
@@ -95,8 +96,7 @@ namespace VertigoGames.Managers
         private void NotifyRewardAndStartTask(ZoneData zoneData, RewardData rewardData, int rewardAmount)
         {
             ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
-            TaskService.TaskService.Instance.StartTaskProcessing();
+            TaskService.Instance.StartTaskProcessing();
         }
-
     }
 }

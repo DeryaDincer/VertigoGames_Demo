@@ -1050,11 +1050,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2897c591a5b25427785c6d5125fb17d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wheelController: {fileID: 544543851}
   _zoneDatas:
   - {fileID: 11400000, guid: 79562a97abdd94fb0aea01d22e6b4e7a, type: 2}
   - {fileID: 11400000, guid: c715f828f2d494103969d421799ad8e1, type: 2}
   - {fileID: 11400000, guid: 94ef60b36abe64238a7520b0d9f3008a, type: 2}
+  _wheelController: {fileID: 544543851}
   _zoneBarController: {fileID: 7497460506554026706}
   _rewardAreaController: {fileID: 8535201930161095281}
 --- !u!1 &1406076836
@@ -1171,8 +1171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc31bdbdb2344a29b7ae82ada52ea7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWindow: {fileID: 0}
-  windows:
+  _windows:
   - {fileID: 1145291870}
 --- !u!1 &1435900110
 GameObject:

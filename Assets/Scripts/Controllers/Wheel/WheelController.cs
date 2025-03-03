@@ -2,18 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using VertigoGames.Controllers.Reward;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
+using VertigoGames.GameTasks;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
 using VertigoGames.Pooling;
+using VertigoGames.Services;
 using VertigoGames.Settings;
-using VertigoGames.TaskService;
 using VertigoGames.UI.Button;
 using VertigoGames.UI.Item.Wheel;
 using Random = UnityEngine.Random;
@@ -129,7 +128,6 @@ namespace VertigoGames.Controllers.Wheel
             _wheelVisualController.SetWheelVisual(wheelZoneAppearance);
         }
         
-        
         private void AddRewardWindowTask()
         {
             var rewardWindowTask = new RewardWindowTask(async () =>
@@ -142,9 +140,7 @@ namespace VertigoGames.Controllers.Wheel
                 ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             });
             
-            TaskService.TaskService.Instance.AddTask(rewardWindowTask);
+            TaskService.Instance.AddTask(rewardWindowTask);
         }
-        
-    
     }
 }

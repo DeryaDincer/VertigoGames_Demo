@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Managers;
+using VertigoGames.Services;
 using VertigoGames.Settings;
 using VertigoGames.UI.Window;
 
@@ -81,7 +82,7 @@ namespace VertigoGames.UI.Window
             };
 
             ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
-            TaskService.TaskService.Instance.CompleteTask(TaskType.ShowRewardWindow);
+            TaskService.Instance.CompleteTask(TaskType.ShowRewardWindow);
         }
     }
 }
