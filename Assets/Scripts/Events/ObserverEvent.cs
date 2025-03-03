@@ -50,4 +50,14 @@ namespace VertigoGames.Events
             IsBlock = isBlock;
         }
     }
+    
+    public class WindowActivateDataEvent : ObserverEvent
+    {
+        public WindowActivateData WindowActivateData { get; private set; }
+
+        public WindowActivateDataEvent(WindowActivateData windowActivateData)
+        {
+            WindowActivateData = windowActivateData;
+        }
+    }
 }
