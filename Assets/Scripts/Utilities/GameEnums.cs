@@ -71,5 +71,6 @@ public enum TaskType
 {
     None,
     ShowRewardWindow,
-    ZoneBar
+    ZoneBar,
+    RewardArea
 }

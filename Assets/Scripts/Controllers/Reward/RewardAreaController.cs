@@ -5,6 +5,7 @@ using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
+using VertigoGames.TaskService;
 
 namespace VertigoGames.Controllers.Zone
 {
@@ -36,7 +37,12 @@ namespace VertigoGames.Controllers.Zone
 
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
-            InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
+            var rewardAreaTask = new RewardAreaTask(async () =>
+            {
+                InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
+            });
+            
+            TaskService.TaskService.Instance.AddTask(rewardAreaTask);
         }
 
         private void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
