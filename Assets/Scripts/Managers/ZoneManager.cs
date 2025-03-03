@@ -36,6 +36,7 @@ namespace VertigoGames.Managers
         public void Register()
         {
             _wheelController.Register();
+            _zoneBarController.Register();
             
             ObserverManager.Register<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
@@ -43,6 +44,8 @@ namespace VertigoGames.Managers
         public void Unregister()
         {
             _wheelController.Unregister();
+            _zoneBarController.Unregister();
+            
             ObserverManager.Unregister<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
 

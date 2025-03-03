@@ -3,12 +3,15 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Managers;
 using VertigoGames.Settings;
+using VertigoGames.TaskService;
 
 namespace VertigoGames.Controllers.Zone
 {
-    public class ZoneBarController : MonoBehaviour, IInitializable
+    public class ZoneBarController : MonoBehaviour, IInitializable, IRegisterable
     {
         [Header("Settings References")] 
         [SerializeField] private ZoneBarSettings _zoneBarSettings;
@@ -45,6 +48,16 @@ namespace VertigoGames.Controllers.Zone
            
         }
         
+        public void Register()
+        {
+            ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
+        }
+
+        public void Unregister()
+        {
+            ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
+        }
+        
         private void Update()
         {
             HandleInput();
@@ -53,7 +66,6 @@ namespace VertigoGames.Controllers.Zone
         private void CalculateSlideDistance()
         {
             _initialPositionX = _slideDistance * _averageIndicatorIndex;
-            Debug.LogError("_initialPositionX: "+_initialPositionX);
         }
 
         private void InitializeZoneIndicators()
@@ -79,6 +91,17 @@ namespace VertigoGames.Controllers.Zone
             }
         }
 
+        private void OnRewardDetermined(OnRewardDetermined obj)
+        {
+            
+            var zoneBarTask = new ZoneBarTask(async () =>
+            {
+                SlideToNextZone();
+            });
+            
+            TaskService.TaskService.Instance.AddTask(zoneBarTask);
+        }
+        
         private void SlideToNextZone()
         {
             float currentPositionX = _layoutGroupRect.anchoredPosition.x;
@@ -96,6 +119,11 @@ namespace VertigoGames.Controllers.Zone
                 }
 
                 _slideCount++;
+            });
+
+            slideSequence.AppendCallback(() =>
+            {
+                TaskService.TaskService.Instance.CompleteTask(TaskType.ZoneBar);
             });
         }
 

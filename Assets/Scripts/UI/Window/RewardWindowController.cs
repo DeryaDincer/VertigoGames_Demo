@@ -81,6 +81,7 @@ namespace VertigoGames.UI.Window
             };
 
             ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
+            TaskService.TaskService.Instance.CompleteTask(TaskType.ShowRewardWindow);
         }
     }
 }

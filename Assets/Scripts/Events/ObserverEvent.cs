@@ -15,11 +15,6 @@ namespace VertigoGames.Events
     //     public SpinWheelEvent() { }
     // }
     
-    public class OnRewardDeterminedEvent : ObserverEvent
-    {
-        public OnRewardDeterminedEvent() { }
-    }
-    
     
     public class OnZoneStateReadyEvent : ObserverEvent
     {

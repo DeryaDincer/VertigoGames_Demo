@@ -70,5 +70,6 @@ public enum WindowType
 public enum TaskType
 {
     None,
-    ShowRewardWindow
+    ShowRewardWindow,
+    ZoneBar
 }

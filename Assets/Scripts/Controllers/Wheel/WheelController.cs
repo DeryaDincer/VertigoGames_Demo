@@ -113,6 +113,7 @@ namespace VertigoGames.Controllers.Wheel
         
         private void SpinedWheel()
         {
+            ObserverManager.Notify(new InputBlockerEvent(false));
             ObserverManager.Notify(new OnWheelSpinCompletedEvent(_selectedReward.Item1,_selectedReward.Item2));
         }
         
