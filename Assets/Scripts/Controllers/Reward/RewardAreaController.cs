@@ -36,6 +36,17 @@ namespace VertigoGames.Controllers.Zone
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
 
+        public void StartGame()
+        {
+            DestroyAllItems();
+        }
+        
+        private void DestroyAllItems()
+        {
+            _rewardAreaItems.ForEach(item => Destroy(item.gameObject));
+            _rewardAreaItems.Clear(); 
+        }
+        
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
             var rewardAreaTask = new RewardAreaTask(async () =>
@@ -63,7 +74,6 @@ namespace VertigoGames.Controllers.Zone
 
         private void AnimationCompleted()
         {
-            Debug.LogError("AnimationCompleted");
             TaskService.TaskService.Instance.CompleteTask(TaskType.RewardArea);
         }
     }

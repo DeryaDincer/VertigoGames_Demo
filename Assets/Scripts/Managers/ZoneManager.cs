@@ -55,11 +55,14 @@ namespace VertigoGames.Managers
 
         public void StartGame()
         {
-            _zoneStateController.UpdateCurrentZoneIndex();
+            _zoneStateController.ResetZoneIndex();
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
             
+            _wheelController.StartGame(zoneData);
+            _zoneBarController.StartGame();
+            _rewardAreaController.StartGame(); //icinde base olsa onu cagirsam olur
            // ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData, _zoneStateController.CurrentZoneIndex));
-            ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
+            //ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
         }
         
         private void OnWheelSpinCompleted(OnWheelSpinCompletedEvent obj)
@@ -79,8 +82,7 @@ namespace VertigoGames.Managers
 
             await Task.Delay(300);
             
-            ObserverManager.Notify(new InputBlockerEvent(false));
-            ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
+            ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData)); //bunuda taska ekle
         }
     }
 }

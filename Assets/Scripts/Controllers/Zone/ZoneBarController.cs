@@ -57,12 +57,17 @@ namespace VertigoGames.Controllers.Zone
         {
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
-        
-        private void Update()
-        {
-            HandleInput();
-        }
 
+        public void StartGame()
+        {
+            SetInitialPosition();
+            for (int i = 0; i < _zoneIndicators.Count; i++)
+            {
+                _zoneIndicators[i].Value = i + 1;
+                _zoneIndicators[i].Text.text = _zoneIndicators[i].Value.ToString();
+            }
+        }
+        
         private void CalculateSlideDistance()
         {
             _initialPositionX = _slideDistance * _averageIndicatorIndex;
@@ -83,17 +88,8 @@ namespace VertigoGames.Controllers.Zone
             _layoutGroupRect.anchoredPosition = new Vector2(_initialPositionX, 0);
         }
 
-        private void HandleInput()
-        {
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                SlideToNextZone();
-            }
-        }
-
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
-            
             var zoneBarTask = new ZoneBarTask(async () =>
             {
                 SlideToNextZone();
@@ -123,7 +119,6 @@ namespace VertigoGames.Controllers.Zone
 
             slideSequence.AppendCallback(() =>
             {
-                Debug.LogError("complete zonebar");
                 TaskService.TaskService.Instance.CompleteTask(TaskType.ZoneBar);
             });
         }

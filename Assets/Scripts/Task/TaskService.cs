@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using VertigoGames.Events;
+using VertigoGames.Managers;
 
 namespace VertigoGames.TaskService
 {
@@ -35,6 +37,8 @@ namespace VertigoGames.TaskService
 
         private async void ProcessTaskQueueAsync()
         {
+            ObserverManager.Notify(new InputBlockerEvent(true));
+            
             while (_taskQueue.Count > 0)
             {
                 _isProcessing = true;
@@ -79,11 +83,11 @@ namespace VertigoGames.TaskService
             _currentTask = null;
             _taskQueue.Clear();
             _isProcessing = false;
+            ObserverManager.Notify(new InputBlockerEvent(false));
         }
 
         public void CompleteTask(TaskType taskType)
         {
-            Debug.LogError("CompleteTask: "+ taskType);
             _currentCompletedTaskType = taskType;
         }
 

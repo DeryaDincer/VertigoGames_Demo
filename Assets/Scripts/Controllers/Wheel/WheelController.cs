@@ -52,21 +52,19 @@ namespace VertigoGames.Controllers.Wheel
 
         public void Register()
         {
-            ObserverManager.Register<OnZoneStateReadyEvent>(OnZoneStateReady);
             ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
         }
 
         public void Unregister()
         {
-            ObserverManager.Unregister<OnZoneStateReadyEvent>(OnZoneStateReady);
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
 
-        private void OnZoneStateReady(OnZoneStateReadyEvent obj)
+        public void StartGame(ZoneData zoneData)
         {
             DestroyAllItems();
             _wheelAnimationController.ResetWheelAnimation();
-            _zoneData = obj.ZoneData;
+            _zoneData = zoneData;
             
             List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(_zoneData, _wheelSettings.WheelSlotCountValue);
             StartCoroutine(InstantiateWheelItemsWithAnimation(selectedRewards, 0));
@@ -113,7 +111,6 @@ namespace VertigoGames.Controllers.Wheel
         
         private void SpinedWheel()
         {
-            ObserverManager.Notify(new InputBlockerEvent(false));
             ObserverManager.Notify(new OnWheelSpinCompletedEvent(_selectedReward.Item1,_selectedReward.Item2));
         }
         

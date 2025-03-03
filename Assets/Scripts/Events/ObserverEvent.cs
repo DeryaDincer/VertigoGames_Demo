@@ -77,6 +77,13 @@ namespace VertigoGames.Events
         }
     }
     
+    public class OnResetGameEvent : ObserverEvent
+    {
+        public OnResetGameEvent()
+        {
+        }
+    }
+    
     public class WindowActivateDataEvent : ObserverEvent
     {
         public WindowActivateData WindowActivateData { get; private set; }

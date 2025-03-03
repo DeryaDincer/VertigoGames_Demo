@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VertigoGames.Controllers.Wheel;
+using VertigoGames.Events;
 using VertigoGames.Interfaces;
 
 namespace VertigoGames.Managers
@@ -28,12 +29,21 @@ namespace VertigoGames.Managers
             zoneManager.Register();
             _uiAnimationManager.Register();
             StartGame();
+            
+            ObserverManager.Register<OnResetGameEvent>(OnResetGame);
         }
         
         public void Unregister()
         {
             zoneManager.Unregister();
             _uiAnimationManager.Unregister();
+            
+            ObserverManager.Unregister<OnResetGameEvent>(OnResetGame);
+        }
+
+        private void OnResetGame(OnResetGameEvent obj)
+        {
+            StartGame();
         }
 
         public void StartGame()

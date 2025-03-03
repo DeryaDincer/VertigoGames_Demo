@@ -17,6 +17,11 @@ namespace VertigoGames.Controllers.Zone
             _zoneDatas = zoneDatas;
         }
 
+        public void ResetZoneIndex()
+        {
+            _currentZoneIndex = 0;
+        }
+        
         public void UpdateCurrentZoneIndex()
         {
             _currentZoneIndex++;
