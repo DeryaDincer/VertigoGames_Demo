@@ -17,7 +17,7 @@ namespace VertigoGames.Managers
         [SerializeField] private WheelController _wheelController;
         [SerializeField] private List<ZoneData> _zoneDatas;
         [SerializeField] private ZoneBarController _zoneBarController;
-       
+        [SerializeField] private RewardAreaController _rewardAreaController;
         private ZoneStateController _zoneStateController;
 
         public void Initialize()
@@ -25,18 +25,21 @@ namespace VertigoGames.Managers
             _zoneStateController = new ZoneStateController(_zoneDatas);
             _wheelController.Initialize();
             _zoneBarController.Initialize();
+            _rewardAreaController.Initialize();
         }
 
         public void Deinitialize()
         {
             _wheelController.Deinitialize();
             _zoneBarController.Deinitialize();
+            _rewardAreaController.Deinitialize();
         }
 
         public void Register()
         {
             _wheelController.Register();
             _zoneBarController.Register();
+            _rewardAreaController.Register();
             
             ObserverManager.Register<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
@@ -45,6 +48,7 @@ namespace VertigoGames.Managers
         {
             _wheelController.Unregister();
             _zoneBarController.Unregister();
+            _rewardAreaController.Unregister();
             
             ObserverManager.Unregister<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }

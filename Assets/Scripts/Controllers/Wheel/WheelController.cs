@@ -25,7 +25,7 @@ namespace VertigoGames.Controllers.Wheel
         [SerializeField] private Image _spinWheelImageValue;
         [SerializeField] private Image _indicatorWheelImageValue;
         [SerializeField] private RectTransform _wheelItemContainer;
-        [SerializeField] private WheelItem _wheelItem;
+        [SerializeField] private WheelItem _wheelItemPrefab;
         [SerializeField] private WheelSettings _wheelSettings;
         [SerializeField] private SpinButton _spinButton;
 
@@ -35,11 +35,11 @@ namespace VertigoGames.Controllers.Wheel
         private RewardSelectController _rewardSelectController;
         private ZoneData _zoneData;
         private int _currentZoneIndex;
-        private List<WheelItem> items = new List<WheelItem>();
+        private List<WheelItem> _wheelItems = new();
         
         public void Initialize()
         {
-            _wheelAnimationController = new WheelAnimationController(_wheelContainer, _wheelSettings);
+            _wheelAnimationController = new WheelAnimationController(_wheelContainer, _indicatorWheelImageValue.rectTransform, _wheelSettings);
             _wheelVisualController = new WheelVisualController(_spinWheelImageValue, _indicatorWheelImageValue);
             _rewardSelectController = new RewardSelectController();
             _spinButton.SetWheelController(this);
@@ -78,10 +78,10 @@ namespace VertigoGames.Controllers.Wheel
             
             foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
             {
-                var item = Instantiate(_wheelItem, _wheelItemContainer);
+                var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
                 int rewardAmount = CalculateRewardAmount(rewardData);
                 item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue, _wheelSettings.WheelSlotCountValue);
-                items.Add(item);
+                _wheelItems.Add(item);
 
                 yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayBetweenItemsValue); 
             }
@@ -89,8 +89,8 @@ namespace VertigoGames.Controllers.Wheel
 
         private void DestroyAllItems()
         {
-            items.ForEach(item => Destroy(item.gameObject));
-            items.Clear(); 
+            _wheelItems.ForEach(item => Destroy(item.gameObject));
+            _wheelItems.Clear(); 
         }
         
         private int CalculateRewardAmount(RewardData rewardData)
@@ -101,8 +101,8 @@ namespace VertigoGames.Controllers.Wheel
         public void OnSpinWheel()
         {
             int targetRewardIndex = GetRandomItemIndex();
-            RewardData rewardData = items[targetRewardIndex].RewardData;
-            _selectedReward = (rewardData, items[targetRewardIndex].RewardAmount);
+            RewardData rewardData = _wheelItems[targetRewardIndex].RewardData;
+            _selectedReward = (rewardData, _wheelItems[targetRewardIndex].RewardAmount);
             _wheelAnimationController.SpinWheel(targetRewardIndex, SpinedWheel);
         }
         
@@ -131,15 +131,11 @@ namespace VertigoGames.Controllers.Wheel
         {
             var rewardWindowTask = new RewardWindowTask(async () =>
             {
-                int index = Random.Range(0, items.Count);
+                int index = Random.Range(0, _wheelItems.Count);
                 RewardWindowCustomData customData = new RewardWindowCustomData();
-                customData.RewardData = items[index].RewardData;
+                customData.RewardData = _wheelItems[index].RewardData;
           
-                WindowActivateData windowActivateData = new WindowActivateData();
-                windowActivateData.WindowType = WindowType.RewardWindow;
-                windowActivateData.ActiveStatus = true;
-                windowActivateData.CustomData = customData;
-                
+                WindowActivateData windowActivateData = new WindowActivateData(WindowType.RewardWindow, true, customData);
                 ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
             });
             

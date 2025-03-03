@@ -13,6 +13,7 @@ namespace VertigoGames.Controllers.Wheel
     public class WheelAnimationController
     {
         private RectTransform _wheelContainer;
+        private RectTransform _wheelIndicator;
         private int _wheelSlotCountValue;
         private int _spinRotationCount;
         private float _spinDuration;
@@ -20,9 +21,10 @@ namespace VertigoGames.Controllers.Wheel
         private float _wheelScaleUpValue;
         private float _wheelBumpDurationValue;
         
-        public WheelAnimationController(RectTransform wheelContainer, WheelSettings wheelSettings)
+        public WheelAnimationController(RectTransform wheelContainer, RectTransform wheelIndicator, WheelSettings wheelSettings)
         {
             _wheelContainer = wheelContainer;
+            _wheelIndicator = wheelIndicator;
             _wheelSlotCountValue = wheelSettings.WheelSlotCountValue;
             _spinRotationCount = wheelSettings.SpinRotationCountValue;
             _spinDuration = wheelSettings.SpinDurationValue;
@@ -43,7 +45,57 @@ namespace VertigoGames.Controllers.Wheel
             float targetAngle = CalculateTargetAngle(targetRewardIndex);
             float totalRotation = CalculateTotalRotation(targetAngle);
 
-            RotateWheel(totalRotation).OnComplete(() => completeAction.Invoke());
+            RotateWheel(totalRotation).OnComplete(() =>
+            {
+                completeAction.Invoke();
+             //   StopIndicatorAnimation();
+            });
+           // StartIndicatorAnimations(totalRotation);
+        }
+        
+        private void StartIndicatorAnimations(float totalRotation)
+        {
+            float slotAngle = 360f / _wheelSlotCountValue; // Her bir slotun açısal aralığı
+            float totalSlots = _spinRotationCount * _wheelSlotCountValue + 1; // Toplam slot sayısı (tam tur + hedef slot)
+            float timePerSlot = _spinDuration / totalSlots; // Her bir slot için geçen süre
+
+            for (int i = 0; i < totalSlots; i++)
+            {
+                float delay = i * timePerSlot; // Her bir slot için gecikme süresi
+
+                // Her bir slot için indicator animasyonunu tetikle
+                DOVirtual.DelayedCall(delay, PlayIndicatorAnimation);
+            }
+        }
+        
+        private void StartIndicatorAnimationsss(float totalRotation)
+        {
+            float slotAngle = 360f / _wheelSlotCountValue; // Her bir slotun açısal aralığı
+            float timePerSlot = _spinDuration / (_spinRotationCount * _wheelSlotCountValue + 1); // Her bir slot için geçen süre
+
+            for (int i = 0; i < _spinRotationCount * _wheelSlotCountValue + 1; i++)
+            {
+                float delay = i * timePerSlot; // Her bir slot için gecikme süresi
+
+                // Her bir slot için indicator animasyonunu tetikle
+                DOVirtual.DelayedCall(delay, PlayIndicatorAnimation);
+            }
+        }
+        public RectTransform indicator; // Indicator nesnesi
+        public float indicatorMoveDistance = 10f; // Indicator'ın hareket mesafesi
+        public float indicatorMoveDuration = 0.1f;
+        private void PlayIndicatorAnimation()
+        {
+            // Indicator'ı sürekli olarak döndür
+            _wheelIndicator.DORotate(new Vector3(0, 0, 360f), indicatorMoveDuration, RotateMode.FastBeyond360)
+                .SetEase(Ease.Linear) // Sabit hızda döndür
+                .SetLoops(-1, LoopType.Restart); // Sonsuz döngü
+        }
+        
+        private void StopIndicatorAnimation()
+        {
+            _wheelIndicator.DOKill(); // Tüm animasyonları durdur
+            _wheelIndicator.rotation = Quaternion.identity; // Indicator'ı başlangıç pozisyonuna getir
         }
         
         private float CalculateTargetAngle(int index)

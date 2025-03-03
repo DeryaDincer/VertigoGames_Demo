@@ -69,6 +69,7 @@ public struct WindowActivateData
     public WindowType WindowType;
     public bool ActiveStatus;
     public object CustomData;
+    
     public WindowActivateData(WindowType windowType, bool active, object customData)
     {
         WindowType = windowType;
