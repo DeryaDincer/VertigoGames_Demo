@@ -173,7 +173,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2166452150322889871}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d3b00d42a064fe282ca4f6fb38fb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _zoneBarSettings: {fileID: 0}
+  _zoneBarSettings: {fileID: 11400000, guid: f8308699b35eb4709a66cc3d25f4b8d7, type: 2}
   _indicatorTextPrefab: {fileID: 5693226548448079597, guid: 8444ab6b742604fe3b0eaa88714fd76d, type: 3}
   _layoutGroupRect: {fileID: 5038882108796118050}
 --- !u!1 &3935805985509178650

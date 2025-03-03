@@ -101,9 +101,19 @@ namespace VertigoGames.Controllers.Wheel
         
         private void OpenRewardWindow()
         {
-          //new spin ready
-          ObserverManager.Notify(new OnWheelSpinCompletedEvent());
+            int index = Random.Range(0, items.Count);
+            RewardWindowCustomData customData = new RewardWindowCustomData();
+            customData.RewardData = items[index].RewardData;
+          
+            WindowActivateData windowActivateData = new WindowActivateData();
+            windowActivateData.WindowType = WindowType.RewardWindow;
+            windowActivateData.ActiveStatus = true;
+            windowActivateData.CustomData = customData;
+                
+            ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
+            ObserverManager.Notify(new OnWheelSpinCompletedEvent());
         }
+        
         
         private void OnUpdateZoneData(OnUpdateZoneDataEvent obj)
         {
