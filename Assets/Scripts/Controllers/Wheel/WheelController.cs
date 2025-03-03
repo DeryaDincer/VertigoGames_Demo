@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
 using VertigoGames.Settings;
+using VertigoGames.TaskService;
+using VertigoGames.UI.Button;
 using VertigoGames.UI.Item.Wheel;
 using Random = UnityEngine.Random;
 
@@ -24,7 +27,9 @@ namespace VertigoGames.Controllers.Wheel
         [SerializeField] private RectTransform _wheelItemContainer;
         [SerializeField] private WheelItem _wheelItem;
         [SerializeField] private WheelSettings _wheelSettings;
-        
+        [SerializeField] private SpinButton _spinButton;
+
+        private (RewardData, int) _selectedReward;
         private WheelAnimationController _wheelAnimationController;
         private WheelVisualController _wheelVisualController;
         private RewardSelectController _rewardSelectController;
@@ -37,6 +42,7 @@ namespace VertigoGames.Controllers.Wheel
             _wheelAnimationController = new WheelAnimationController(_wheelContainer, _wheelSettings);
             _wheelVisualController = new WheelVisualController(_spinWheelImageValue, _indicatorWheelImageValue);
             _rewardSelectController = new RewardSelectController();
+            _spinButton.SetWheelController(this);
         }
 
         public void Deinitialize()
@@ -46,16 +52,14 @@ namespace VertigoGames.Controllers.Wheel
 
         public void Register()
         {
-            ObserverManager.Register<SpinWheelEvent>(OnSpinWheel);
             ObserverManager.Register<OnZoneStateReadyEvent>(OnZoneStateReady);
-            ObserverManager.Register<OnUpdateZoneDataEvent>(OnUpdateZoneData);
+            ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
         }
 
         public void Unregister()
         {
-            ObserverManager.Unregister<SpinWheelEvent>(OnSpinWheel);
             ObserverManager.Unregister<OnZoneStateReadyEvent>(OnZoneStateReady);
-            ObserverManager.Unregister<OnUpdateZoneDataEvent>(OnUpdateZoneData);
+            ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
 
         private void OnZoneStateReady(OnZoneStateReadyEvent obj)
@@ -94,32 +98,53 @@ namespace VertigoGames.Controllers.Wheel
             return rewardData.RewardInfo.InitialRewardCount * (_currentZoneIndex + 1);
         }
         
-        private void OnSpinWheel(SpinWheelEvent obj)
+        public void OnSpinWheel()
         {
-            _wheelAnimationController.SpinWheel(OpenRewardWindow);
+            int targetRewardIndex = GetRandomItemIndex();
+            RewardData rewardData = items[targetRewardIndex].RewardData;
+            _selectedReward = (rewardData, items[targetRewardIndex].RewardAmount);
+            _wheelAnimationController.SpinWheel(targetRewardIndex, SpinedWheel);
         }
         
-        private void OpenRewardWindow()
+        private int GetRandomItemIndex()
         {
-            int index = Random.Range(0, items.Count);
-            RewardWindowCustomData customData = new RewardWindowCustomData();
-            customData.RewardData = items[index].RewardData;
-          
-            WindowActivateData windowActivateData = new WindowActivateData();
-            windowActivateData.WindowType = WindowType.RewardWindow;
-            windowActivateData.ActiveStatus = true;
-            windowActivateData.CustomData = customData;
-                
-            ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
-            ObserverManager.Notify(new OnWheelSpinCompletedEvent());
+            return Random.Range(0, _wheelSettings.WheelSlotCountValue);
         }
         
-        
-        private void OnUpdateZoneData(OnUpdateZoneDataEvent obj)
+        private void SpinedWheel()
         {
+            ObserverManager.Notify(new OnWheelSpinCompletedEvent(_selectedReward.Item1,_selectedReward.Item2));
+        }
+        
+        private void OnRewardDetermined(OnRewardDetermined obj)
+        {
+            AddRewardWindowTask();
+
             _currentZoneIndex = obj.CurrentZoneIndex;
             WheelZoneAppearance wheelZoneAppearance = _wheelSettings.GetWheelZoneAppearanceByZoneType(obj.ZoneData.ZoneType);
             _wheelVisualController.SetWheelVisual(wheelZoneAppearance);
         }
+        
+        
+        private void AddRewardWindowTask()
+        {
+            var rewardWindowTask = new RewardWindowTask(async () =>
+            {
+                int index = Random.Range(0, items.Count);
+                RewardWindowCustomData customData = new RewardWindowCustomData();
+                customData.RewardData = items[index].RewardData;
+          
+                WindowActivateData windowActivateData = new WindowActivateData();
+                windowActivateData.WindowType = WindowType.RewardWindow;
+                windowActivateData.ActiveStatus = true;
+                windowActivateData.CustomData = customData;
+                
+                ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
+            });
+            
+            TaskService.TaskService.Instance.AddTask(rewardWindowTask);
+        }
+        
+    
     }
 }

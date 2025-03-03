@@ -38,20 +38,14 @@ namespace VertigoGames.Controllers.Wheel
         }
      
         
-        public void SpinWheel(Action completeAction)
+        public void SpinWheel(int targetRewardIndex, Action completeAction)
         {
-            int randomIndex = GetRandomItemIndex();
-            float targetAngle = CalculateTargetAngle(randomIndex);
+            float targetAngle = CalculateTargetAngle(targetRewardIndex);
             float totalRotation = CalculateTotalRotation(targetAngle);
 
             RotateWheel(totalRotation).OnComplete(() => completeAction.Invoke());
         }
-
-        private int GetRandomItemIndex()
-        {
-            return Random.Range(0, _wheelSlotCountValue);
-        }
-
+        
         private float CalculateTargetAngle(int index)
         {
             return index * (360f / _wheelSlotCountValue);

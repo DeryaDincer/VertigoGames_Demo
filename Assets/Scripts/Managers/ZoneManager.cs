@@ -6,6 +6,7 @@ using UnityEngine;
 using VertigoGames.Controllers;
 using VertigoGames.Controllers.Wheel;
 using VertigoGames.Controllers.Zone;
+using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 
@@ -37,43 +38,42 @@ namespace VertigoGames.Managers
             _wheelController.Register();
             
             ObserverManager.Register<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
-            ObserverManager.Register<SpinWheelEvent>(OnSpinWheel);
         }
 
         public void Unregister()
         {
             _wheelController.Unregister();
             ObserverManager.Unregister<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
-            ObserverManager.Unregister<SpinWheelEvent>(OnSpinWheel);
         }
 
         public void StartGame()
         {
-            UpgradeZone();
+            _zoneStateController.UpdateCurrentZoneIndex();
+            ZoneData zoneData = _zoneStateController.FindCurrentZone();
+            
+           // ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData, _zoneStateController.CurrentZoneIndex));
+            ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
         }
         
         private void OnWheelSpinCompleted(OnWheelSpinCompletedEvent obj)
         {
-            UpgradeZone();
+            UpgradeZone(obj.RewardData, obj.RewardAmount);
         }
 
-        private async void UpgradeZone()
+        private async void UpgradeZone(RewardData rewardData, int rewardAmount)
         {
             _zoneStateController.UpdateCurrentZoneIndex();
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
             
-            ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData, _zoneStateController.CurrentZoneIndex));
+            ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex,rewardData, rewardAmount));
+            
+            TaskService.TaskService.Instance.StartTaskProcessing();
+            
 
             await Task.Delay(300);
             
             ObserverManager.Notify(new InputBlockerEvent(false));
             ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
-        }
-
-        private void OnSpinWheel(SpinWheelEvent obj)
-        {
-            return;
-            ObserverManager.Notify(new InputBlockerEvent(true));
         }
     }
 }

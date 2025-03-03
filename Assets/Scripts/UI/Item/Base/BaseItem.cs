@@ -11,12 +11,14 @@ namespace VertigoGames.UI.Item.Base
     public class BaseItem : MonoBehaviour, IBaseItem
     {
         public RewardData RewardData => _rewardData;
+        public int RewardAmount => _rewardAmount;
 
         [SerializeField] protected RectTransform _itemRoot;
         [SerializeField] protected Image _itemImageValue;
         [SerializeField] protected TextMeshProUGUI _rewardAmountTextValue;
 
         private RewardData _rewardData;
+        private int _rewardAmount;
 
         public virtual void SetRewardData(RewardData rewardData)
         {
@@ -30,7 +32,8 @@ namespace VertigoGames.UI.Item.Base
 
         public virtual void SetRewardAmount(int rewardAmount)
         {
-            _rewardAmountTextValue.text = "x" + rewardAmount;
+            _rewardAmount = rewardAmount;
+            _rewardAmountTextValue.text = "x" + _rewardAmount;
         }
     }
 }

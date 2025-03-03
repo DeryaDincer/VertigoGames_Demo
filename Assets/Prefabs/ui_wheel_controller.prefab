@@ -340,6 +340,7 @@ MonoBehaviour:
   _wheelItemContainer: {fileID: 198056443155232840}
   _wheelItem: {fileID: 4652229724546407490, guid: ce80152d7dc5e41b0b61e32fe2a03037, type: 3}
   _wheelSettings: {fileID: 11400000, guid: 6e9c80d4a096042f294f811b1913c479, type: 2}
+  _spinButton: {fileID: 1683172210}
 --- !u!1 &8200172483555549552
 GameObject:
   m_ObjectHideFlags: 0

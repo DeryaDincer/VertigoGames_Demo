@@ -53,6 +53,7 @@ namespace VertigoGames.Controllers.Zone
         private void CalculateSlideDistance()
         {
             _initialPositionX = _slideDistance * _averageIndicatorIndex;
+            Debug.LogError("_initialPositionX: "+_initialPositionX);
         }
 
         private void InitializeZoneIndicators()
