@@ -20,7 +20,7 @@ MonoBehaviour:
   _wheelRadiusValue: 205
   _spinEaseValue: 6
   _wheelScaleUpValue: 1.2
-  _wheelBumpDurationValue: 0.15
+  _wheelBumpDurationValue: 0.25
   _wheelZoneAppearances:
   - ZoneType: 0
     WheelBaseSprite: {fileID: 21300000, guid: 7ac688b51752642818301a93116aa8eb, type: 3}

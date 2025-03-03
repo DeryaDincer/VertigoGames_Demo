@@ -15,6 +15,7 @@ namespace VertigoGames.Managers
     {
         [SerializeField] private WheelController _wheelController;
         [SerializeField] private List<ZoneData> _zoneDatas;
+        [SerializeField] private ZoneBarController _zoneBarController;
        
         private ZoneStateController _zoneStateController;
 
@@ -22,11 +23,13 @@ namespace VertigoGames.Managers
         {
             _zoneStateController = new ZoneStateController(_zoneDatas);
             _wheelController.Initialize();
+            _zoneBarController.Initialize();
         }
 
         public void Deinitialize()
         {
             _wheelController.Deinitialize();
+            _zoneBarController.Deinitialize();
         }
 
         public void Register()
