@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Interfaces.Item;
+using VertigoGames.Pooling;
 
 namespace VertigoGames.UI.Item.Base
 {
-    public class BaseItem : MonoBehaviour, IBaseItem
+    public class BaseItem : PoolObject, IBaseItem
     {
         public RewardData RewardData => _rewardData;
         public int RewardAmount => _rewardAmount;
@@ -34,6 +35,21 @@ namespace VertigoGames.UI.Item.Base
         {
             _rewardAmount = rewardAmount;
             _rewardAmountTextValue.text = "x" + _rewardAmount;
+        }
+
+        public override void OnDeactivate()
+        {
+            
+        }
+
+        public override void OnSpawn()
+        {
+            transform.localScale = Vector3.one;
+        }
+
+        public override void OnCreated()
+        {
+           
         }
     }
 }

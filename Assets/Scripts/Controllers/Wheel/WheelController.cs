@@ -11,6 +11,7 @@ using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
+using VertigoGames.Pooling;
 using VertigoGames.Settings;
 using VertigoGames.TaskService;
 using VertigoGames.UI.Button;
@@ -66,17 +67,22 @@ namespace VertigoGames.Controllers.Wheel
             _wheelAnimationController.ResetWheelAnimation();
             _zoneData = zoneData;
             
-            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(_zoneData, _wheelSettings.WheelSlotCountValue);
+            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(_zoneData, _wheelSettings.WheelSlotCountValue);//zonemanager yapsim
             StartCoroutine(InstantiateWheelItemsWithAnimation(selectedRewards, 0));
         }
         
         private IEnumerator InstantiateWheelItemsWithAnimation(List<RewardData> selectedRewards, int currentZoneIndex)
         {
             yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayValue);
+            yield return new WaitForSeconds(1);
             
             foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
             {
-                var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
+               //var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
+                WheelItem item = ObjectPoolManager.Instance.GetObjectFromPool<WheelItem>();
+         
+                item.transform.SetParent(_wheelItemContainer);
+                
                 int rewardAmount = CalculateRewardAmount(rewardData);
                 item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue, _wheelSettings.WheelSlotCountValue);
                 _wheelItems.Add(item);

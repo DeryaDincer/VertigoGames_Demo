@@ -8,9 +8,9 @@ using VertigoGames.Interfaces;
 
 namespace VertigoGames.Managers
 {
-    public class GameManager : MonoBehaviour,IInitializable, IRegisterable
+    public sealed class GameManager : MonoBehaviour,IInitializable, IRegisterable
     {
-        [SerializeField] private ZoneManager zoneManager;
+        [SerializeField] private readonly ZoneManager zoneManager;
         [SerializeField] private UIAnimationManager _uiAnimationManager;
         public void Initialize()
         {

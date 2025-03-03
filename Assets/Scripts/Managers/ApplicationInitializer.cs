@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VertigoGames.Interfaces;
+using VertigoGames.Pooling;
 
 namespace VertigoGames.Managers
 {
-    public class ApplicationInitializer : MonoBehaviour, IInitializable, IRegisterable
+    public sealed class ApplicationInitializer : MonoBehaviour, IInitializable, IRegisterable
     {
         [SerializeField] private GameManager _gameManager;
         [SerializeField] private WindowManager _windowManager;
-
+        [SerializeField] private ObjectPoolManager _objectPoolManager;
         private TaskService.TaskService _taskService;
         
         private void Awake()
@@ -34,14 +35,15 @@ namespace VertigoGames.Managers
             _taskService = new();
             _gameManager.Initialize();
             _windowManager.Initialize();
+            _objectPoolManager.Initialize();
         }
         
         public void Deinitialize()
         {
             _gameManager.Deinitialize();
             _windowManager.Initialize();
+            _objectPoolManager.Deinitialize();
         } 
-        
         
         public void Register()
         {
