@@ -10,7 +10,7 @@ using VertigoGames.UI.Window;
 
 namespace VertigoGames.Managers
 {
-    public class WindowManager : MonoBehaviour
+    public class WindowManager : MonoBehaviour, IInitializable, IRegisterable
     {
         [SerializeField] private Window currentWindow;
 

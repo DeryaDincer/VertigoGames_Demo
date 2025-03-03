@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
@@ -45,11 +46,25 @@ namespace VertigoGames.Controllers.Zone
             TaskService.TaskService.Instance.AddTask(rewardAreaTask);
         }
 
-        private void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
+        private async void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
         {
+            
             var item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
             item.SetItem(rewardData, rewardAmount);
             _rewardAreaItems.Add(item);
+
+            await Task.Delay(100);
+            
+            RewardAnimation rewardAnimation =
+                new RewardAnimation(rewardData, rewardAmount, Vector2.zero, item.transform.position, AnimationCompleted);
+            ObserverManager.Notify(new OnRewardAnimationEvent(rewardAnimation));
+      
+        }
+
+        private void AnimationCompleted()
+        {
+            Debug.LogError("AnimationCompleted");
+            TaskService.TaskService.Instance.CompleteTask(TaskType.RewardArea);
         }
     }
 }

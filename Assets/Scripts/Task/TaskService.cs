@@ -75,6 +75,7 @@ namespace VertigoGames.TaskService
 
         private void ClearTasks()
         {
+            Debug.LogError("ClearTasks input ac");
             _currentTask = null;
             _taskQueue.Clear();
             _isProcessing = false;
@@ -82,6 +83,7 @@ namespace VertigoGames.TaskService
 
         public void CompleteTask(TaskType taskType)
         {
+            Debug.LogError("CompleteTask: "+ taskType);
             _currentCompletedTaskType = taskType;
         }
 

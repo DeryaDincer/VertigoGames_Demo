@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,17 +39,7 @@ namespace VertigoGames.Events
         }
     }
     
-    // public class OnUpdateZoneDataEvent : ObserverEvent
-    // {
-    //     public ZoneData ZoneData;
-    //     public int CurrentZoneIndex;
-    //
-    //     public OnUpdateZoneDataEvent(ZoneData zoneData, int currentZoneIndex)
-    //     {
-    //         ZoneData = zoneData;
-    //         CurrentZoneIndex = currentZoneIndex;
-    //     }
-    // }
+
     
     public class OnRewardDetermined : ObserverEvent
     {
@@ -73,6 +64,16 @@ namespace VertigoGames.Events
         public InputBlockerEvent(bool isBlock)
         {
             IsBlock = isBlock;
+        }
+    }
+    
+    public class OnRewardAnimationEvent : ObserverEvent
+    {
+        public RewardAnimation RewardAnimation;
+
+        public OnRewardAnimationEvent(RewardAnimation rewardAnimation)
+        {
+            RewardAnimation = rewardAnimation;
         }
     }
     

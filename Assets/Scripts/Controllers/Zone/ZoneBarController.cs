@@ -123,6 +123,7 @@ namespace VertigoGames.Controllers.Zone
 
             slideSequence.AppendCallback(() =>
             {
+                Debug.LogError("complete zonebar");
                 TaskService.TaskService.Instance.CompleteTask(TaskType.ZoneBar);
             });
         }
