@@ -10,15 +10,12 @@ namespace VertigoGames.Controllers.Reward
     {
         private System.Random _random;
 
-        private const double _desiredWeightProbability = 0.8; // Constant for 80% probability
-
-        public RewardSelectController()
-        {
-            _random = new System.Random();
-        }
+        private readonly double _desiredWeightProbability = 0.8; // Constant for 80% probability
 
         public List<RewardData> SelectRewards(ZoneData zoneData, int selectedRewardCount)
         {
+            _random = new System.Random();
+            
             var selectedRewards = new List<RewardData>();
             var availableRandomRewards = zoneData.RandomRewards.ToList(); // Copy of random rewards
 

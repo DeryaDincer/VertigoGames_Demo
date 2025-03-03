@@ -10,15 +10,5 @@ namespace VertigoGames.TaskService
             : base(TaskType.RewardArea, openRewardAreaTaskAsync)
         {
         }
-
-        public override async Task ExecuteAsync()
-        {
-            await base.ExecuteAsync(); 
-        }
-
-        public override void Complete()
-        {
-            base.Complete(); // Base sınıftaki tamamlama işlemini çağır
-        }
     }
 }

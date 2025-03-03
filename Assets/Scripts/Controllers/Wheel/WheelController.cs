@@ -61,7 +61,7 @@ namespace VertigoGames.Controllers.Wheel
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
 
-        public void StartGame(ZoneData zoneData)
+        public void BeginGameSession(ZoneData zoneData)
         {
             DestroyAllItems();
             _wheelAnimationController.ResetWheelAnimation();
@@ -138,8 +138,8 @@ namespace VertigoGames.Controllers.Wheel
                 RewardWindowCustomData customData = new RewardWindowCustomData();
                 customData.RewardData = _wheelItems[index].RewardData;
           
-                WindowActivateData windowActivateData = new WindowActivateData(WindowType.RewardWindow, true, customData);
-                ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
+                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.RewardWindow, true, customData);
+                ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             });
             
             TaskService.TaskService.Instance.AddTask(rewardWindowTask);

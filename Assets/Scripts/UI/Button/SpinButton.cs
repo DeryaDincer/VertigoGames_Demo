@@ -26,7 +26,7 @@ namespace VertigoGames.UI.Button
         private void ClickButton()
         {
             _wheelController.OnSpinWheel();
-            // ObserverManager.Notify(new SpinWheelEvent());
+            // ObserverManager.Notify(new SpinWheelEvent()); event kullan
         }
     }
 }

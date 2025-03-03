@@ -11,9 +11,12 @@ namespace VertigoGames.Pooling
         [SerializeField] private Transform _poolParent;
         [SerializeField] private ObjectPoolInfo[] _pools;
 
+        #region Initialization and Deinitialization
         public void Initialize() => InitializeAllPools();
         
         public void Deinitialize() { }
+        
+        #endregion
 
         private void InitializeAllPools()
         {

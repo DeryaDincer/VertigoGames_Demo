@@ -73,14 +73,14 @@ namespace VertigoGames.UI.Window
 
         private void CloseWindow()
         {
-            WindowActivateData windowActivateData = new WindowActivateData
+            WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo
             {
                 WindowType = WindowType.RewardWindow,
                 ActiveStatus = false,
                 CustomData = null
             };
 
-            ObserverManager.Notify(new WindowActivateDataEvent(windowActivateData));
+            ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             TaskService.TaskService.Instance.CompleteTask(TaskType.ShowRewardWindow);
         }
     }

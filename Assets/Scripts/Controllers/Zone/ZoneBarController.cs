@@ -58,7 +58,7 @@ namespace VertigoGames.Controllers.Zone
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
 
-        public void StartGame()
+        public void BeginGameSession()
         {
             SetInitialPosition();
             for (int i = 0; i < _zoneIndicators.Count; i++)

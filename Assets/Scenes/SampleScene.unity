@@ -937,7 +937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameManager: {fileID: 1487944652}
   _windowManager: {fileID: 1406076842}
-  _objectPoolManager: {fileID: 0}
+  _objectPoolManager: {fileID: 902613346}
 --- !u!1 &1279555907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,6 +1411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b264bee175d4a16a5afc3135f7da3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _zoneManager: {fileID: 1345381860}
   _uiAnimationManager: {fileID: 1453079185}
 --- !u!1 &1995248826
 GameObject:

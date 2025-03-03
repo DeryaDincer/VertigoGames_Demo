@@ -1,41 +1,45 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace VertigoGames.Managers
 {
+    /// <summary>
+    /// Observer pattern implementation to manage event subscriptions and notifications.
+    /// </summary>
     public class ObserverManager
     {
-        private static Dictionary<Type, Action<object>> observers = new Dictionary<Type, Action<object>>();
+        private static readonly Dictionary<Type, Action<object>> _observers = new Dictionary<Type, Action<object>>();
 
         public static void Register<T>(Action<T> observer)
         {
             Type eventType = typeof(T);
-            if (!observers.ContainsKey(eventType))
+
+            if (!_observers.ContainsKey(eventType))
             {
-                observers[eventType] = _ => { };
+                _observers[eventType] = _ => { };
             }
-            observers[eventType] += (obj) => observer((T)obj);
+
+            _observers[eventType] += obj => observer((T)obj);
         }
 
         public static void Unregister<T>(Action<T> observer)
         {
             Type eventType = typeof(T);
-            if (observers.ContainsKey(eventType))
+
+            if (_observers.ContainsKey(eventType))
             {
-                observers[eventType] -= (obj) => observer((T)obj);
+                _observers[eventType] -= obj => observer((T)obj);
             }
         }
 
         public static void Notify<T>(T eventData)
         {
             Type eventType = typeof(T);
-            if (observers.ContainsKey(eventType))
+
+            if (_observers.ContainsKey(eventType))
             {
-                observers[eventType]?.Invoke(eventData);
+                _observers[eventType]?.Invoke(eventData);
             }
         }
     }
- 
 }

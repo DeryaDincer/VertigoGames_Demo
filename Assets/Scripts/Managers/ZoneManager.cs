@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using VertigoGames.Controllers;
 using VertigoGames.Controllers.Wheel;
@@ -14,33 +11,41 @@ namespace VertigoGames.Managers
 {
     public class ZoneManager : MonoBehaviour, IInitializable, IRegisterable
     {
-        [SerializeField] private WheelController _wheelController;
+        [Header("Data References")] 
         [SerializeField] private List<ZoneData> _zoneDatas;
+
+        [Header("Controller References")] 
+        [SerializeField] private WheelController _wheelController;
         [SerializeField] private ZoneBarController _zoneBarController;
         [SerializeField] private RewardAreaController _rewardAreaController;
+
         private ZoneStateController _zoneStateController;
+
+        #region Initialization and Deinitialization
 
         public void Initialize()
         {
             _zoneStateController = new ZoneStateController(_zoneDatas);
             _wheelController.Initialize();
             _zoneBarController.Initialize();
-            _rewardAreaController.Initialize();
         }
 
         public void Deinitialize()
         {
             _wheelController.Deinitialize();
             _zoneBarController.Deinitialize();
-            _rewardAreaController.Deinitialize();
         }
+
+        #endregion
+
+        #region Registration and Unregistration
 
         public void Register()
         {
             _wheelController.Register();
             _zoneBarController.Register();
             _rewardAreaController.Register();
-            
+
             ObserverManager.Register<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
 
@@ -49,40 +54,49 @@ namespace VertigoGames.Managers
             _wheelController.Unregister();
             _zoneBarController.Unregister();
             _rewardAreaController.Unregister();
-            
+
             ObserverManager.Unregister<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
 
-        public void StartGame()
+        #endregion
+
+        public void BeginGameSession()
         {
             _zoneStateController.ResetZoneIndex();
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
-            
-            _wheelController.StartGame(zoneData);
-            _zoneBarController.StartGame();
-            _rewardAreaController.StartGame(); //icinde base olsa onu cagirsam olur
-           // ObserverManager.Notify(new OnUpdateZoneDataEvent(zoneData, _zoneStateController.CurrentZoneIndex));
-            //ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData));
-        }
-        
-        private void OnWheelSpinCompleted(OnWheelSpinCompletedEvent obj)
-        {
-            UpgradeZone(obj.RewardData, obj.RewardAmount);
+
+            _wheelController.BeginGameSession(zoneData);
+            _zoneBarController.BeginGameSession();
+            _rewardAreaController.BeginGameSession(); 
         }
 
-        private async void UpgradeZone(RewardData rewardData, int rewardAmount)
+        private void OnWheelSpinCompleted(OnWheelSpinCompletedEvent spinEvent)
+        {
+            AdvanceToNextZone(spinEvent.RewardData, spinEvent.RewardAmount);
+        }
+
+        private void AdvanceToNextZone(RewardData rewardData, int rewardAmount)
+        {
+            UpdateZoneIndex();
+            ZoneData currentZoneData = GetCurrentZoneData();
+            NotifyRewardAndStartTask(currentZoneData, rewardData, rewardAmount);
+        }
+
+        private void UpdateZoneIndex()
         {
             _zoneStateController.UpdateCurrentZoneIndex();
-            ZoneData zoneData = _zoneStateController.FindCurrentZone();
-            
-            ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex,rewardData, rewardAmount));
-            
-            TaskService.TaskService.Instance.StartTaskProcessing();
-            
-
-            await Task.Delay(300);
-            
-            ObserverManager.Notify(new OnZoneStateReadyEvent(zoneData)); //bunuda taska ekle
         }
+
+        private ZoneData GetCurrentZoneData()
+        {
+            return _zoneStateController.FindCurrentZone();
+        }
+
+        private void NotifyRewardAndStartTask(ZoneData zoneData, RewardData rewardData, int rewardAmount)
+        {
+            ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
+            TaskService.TaskService.Instance.StartTaskProcessing();
+        }
+
     }
 }

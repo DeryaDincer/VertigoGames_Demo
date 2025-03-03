@@ -10,21 +10,11 @@ using VertigoGames.TaskService;
 
 namespace VertigoGames.Controllers.Zone
 {
-    public class RewardAreaController : MonoBehaviour, IInitializable, IRegisterable
+    public class RewardAreaController : MonoBehaviour, IRegisterable
     {
         [SerializeField] private RewardAreaItem _rewardAreaItemPrefab;
         [SerializeField] private RectTransform _rewardItemContainer;
         private List<RewardAreaItem> _rewardAreaItems = new();
-        
-        public void Initialize()
-        {
-           
-        }
-
-        public void Deinitialize()
-        {
-           
-        }
         
         public void Register()
         {
@@ -36,7 +26,7 @@ namespace VertigoGames.Controllers.Zone
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
         }
 
-        public void StartGame()
+        public void BeginGameSession()
         {
             DestroyAllItems();
         }
@@ -59,7 +49,6 @@ namespace VertigoGames.Controllers.Zone
 
         private async void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
         {
-            
             var item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
             item.SetItem(rewardData, rewardAmount);
             _rewardAreaItems.Add(item);

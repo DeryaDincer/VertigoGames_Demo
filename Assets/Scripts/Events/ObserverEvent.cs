@@ -17,15 +17,15 @@ namespace VertigoGames.Events
     // }
     
     
-    public class OnZoneStateReadyEvent : ObserverEvent
-    {
-        public ZoneData ZoneData;
-
-        public OnZoneStateReadyEvent(ZoneData zoneData)
-        {
-            ZoneData = zoneData;
-        }
-    }
+    // public class OnZoneStateReadyEvent : ObserverEvent
+    // {
+    //     public ZoneData ZoneData;
+    //
+    //     public OnZoneStateReadyEvent(ZoneData zoneData)
+    //     {
+    //         ZoneData = zoneData;
+    //     }
+    // }
     
     public class OnWheelSpinCompletedEvent : ObserverEvent
     {
@@ -77,20 +77,20 @@ namespace VertigoGames.Events
         }
     }
     
-    public class OnResetGameEvent : ObserverEvent
+    public class GameSessionResetEvent : ObserverEvent
     {
-        public OnResetGameEvent()
+        public GameSessionResetEvent()
         {
         }
     }
     
-    public class WindowActivateDataEvent : ObserverEvent
+    public class WindowStateChangeEvent : ObserverEvent
     {
-        public WindowActivateData WindowActivateData { get; private set; }
+        public WindowStateChangeInfo WindowStateChangeInfo { get; private set; }
 
-        public WindowActivateDataEvent(WindowActivateData windowActivateData)
+        public WindowStateChangeEvent(WindowStateChangeInfo windowStateChangeInfo)
         {
-            WindowActivateData = windowActivateData;
+            WindowStateChangeInfo = windowStateChangeInfo;
         }
     }
 }

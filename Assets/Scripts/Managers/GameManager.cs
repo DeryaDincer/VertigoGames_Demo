@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VertigoGames.Controllers.Wheel;
 using VertigoGames.Events;
@@ -8,47 +6,55 @@ using VertigoGames.Interfaces;
 
 namespace VertigoGames.Managers
 {
-    public sealed class GameManager : MonoBehaviour,IInitializable, IRegisterable
+    public sealed class GameManager : MonoBehaviour, IInitializable, IRegisterable
     {
-        [SerializeField] private readonly ZoneManager zoneManager;
+        [Header("Manager References")] 
+        [SerializeField] private ZoneManager _zoneManager;
         [SerializeField] private UIAnimationManager _uiAnimationManager;
+        
+        #region Initialization and Deinitialization
+
         public void Initialize()
         {
-            zoneManager.Initialize();
+            _zoneManager.Initialize();
             _uiAnimationManager.Initialize();
         }
-        
-        public void Deinitialize() 
+
+        public void Deinitialize()
         {
-            zoneManager.Deinitialize();
+            _zoneManager.Deinitialize();
             _uiAnimationManager.Deinitialize();
         }
-        
+
+        #endregion
+
+        #region Registration and Unregistration
+
         public void Register()
         {
-            zoneManager.Register();
+            _zoneManager.Register();
             _uiAnimationManager.Register();
-            StartGame();
-            
-            ObserverManager.Register<OnResetGameEvent>(OnResetGame);
+            BeginGameSession();
+
+            ObserverManager.Register<GameSessionResetEvent>(OnGameSessionReset);
         }
-        
+
         public void Unregister()
         {
-            zoneManager.Unregister();
+            _zoneManager.Unregister();
             _uiAnimationManager.Unregister();
-            
-            ObserverManager.Unregister<OnResetGameEvent>(OnResetGame);
+
+            ObserverManager.Unregister<GameSessionResetEvent>(OnGameSessionReset);
         }
 
-        private void OnResetGame(OnResetGameEvent obj)
-        {
-            StartGame();
-        }
+        #endregion
 
-        public void StartGame()
-        {
-            zoneManager.StartGame();
-        }
+        #region Game Flow
+
+        private void BeginGameSession() =>  _zoneManager.BeginGameSession();
+       
+        private void OnGameSessionReset(GameSessionResetEvent obj) =>  BeginGameSession();
+
+        #endregion
     }
 }

@@ -1,19 +1,23 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
 
 namespace VertigoGames.Managers
 {
+    /// <summary>
+    /// Manages the initialization and registration of core application components.
+    /// </summary>
     public sealed class ApplicationInitializer : MonoBehaviour, IInitializable, IRegisterable
     {
+        [Header("Manager References")] 
         [SerializeField] private GameManager _gameManager;
         [SerializeField] private WindowManager _windowManager;
         [SerializeField] private ObjectPoolManager _objectPoolManager;
         private TaskService.TaskService _taskService;
-        
+
+        #region Unity Lifecycle Methods
+
         private void Awake()
         {
             Initialize();
@@ -30,32 +34,53 @@ namespace VertigoGames.Managers
             Deinitialize();
         }
 
+        #endregion
+
+        #region IInitializable Implementation
+
+        /// <summary>
+        /// Initializes the core components of the application.
+        /// </summary>
         public void Initialize()
         {
-            _taskService = new();
+            _taskService = new TaskService.TaskService();
             _gameManager.Initialize();
             _windowManager.Initialize();
             _objectPoolManager.Initialize();
         }
-        
+
+        /// <summary>
+        /// Deinitializes the core components of the application.
+        /// </summary>
         public void Deinitialize()
         {
             _gameManager.Deinitialize();
-            _windowManager.Initialize();
+            _windowManager.Deinitialize(); // Fixed: Previously was calling Initialize instead of Deinitialize
             _objectPoolManager.Deinitialize();
-        } 
-        
+        }
+
+        #endregion
+
+        #region IRegisterable Implementation
+
+        /// <summary>
+        /// Registers the core components of the application.
+        /// </summary>
         public void Register()
         {
             _gameManager.Register();
             _windowManager.Register();
         }
-        
+
+        /// <summary>
+        /// Unregisters the core components of the application.
+        /// </summary>
         public void Unregister()
         {
             _gameManager.Unregister();
             _windowManager.Unregister();
         }
-      
+
+        #endregion
     }
 }

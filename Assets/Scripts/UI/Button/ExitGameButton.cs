@@ -19,8 +19,7 @@ namespace VertigoGames.UI.Button
 
         private void ClickButton()
         {
-            Debug.LogError("reset game");
-             ObserverManager.Notify(new OnResetGameEvent());
+             ObserverManager.Notify(new GameSessionResetEvent());
         }
     }
 }

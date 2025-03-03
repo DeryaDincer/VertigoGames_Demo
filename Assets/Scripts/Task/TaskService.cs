@@ -8,7 +8,7 @@ using VertigoGames.Managers;
 
 namespace VertigoGames.TaskService
 {
-    public class TaskService
+    public class TaskService //singlekton ekle
     {
         public static TaskService Instance { get; private set; }
 
@@ -70,11 +70,6 @@ namespace VertigoGames.TaskService
             }
 
             _taskQueue = new Queue<ITask>(_taskQueue.OrderBy(x => x.TaskType));
-
-            if (_taskQueue.Count == 1 && !_isProcessing)
-            {
-               // ProcessTaskQueueAsync();
-            }
         }
 
         private void ClearTasks()
