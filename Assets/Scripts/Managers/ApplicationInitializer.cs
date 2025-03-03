@@ -10,6 +10,8 @@ namespace VertigoGames.Managers
     {
         [SerializeField] private GameManager _gameManager;
         [SerializeField] private WindowManager _windowManager;
+
+        private TaskService.TaskService _taskService;
         
         private void Awake()
         {
@@ -29,6 +31,7 @@ namespace VertigoGames.Managers
 
         public void Initialize()
         {
+            _taskService = new();
             _gameManager.Initialize();
             _windowManager.Initialize();
         }

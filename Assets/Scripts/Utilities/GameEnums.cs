@@ -66,3 +66,9 @@ public enum WindowType
     None,
     RewardWindow
 }
+
+public enum TaskType
+{
+    None,
+    ShowRewardWindow
+}
