@@ -15,7 +15,7 @@ MonoBehaviour:
   rewardInfo:
     Title: Gold
     RewardType: 14
-    InitialRewardCount: 5
+    InitialRewardCount: 50
     RewardIncrementMultiplier: 0.01
-    Icon: {fileID: 21300000, guid: a0d54f29ed12441609bdb19312641c70, type: 3}
+    Icon: {fileID: 21300000, guid: b71badc93de454d67bafa06f778e1fd1, type: 3}
   _rewardWeight: 3
