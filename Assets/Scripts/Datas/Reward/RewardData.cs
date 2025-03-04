@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using VertigoGames.Managers;
 
 namespace VertigoGames.Datas.Reward
 {
@@ -14,6 +15,11 @@ namespace VertigoGames.Datas.Reward
         [Title("Weight Settings")]
         [SerializeField] private RewardWeight _rewardWeight;
         public RewardWeight RewardWeight => _rewardWeight;
+
+        public void AddCurrency(int amount)
+        {
+            CurrencyManager.Instance.AddCurrency(RewardInfo.RewardType, amount); 
+        }
     }
     
     [System.Serializable]

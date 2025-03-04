@@ -83,6 +83,21 @@ namespace VertigoGames.Events
         {
         }
     }
+
+    public class GameSessionReviveEvent : ObserverEvent
+    {
+        
+    }
+    
+    public class OnCurrencyChangedEvent : ObserverEvent
+    {
+        public RewardType RewardType;
+        
+        public OnCurrencyChangedEvent(RewardType rewardType)
+        {
+            RewardType = rewardType;
+        }
+    }
     
     public class WindowStateChangeEvent : ObserverEvent
     {

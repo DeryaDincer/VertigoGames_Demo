@@ -40,6 +40,8 @@ namespace VertigoGames.Controllers.Zone
         
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
+            obj.RewardData.AddCurrency(obj.RewardAmount);
+            
             var rewardAreaTask = new RewardAreaTask(async () =>
             {
                 InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
