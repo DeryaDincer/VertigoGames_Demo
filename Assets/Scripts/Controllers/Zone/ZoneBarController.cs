@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using VertigoGames.Events;
 using VertigoGames.GameTasks;
 using VertigoGames.Interfaces;
@@ -22,11 +23,12 @@ namespace VertigoGames.Controllers.Zone
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI _indicatorTextPrefab;
         [SerializeField] private RectTransform _layoutGroupRect;
+        [SerializeField] private Image _indicatorImageValue;
 
         private readonly List<ZoneBarIndicatorInfo> _zoneIndicators = new();
-        private int _initialIndicatorCount;
-        private int _averageIndicatorIndex;
-        private float _slideDistance;
+        // private int _initialIndicatorCount;
+        //private int _averageIndicatorIndex;
+        // private float _slideDistance;
         private float _initialPositionX;
         private int _slideCount = 0;
 
@@ -36,19 +38,11 @@ namespace VertigoGames.Controllers.Zone
 
         public void Initialize()
         {
-            LoadSettings();
             CalculateSlideDistance();
             InitializeZoneIndicators();
             SetInitialPosition();
 
             _animationController = new ZoneBarAnimationController(_layoutGroupRect, _zoneBarSettings);
-        }
-
-        private void LoadSettings()
-        {
-            _initialIndicatorCount = _zoneBarSettings.InitialIndicatorCount;
-            _averageIndicatorIndex = _zoneBarSettings.AverageIndicatorIndex;
-            _slideDistance = _zoneBarSettings.SlideDistance;
         }
 
         public void Deinitialize()
@@ -74,12 +68,12 @@ namespace VertigoGames.Controllers.Zone
 
         private void CalculateSlideDistance()
         {
-            _initialPositionX = _slideDistance * _averageIndicatorIndex;
+            _initialPositionX = _zoneBarSettings.SlideDistance * _zoneBarSettings.AverageIndicatorIndex;
         }
 
         private void InitializeZoneIndicators()
         {
-            for (int i = 0; i < _initialIndicatorCount; i++)
+            for (int i = 0; i < _zoneBarSettings.InitialIndicatorCount; i++)
             {
                 TextMeshProUGUI indicatorText = Instantiate(_indicatorTextPrefab, _layoutGroupRect.transform);
                 indicatorText.text = i.ToString();
@@ -106,6 +100,7 @@ namespace VertigoGames.Controllers.Zone
             var zoneBarTask = new ZoneBarTask(async () =>
             {
                 SlideToNextZone();
+                SetZoneUI(obj.ZoneData.ZoneType);
             });
 
             TaskService.Instance.AddTask(zoneBarTask);
@@ -115,7 +110,7 @@ namespace VertigoGames.Controllers.Zone
         {
             _animationController.SlideToNextZone(() =>
             {
-                if (_slideCount >= _averageIndicatorIndex)
+                if (_slideCount >= _zoneBarSettings.AverageIndicatorIndex)
                 {
                     UpdateZoneIndicators();
                     _animationController.ResetPosition();
@@ -125,6 +120,12 @@ namespace VertigoGames.Controllers.Zone
 
                 TaskService.Instance.CompleteTask(TaskType.ZoneBar);
             });
+        }
+
+        private void SetZoneUI(ZoneType zoneType)
+        {
+            ZoneBarAppearanceInfo zoneBarAppearanceInfo = _zoneBarSettings.GetZoneBarAppearanceByZoneType(zoneType);
+            _indicatorImageValue.sprite = zoneBarAppearanceInfo.ZoneBaseSprite;
         }
 
         private void UpdateZoneIndicators()

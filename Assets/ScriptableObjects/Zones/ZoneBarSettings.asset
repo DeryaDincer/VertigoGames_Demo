@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a1b0814440d49f18bf225d70d65f5a, type: 3}
   m_Name: ZoneBarSettings
   m_EditorClassIdentifier: 
-  _initialIndicatorCount: 10
+  _initialIndicatorCount: 12
+  _averageIndicatorIndex: 5
   _slideDuration: 1
   _slideEase: 6
+  _zoneBarAppearanceInfos:
+  - ZoneType: 0
+    ZoneBaseSprite: {fileID: 21300000, guid: c60dd0ad0bbab4431bf29c6b043f8b2a, type: 3}
+  - ZoneType: 1
+    ZoneBaseSprite: {fileID: 21300000, guid: d9fa6f02f6faa4321a663c435d1ce522, type: 3}
+  - ZoneType: 2
+    ZoneBaseSprite: {fileID: 21300000, guid: fd8eaa6b16dc14819b7ec440ec9698a8, type: 3}
