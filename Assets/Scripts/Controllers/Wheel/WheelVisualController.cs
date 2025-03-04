@@ -17,10 +17,10 @@ namespace VertigoGames.Controllers.Wheel
             _indicatorWheelImageValue = indicatorWheelImageValue;
         }
 
-        public void SetWheelVisual(WheelZoneAppearance wheelZoneAppearance)
+        public void SetWheelVisual(WheelZoneAppearanceInfo wheelZoneAppearanceInfo)
         {
-            _spinWheelImageValue.sprite = wheelZoneAppearance.WheelBaseSprite;
-            _indicatorWheelImageValue.sprite = wheelZoneAppearance.WheelIndicatorSprite;
+            _spinWheelImageValue.sprite = wheelZoneAppearanceInfo.WheelBaseSprite;
+            _indicatorWheelImageValue.sprite = wheelZoneAppearanceInfo.WheelIndicatorSprite;
         }
     }
 

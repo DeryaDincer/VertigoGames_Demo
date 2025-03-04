@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace VertigoGames.Utility
 {
@@ -40,6 +41,17 @@ namespace VertigoGames.Utility
         #endregion
 
 
+        #region Image
+
+        public static void SetAlpha(this Image image, float alpha)
+        {
+            Color color = image.color;
+            color.a = alpha;
+            image.color = color;
+        }
+
+        #endregion
+        
         #region DoTween
 
         public static Tween DoBump(this Transform transform, float scaleFactor = 1.05f, float duration = 0.05f)

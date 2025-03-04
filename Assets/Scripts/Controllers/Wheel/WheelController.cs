@@ -62,23 +62,30 @@ namespace VertigoGames.Controllers.Wheel
 
         public void BeginGameSession(ZoneData zoneData)
         {
+            InitialWheelSession(zoneData);
+        }
+        
+        private void InitialWheelSession(ZoneData zoneData)
+        {
             DestroyAllItems();
             _wheelAnimationController.ResetWheelAnimation();
             _zoneData = zoneData;
             
             List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(_zoneData, _wheelSettings.WheelSlotCountValue);//zonemanager yapsim
             StartCoroutine(InstantiateWheelItemsWithAnimation(selectedRewards, 0));
-        }
+            
+            WheelZoneAppearanceInfo wheelZoneAppearanceInfo = _wheelSettings.GetWheelZoneAppearanceByZoneType(_zoneData.ZoneType);
+            _wheelVisualController.SetWheelVisual(wheelZoneAppearanceInfo);
+        } 
         
         private IEnumerator InstantiateWheelItemsWithAnimation(List<RewardData> selectedRewards, int currentZoneIndex)
         {
             yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayValue);
-            yield return new WaitForSeconds(1);
             
             foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
             {
-               //var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
-                WheelItem item = ObjectPoolManager.Instance.GetObjectFromPool<WheelItem>();
+               var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
+                // WheelItem item = ObjectPoolManager.Instance.GetObjectFromPool<WheelItem>();
          
                 item.transform.SetParent(_wheelItemContainer);
                 
@@ -88,6 +95,9 @@ namespace VertigoGames.Controllers.Wheel
 
                 yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayBetweenItemsValue); 
             }
+            
+            ObserverManager.Notify(new InputBlockerEvent(false));
+            TaskService.Instance.CompleteTask(TaskType.InitializeWheel);
         }
 
         private void DestroyAllItems()
@@ -103,6 +113,7 @@ namespace VertigoGames.Controllers.Wheel
         
         public void OnSpinWheel()
         {
+            ObserverManager.Notify(new InputBlockerEvent(true));
             int targetRewardIndex = GetRandomItemIndex();
             RewardData rewardData = _wheelItems[targetRewardIndex].RewardData;
             _selectedReward = (rewardData, _wheelItems[targetRewardIndex].RewardAmount);
@@ -121,26 +132,59 @@ namespace VertigoGames.Controllers.Wheel
         
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
+            // if (obj.RewardData.RewardInfo.RewardType == RewardType.Bomb)
+            // {
+            //     AddDangerRewardWindowTask();
+            //
+            // }
+            // else
+            // {
+            //     AddRewardWindowTask();
+            //
+            // }
             AddRewardWindowTask();
-
+            AddInitializeWheelTask(obj.ZoneData);
+            
             _currentZoneIndex = obj.CurrentZoneIndex;
-            WheelZoneAppearance wheelZoneAppearance = _wheelSettings.GetWheelZoneAppearanceByZoneType(obj.ZoneData.ZoneType);
-            _wheelVisualController.SetWheelVisual(wheelZoneAppearance);
+
+            // WheelZoneAppearanceInfo wheelZoneAppearanceInfo = _wheelSettings.GetWheelZoneAppearanceByZoneType(obj.ZoneData.ZoneType);
+            // _wheelVisualController.SetWheelVisual(wheelZoneAppearanceInfo);
         }
         
         private void AddRewardWindowTask()
         {
             var rewardWindowTask = new RewardWindowTask(async () =>
             {
-                int index = Random.Range(0, _wheelItems.Count);
-                RewardWindowCustomData customData = new RewardWindowCustomData();
-                customData.RewardData = _wheelItems[index].RewardData;
-          
-                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.RewardWindow, true, customData);
+                RewardWindowCustomInfo customInfo = new RewardWindowCustomInfo(_selectedReward.Item1, _selectedReward.Item2);
+            
+                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.RewardWindow, true, customInfo);
                 ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             });
             
             TaskService.Instance.AddTask(rewardWindowTask);
+        }
+        
+        private void AddDangerRewardWindowTask()
+        {
+            var dangerRewardWindowTask = new DangerRewardWindowTask(async () =>
+            {
+                RewardWindowCustomInfo customInfo = new RewardWindowCustomInfo(_selectedReward.Item1, _selectedReward.Item2);
+            
+                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.DangerRewardWindow, true, customInfo);
+                ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
+            });
+            
+            TaskService.Instance.AddTask(dangerRewardWindowTask);
+        }
+        
+        private void AddInitializeWheelTask(ZoneData zoneData)
+        {
+            var initializeWheelTask = new InitializeWheelTask(async () =>
+            {
+                InitialWheelSession(zoneData);
+            });
+            
+            TaskService.Instance.AddTask(initializeWheelTask);
         }
     }
 }

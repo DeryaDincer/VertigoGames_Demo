@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace VertigoGames.Settings
 {
@@ -18,9 +16,12 @@ namespace VertigoGames.Settings
         public float WheelScaleUpValue => _wheelScaleUpValue;
         public float WheelRadiusValue => _wheelRadiusValue;
         public Ease SpinEaseValue => _spinEaseValue;
+        public float IndicatorRotationValue => _indicatorRotationValue;
+        public float IndicatorDurationValue => _indicatorDurationValue;
+        public Ease IndicatorEaseValue => _indicatorEaseValue;
         public float SpinDurationValue => _spinDurationValue;
         public float WheelBumpDurationValue => _wheelBumpDurationValue;
-        public  List<WheelZoneAppearance>  WheelZoneAppearances => _wheelZoneAppearances;
+        public  List<WheelZoneAppearanceInfo>  WheelZoneAppearances => _wheelZoneAppearances;
       
         [Title("Wheel Settings")]
         
@@ -38,6 +39,12 @@ namespace VertigoGames.Settings
         [SerializeField] private int _wheelRadiusValue;
         [SerializeField] private Ease _spinEaseValue;
         
+        [Title("Wheel Indicator Animation Settings")]
+        
+        [SerializeField] private int _indicatorRotationValue;
+        [SerializeField] private float _indicatorDurationValue;
+        [SerializeField] private Ease _indicatorEaseValue;
+        
         [Title("Wheel Scale Animation Settings")]
         
         [SerializeField] private float _wheelScaleUpValue;
@@ -45,21 +52,12 @@ namespace VertigoGames.Settings
         
         [Title("Wheel Appearance Settings")]
         
-        [SerializeField] private List<WheelZoneAppearance> _wheelZoneAppearances;
+        [SerializeField] private List<WheelZoneAppearanceInfo> _wheelZoneAppearances;
 
-        public WheelZoneAppearance GetWheelZoneAppearanceByZoneType(ZoneType zoneType)
+        public WheelZoneAppearanceInfo GetWheelZoneAppearanceByZoneType(ZoneType zoneType)
         {
             var appearance = _wheelZoneAppearances.FirstOrDefault(wza => wza.ZoneType == zoneType);
             return appearance;
         }
     }
-
-    [System.Serializable]
-    public struct WheelZoneAppearance
-    {
-        public ZoneType ZoneType;
-        public Sprite WheelBaseSprite;
-        public Sprite WheelIndicatorSprite;
-    }
-  
 }
