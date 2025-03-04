@@ -7,38 +7,31 @@ using VertigoGames.Events;
 using VertigoGames.Managers;
 using VertigoGames.Services;
 using VertigoGames.Settings;
-using VertigoGames.UI.Window;
 
 namespace VertigoGames.UI.Window
 {
-    public class RewardWindowController : Window
+    public class DangerRewardWindowController : Window
     {
-        [Header("UI References")]
+         [Header("UI References")]
         [SerializeField] private Image _rewardIcon;
-        [SerializeField] private TextMeshProUGUI _rewardTitleValue;
-        [SerializeField] private TextMeshProUGUI _rewardAmountValue;
         [SerializeField] private RectTransform _cardRoot;
-        [SerializeField] private CanvasGroup _cardCanvasGroup;
-        [SerializeField] private RectTransform _cardFrontValue;
-        [SerializeField] private RectTransform _cardBackValue;
-
-        [Header("Reward Window Settings")]
-        [SerializeField] private RewardWindowSettings _rewardWindowSettings;
+        [SerializeField] private Image _windowBackgroundImage;
+        [SerializeField] private TextMeshProUGUI _dangerInfoTextValue;
+            
+        [Header("Danger Reward Window Settings")]
+        [SerializeField] private DangerRewardWindowSettings _dangerRewardWindowSettings;
 
         private RewardWindowCustomInfo _rewardWindowCustomInfo;
-        private RewardWindowAnimationController _animationController;
+        private DangerRewardWindowAnimationController _animationController;
 
-        public override WindowType WindowType => WindowType.RewardWindow;
+        public override WindowType WindowType => WindowType.DangerRewardWindow;
 
         private void Awake()
         {
-            _animationController = new RewardWindowAnimationController(
-                _rewardWindowSettings,
+            _animationController = new DangerRewardWindowAnimationController(
+                _dangerRewardWindowSettings,
                 _cardRoot,
-                _cardCanvasGroup,
-                _cardFrontValue,
-                _cardBackValue
-            );
+                _windowBackgroundImage);
         }
 
         public override void OnWindowActivated(object customData)
@@ -48,11 +41,11 @@ namespace VertigoGames.UI.Window
 
             if (_rewardWindowCustomInfo == null)
             {
-                Debug.LogError("RewardWindowCustomData is null!");
+                Debug.LogError("DangerRewardWindowCustomData is null!");
                 return;
             }
-          
-            SetRewardInfo(_rewardWindowCustomInfo.RewardData, _rewardWindowCustomInfo.RewardAmount);
+
+            SetRewardInfo(_rewardWindowCustomInfo.RewardData);
             _animationController.PlayCardAnimation().OnComplete(CloseWindow);
         }
 
@@ -61,21 +54,18 @@ namespace VertigoGames.UI.Window
             DOTween.Kill(transform);
             base.OnWindowDeactivated();
             _animationController.ResetCardRotation();
-            _cardCanvasGroup.alpha = 1;
         }
 
-        private void SetRewardInfo(RewardData rewardData, int rewardAmount)
+        private void SetRewardInfo(RewardData rewardData)
         {
             _rewardIcon.sprite = rewardData.RewardInfo.Icon;
-            _rewardTitleValue.text = rewardData.RewardInfo.Title;
-            _rewardAmountValue.text = "x" + rewardAmount; 
         }
 
         private void CloseWindow()
         {
             WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo
             {
-                WindowType = WindowType.RewardWindow,
+                WindowType = WindowType.DangerRewardWindow,
                 ActiveStatus = false,
                 CustomInfo = null
             };
