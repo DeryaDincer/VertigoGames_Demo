@@ -1,27 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+using VertigoGames.Controllers.Currency;
 using VertigoGames.Events;
+using VertigoGames.Interfaces;
 using VertigoGames.Utility;
 
 namespace VertigoGames.Managers
 {
-    public class CurrencyManager : MonoBehaviour
+    public class CurrencyManager : MonoBehaviour, IRegisterable
     {
-        public static CurrencyManager Instance { get; private set; }
+        [SerializeField] private CurrencyController _currencyController;
+        
+        #region Initialization and Deinitialization
 
-        private void Awake()
+        public void Initialize()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            _currencyController.Initialize(this);
         }
+
+        public void Deinitialize()
+        {
+            _currencyController.Deinitialize();
+        }
+
+        #endregion
+
+        #region Registration and Unregistration
+
+        public void Register()
+        {
+            _currencyController.Register();
+        }
+
+        public void Unregister()
+        {
+            _currencyController.Unregister();
+        }
+
+        #endregion
 
         public int LoadCurrency(RewardType rewardType)
         {

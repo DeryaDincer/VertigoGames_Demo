@@ -1363,6 +1363,7 @@ MonoBehaviour:
   _gameManager: {fileID: 1487944652}
   _windowManager: {fileID: 1406076842}
   _objectPoolManager: {fileID: 902613346}
+  _currencyManager: {fileID: 1304720032}
 --- !u!1 &1279555907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,6 +1476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8506d379b021e43aba7e41a3076405b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currencyController: {fileID: 2008124780}
 --- !u!1 &1345381858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,7 +1936,7 @@ GameObject:
   - component: {fileID: 2008124782}
   - component: {fileID: 2008124780}
   m_Layer: 5
-  m_Name: ui_currency_bar
+  m_Name: CurrencyController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

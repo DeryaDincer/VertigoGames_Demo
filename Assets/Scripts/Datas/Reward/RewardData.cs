@@ -18,7 +18,8 @@ namespace VertigoGames.Datas.Reward
 
         public void AddCurrency(int amount)
         {
-            CurrencyManager.Instance.AddCurrency(RewardInfo.RewardType, amount); 
+          
+            //CurrencyManager.Instance.AddCurrency(RewardInfo.RewardType, amount); 
         }
     }
     

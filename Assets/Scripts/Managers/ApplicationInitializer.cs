@@ -14,6 +14,7 @@ namespace VertigoGames.Managers
         [SerializeField] private GameManager _gameManager;
         [SerializeField] private WindowManager _windowManager;
         [SerializeField] private ObjectPoolManager _objectPoolManager;
+        [SerializeField] private CurrencyManager _currencyManager;
         private TaskService _taskService;
 
         #region Unity Lifecycle Methods
@@ -47,6 +48,7 @@ namespace VertigoGames.Managers
             _gameManager.Initialize(_objectPoolManager, _taskService);
             _windowManager.Initialize(_taskService);
             _objectPoolManager.Initialize();
+            _currencyManager.Initialize();
         }
 
         /// <summary>
@@ -57,6 +59,7 @@ namespace VertigoGames.Managers
             _gameManager.Deinitialize();
             _windowManager.Deinitialize(); // Fixed: Previously was calling Initialize instead of Deinitialize
             _objectPoolManager.Deinitialize();
+            _currencyManager.Deinitialize();
         }
 
         #endregion
@@ -70,6 +73,7 @@ namespace VertigoGames.Managers
         {
             _gameManager.Register();
             _windowManager.Register();
+            _currencyManager.Register();
         }
 
         /// <summary>
@@ -79,6 +83,7 @@ namespace VertigoGames.Managers
         {
             _gameManager.Unregister();
             _windowManager.Unregister();
+            _currencyManager.Unregister();
         }
 
         #endregion
