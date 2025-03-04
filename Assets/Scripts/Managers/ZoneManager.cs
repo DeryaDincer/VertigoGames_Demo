@@ -28,17 +28,19 @@ namespace VertigoGames.Managers
 
 
         private ObjectPoolManager _objectPoolManager;
+        private TaskService _taskService;
         
         #region Initialization and Deinitialization
 
-        public void Initialize(ObjectPoolManager objectPoolManager)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
         {
             _objectPoolManager = objectPoolManager;
-           
+            _taskService = taskService;
+            
             _zoneStateController = new ZoneStateController(_zoneDatas);
-            _wheelController.Initialize(objectPoolManager);
-            _zoneBarController.Initialize();
-            _rewardAreaController.Initialize(objectPoolManager);
+            _wheelController.Initialize(objectPoolManager, taskService);
+            _zoneBarController.Initialize(taskService);
+            _rewardAreaController.Initialize(objectPoolManager, taskService);
         }
 
         public void Deinitialize()
@@ -109,7 +111,7 @@ namespace VertigoGames.Managers
         {
             ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
             await Task.Delay(200);
-            TaskService.Instance.StartTaskProcessing();
+            _taskService.StartTaskProcessing();
         }
     }
 }

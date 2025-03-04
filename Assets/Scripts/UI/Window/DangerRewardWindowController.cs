@@ -23,11 +23,14 @@ namespace VertigoGames.UI.Window
 
         private RewardWindowCustomInfo _rewardWindowCustomInfo;
         private DangerRewardWindowAnimationController _animationController;
-
+        private TaskService _taskService;
         public override WindowType WindowType => WindowType.DangerRewardWindow;
 
-        private void Awake()
+        public override void Initialize(TaskService taskService)
         {
+            base.Initialize(taskService);
+            _taskService = taskService;
+            
             _animationController = new DangerRewardWindowAnimationController(
                 _dangerRewardWindowSettings,
                 _cardRoot,
@@ -71,7 +74,7 @@ namespace VertigoGames.UI.Window
             };
 
             ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
-            TaskService.Instance.CompleteTask(TaskType.ShowRewardWindow);
+            _taskService.CompleteTask(TaskType.ShowRewardWindow);
         }
     }
 }

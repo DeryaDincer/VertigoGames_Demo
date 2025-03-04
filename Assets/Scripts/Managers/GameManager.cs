@@ -4,6 +4,7 @@ using VertigoGames.Controllers.Wheel;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
+using VertigoGames.Services;
 
 namespace VertigoGames.Managers
 {
@@ -14,13 +15,15 @@ namespace VertigoGames.Managers
         [SerializeField] private UIAnimationManager _uiAnimationManager;
 
         private ObjectPoolManager _objectPoolManager;
+        private TaskService _taskService;
         #region Initialization and Deinitialization
 
-        public void Initialize(ObjectPoolManager objectPoolManager)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
         {
             _objectPoolManager = objectPoolManager;
+            _taskService = taskService;
             
-            _zoneManager.Initialize(_objectPoolManager);
+            _zoneManager.Initialize(_objectPoolManager, _taskService);
             _uiAnimationManager.Initialize(_objectPoolManager);
         }
 

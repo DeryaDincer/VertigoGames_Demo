@@ -20,10 +20,12 @@ namespace VertigoGames.Controllers.Zone
         [SerializeField] private RectTransform _rewardItemContainer;
         private List<RewardAreaItem> _rewardAreaItems = new();
         private ObjectPoolManager _objectPoolManager;
+        private TaskService _taskService;
         
-        public void Initialize(ObjectPoolManager objectPoolManager)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
         {
             _objectPoolManager = objectPoolManager;
+            _taskService = taskService;
         }
         
         public void Register()
@@ -55,7 +57,7 @@ namespace VertigoGames.Controllers.Zone
                 InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
             });
             
-            TaskService.Instance.AddTask(rewardAreaTask);
+            _taskService.AddTask(rewardAreaTask);
         }
 
         private async void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
@@ -95,7 +97,7 @@ namespace VertigoGames.Controllers.Zone
         private void AnimationCompleted(RewardAreaItem item , RewardData rewardData, int rewardAmount)
         {
             item.transform.localScale = Vector3.one;
-            TaskService.Instance.CompleteTask(TaskType.RewardArea);
+            _taskService.CompleteTask(TaskType.RewardArea);
         }
     }
 }

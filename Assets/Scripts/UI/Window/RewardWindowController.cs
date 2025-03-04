@@ -27,11 +27,14 @@ namespace VertigoGames.UI.Window
 
         private RewardWindowCustomInfo _rewardWindowCustomInfo;
         private RewardWindowAnimationController _animationController;
-
+        private TaskService _taskService;
         public override WindowType WindowType => WindowType.RewardWindow;
 
-        private void Awake()
+        public override void Initialize(TaskService taskService)
         {
+            base.Initialize(taskService);
+            _taskService = taskService;
+            
             _animationController = new RewardWindowAnimationController(
                 _rewardWindowSettings,
                 _cardRoot,
@@ -40,7 +43,7 @@ namespace VertigoGames.UI.Window
                 _cardBackValue
             );
         }
-
+        
         public override void OnWindowActivated(object customData)
         {
             base.OnWindowActivated(customData);
@@ -81,7 +84,7 @@ namespace VertigoGames.UI.Window
             };
 
             ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
-            TaskService.Instance.CompleteTask(TaskType.ShowRewardWindow);
+            _taskService.CompleteTask(TaskType.ShowRewardWindow);
         }
     }
 }

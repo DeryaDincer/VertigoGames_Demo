@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Services;
 using VertigoGames.UI.Window;
 
 namespace VertigoGames.Managers
@@ -11,13 +12,18 @@ namespace VertigoGames.Managers
     /// <summary>
     /// Manages the opening, closing, and navigation between different windows in the application.
     /// </summary>
-    public class WindowManager : MonoBehaviour, IInitializable, IRegisterable
+    public class WindowManager : MonoBehaviour, IRegisterable
     {
         [SerializeField] private List<Window> _windows;
-
+        private TaskService _taskService;
+        
         #region Initialization and Deinitialization
-     
-        public void Initialize() => _windows.ForEach(window => window.Initialize());
+
+        public void Initialize(TaskService taskService)
+        {
+            _taskService = taskService;
+            _windows.ForEach(window => window.Initialize(taskService));
+        } 
 
         public void Deinitialize() => _windows.ForEach(window => window.Deinitialize());
 

@@ -37,10 +37,12 @@ namespace VertigoGames.Controllers.Wheel
         private int _currentZoneIndex;
         private List<WheelItem> _wheelItems = new();
         private ObjectPoolManager _objectPoolManager;
+        private TaskService _taskService;
         
-        public void Initialize(ObjectPoolManager objectPoolManager)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
         {
             _objectPoolManager = objectPoolManager;
+            _taskService = taskService;
             
             _wheelAnimationController = new WheelAnimationController(_wheelContainer, _indicatorWheelImageValue.rectTransform, _wheelSettings);
             _wheelVisualController = new WheelVisualController(_spinWheelImageValue, _indicatorWheelImageValue);
@@ -97,7 +99,7 @@ namespace VertigoGames.Controllers.Wheel
             }
             
             ObserverManager.Notify(new InputBlockerEvent(false));
-            TaskService.Instance.CompleteTask(TaskType.InitializeWheel);
+            _taskService.CompleteTask(TaskType.InitializeWheel);
         }
 
         private void DestroyAllItems()
@@ -161,7 +163,7 @@ namespace VertigoGames.Controllers.Wheel
                 ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             });
             
-            TaskService.Instance.AddTask(rewardWindowTask);
+            _taskService.AddTask(rewardWindowTask);
         }
         
         private void AddDangerRewardWindowTask()
@@ -174,7 +176,7 @@ namespace VertigoGames.Controllers.Wheel
                 ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             });
             
-            TaskService.Instance.AddTask(dangerRewardWindowTask);
+            _taskService.AddTask(dangerRewardWindowTask);
         }
         
         private void AddInitializeWheelTask(ZoneData zoneData)
@@ -184,7 +186,7 @@ namespace VertigoGames.Controllers.Wheel
                 InitialWheelSession(zoneData);
             });
             
-            TaskService.Instance.AddTask(initializeWheelTask);
+            _taskService.AddTask(initializeWheelTask);
         }
     }
 }

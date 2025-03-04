@@ -15,22 +15,10 @@ namespace VertigoGames.Services
     /// </summary>
     public class TaskService
     {
-        public static TaskService Instance { get; private set; }
         private Queue<ITask> _taskQueue = new();
         private TaskType _currentCompletedTaskType;
         private bool _isProcessing;
 
-        public TaskService()
-        {
-            if (Instance != null)
-            {
-                Debug.Log("You are trying to create another instance of TASK HANDLER. Ignoring...");
-                return;
-            }
-
-            Instance = this;
-        }
-        
         public void StartTaskProcessing()
         {
             if (!_isProcessing)

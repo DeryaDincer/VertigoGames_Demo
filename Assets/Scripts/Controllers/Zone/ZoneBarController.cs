@@ -15,7 +15,7 @@ namespace VertigoGames.Controllers.Zone
     /// <summary>
     /// Controls the behavior of the zone bar, including initialization, animation, and updating indicators.
     /// </summary>
-    public class ZoneBarController : MonoBehaviour, IInitializable, IRegisterable
+    public class ZoneBarController : MonoBehaviour, IRegisterable
     {
         [Header("Settings References")]
         [SerializeField] private ZoneBarSettings _zoneBarSettings;
@@ -33,11 +33,14 @@ namespace VertigoGames.Controllers.Zone
         private int _slideCount = 0;
 
         private ZoneBarAnimationController _animationController;
-
+        private TaskService _taskService;
+        
         #region Initialization and Deinitialization
 
-        public void Initialize()
+        public void Initialize(TaskService taskService)
         {
+            _taskService = taskService;
+            
             CalculateSlideDistance();
             InitializeZoneIndicators();
             SetInitialPosition();
@@ -103,7 +106,7 @@ namespace VertigoGames.Controllers.Zone
                 SetZoneUI(obj.ZoneData.ZoneType);
             });
 
-            TaskService.Instance.AddTask(zoneBarTask);
+            _taskService.AddTask(zoneBarTask);
         }
 
         private void SlideToNextZone()
@@ -118,7 +121,7 @@ namespace VertigoGames.Controllers.Zone
 
                 _slideCount++;
 
-                TaskService.Instance.CompleteTask(TaskType.ZoneBar);
+                _taskService.CompleteTask(TaskType.ZoneBar);
             });
         }
 
