@@ -10,15 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7581e273032641d99d7e4a0aa4d0272, type: 3}
-  m_Name: DangerRewardWindowSettings
+  m_Name: DeadZoneWindowSettings
   m_EditorClassIdentifier: 
-  _fadeDuration: 0.1
+  _backgroundFadeDuration: 0.1
   _scaleDuration: 0.2
   _rotateDuration: 0.23
-  _cardFlipDuration: 0.1
-  _bumpScale: 1.15
-  _bumpDuration: 0.2
   _delayBeforeClose: 1
-  _initialCardRotationZ: 35
-  _initialCardBackRotationY: -65
-  _initialCardScale: 0.4
+  _initialCardBackRotationZ: 15
+  _initialCardPositionY: -1500
+  _backgroundFadeValue: 0.9

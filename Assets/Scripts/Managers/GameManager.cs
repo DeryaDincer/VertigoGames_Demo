@@ -18,12 +18,12 @@ namespace VertigoGames.Managers
         private TaskService _taskService;
         #region Initialization and Deinitialization
 
-        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService,CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;
             
-            _zoneManager.Initialize(_objectPoolManager, _taskService);
+            _zoneManager.Initialize(_objectPoolManager, _taskService, currencyManager);
             _uiAnimationManager.Initialize(_objectPoolManager);
         }
 

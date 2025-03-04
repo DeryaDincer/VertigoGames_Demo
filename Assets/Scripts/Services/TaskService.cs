@@ -61,7 +61,7 @@ namespace VertigoGames.Services
             ClearTasks();
         }
 
-        private void ClearTasks()
+        public void ClearTasks()
         {
             _taskQueue.Clear();
             _isProcessing = false;

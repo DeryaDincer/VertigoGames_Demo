@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 1009022872702908549}
   - component: {fileID: 846411239942200073}
   - component: {fileID: 4758125355847216729}
+  - component: {fileID: 5684182899793729276}
   m_Layer: 5
   m_Name: ui_button_revive
   m_TagString: Untagged
@@ -198,6 +199,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5684182899793729276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057289241863272904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64c5e807ab134178a798e3aeaf4f298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1298037907533662098
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,7 +794,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
@@ -809,7 +822,7 @@ GameObject:
   - component: {fileID: 1686229970407272860}
   - component: {fileID: 3103545586889988685}
   m_Layer: 5
-  m_Name: ui_image_danger_reward_icon_value
+  m_Name: ui_image_dead_zone_icon_value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1020,7 +1033,7 @@ GameObject:
   - component: {fileID: 5822571940403942054}
   - component: {fileID: 6600707467179920514}
   m_Layer: 5
-  m_Name: ui_text_danger_reward_info_value
+  m_Name: ui_text_dad_zone_info_value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1425,7 +1438,7 @@ GameObject:
   - component: {fileID: 645172299969291724}
   - component: {fileID: 7210008949066572015}
   m_Layer: 5
-  m_Name: ui_window_danger_reward
+  m_Name: ui_window_dead_zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1478,4 +1491,5 @@ MonoBehaviour:
   _rewardIcon: {fileID: 3103545586889988685}
   _cardRoot: {fileID: 4134346598274875075}
   _windowBackgroundImage: {fileID: 3892896251746748690}
-  _dangerRewardWindowSettings: {fileID: 11400000, guid: 1f1bed75c01fe4b8f82641313cf21208, type: 2}
+  _deadZoneInfoTextValue: {fileID: 6600707467179920514}
+  deadZoneWindowSettings: {fileID: 11400000, guid: 1f1bed75c01fe4b8f82641313cf21208, type: 2}

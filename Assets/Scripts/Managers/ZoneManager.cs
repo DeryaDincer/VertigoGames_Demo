@@ -32,7 +32,7 @@ namespace VertigoGames.Managers
         
         #region Initialization and Deinitialization
 
-        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService, CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;
@@ -40,7 +40,7 @@ namespace VertigoGames.Managers
             _zoneStateController = new ZoneStateController(_zoneDatas);
             _wheelController.Initialize(objectPoolManager, taskService);
             _zoneBarController.Initialize(taskService);
-            _rewardAreaController.Initialize(objectPoolManager, taskService);
+            _rewardAreaController.Initialize(objectPoolManager, taskService, currencyManager);
         }
 
         public void Deinitialize()
@@ -75,6 +75,7 @@ namespace VertigoGames.Managers
 
         public void BeginGameSession()
         {
+            _taskService.ClearTasks();
             ObserverManager.Notify(new InputBlockerEvent(true));
             
             _zoneStateController.ResetZoneIndex();
@@ -109,7 +110,14 @@ namespace VertigoGames.Managers
 
         private async void NotifyRewardAndStartTask(ZoneData zoneData, RewardData rewardData, int rewardAmount)
         {
-            ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
+            if (rewardData.RewardInfo.RewardType == RewardType.Bomb)
+            {
+                ObserverManager.Notify(new OnDeadZoneReward(rewardData));
+            }
+            else
+            {
+                ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
+            }
             await Task.Delay(200);
             _taskService.StartTaskProcessing();
         }

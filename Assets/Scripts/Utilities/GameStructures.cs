@@ -50,6 +50,19 @@ public class RewardWindowCustomInfo
     }
 }
 
+public class DangerZoneWindowCustomInfo
+{
+    public RewardData RewardData;
+    public int RewardAmount;
+
+    public DangerZoneWindowCustomInfo(RewardData rewardData, int rewardAmount)
+    {
+        RewardData = rewardData;
+        RewardAmount = rewardAmount;
+    }
+}
+
+
 public class UIRewardAnimationInfo
 {
     public RewardData RewardData;

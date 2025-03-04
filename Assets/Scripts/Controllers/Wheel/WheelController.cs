@@ -58,11 +58,13 @@ namespace VertigoGames.Controllers.Wheel
         public void Register()
         {
             ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
+            ObserverManager.Register<OnDeadZoneReward>(OnDeadZoneReward);
         }
 
         public void Unregister()
         {
             ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
+            ObserverManager.Unregister<OnDeadZoneReward>(OnDeadZoneReward);
         }
 
         public void BeginGameSession(ZoneData zoneData)
@@ -134,23 +136,17 @@ namespace VertigoGames.Controllers.Wheel
         
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
-            // if (obj.RewardData.RewardInfo.RewardType == RewardType.Bomb)
-            // {
-            //     AddDangerRewardWindowTask();
-            //
-            // }
-            // else
-            // {
-            //     AddRewardWindowTask();
-            //
-            // }
             AddRewardWindowTask();
             AddInitializeWheelTask(obj.ZoneData);
-            
-            _currentZoneIndex = obj.CurrentZoneIndex;
 
-            // WheelZoneAppearanceInfo wheelZoneAppearanceInfo = _wheelSettings.GetWheelZoneAppearanceByZoneType(obj.ZoneData.ZoneType);
-            // _wheelVisualController.SetWheelVisual(wheelZoneAppearanceInfo);
+            _zoneData = obj.ZoneData;
+            _currentZoneIndex = obj.CurrentZoneIndex;
+        }
+        
+        private void OnDeadZoneReward(OnDeadZoneReward obj)
+        {
+            AddDeadZoneWindowTask();
+            AddInitializeWheelTask(_zoneData);
         }
         
         private void AddRewardWindowTask()
@@ -166,13 +162,13 @@ namespace VertigoGames.Controllers.Wheel
             _taskService.AddTask(rewardWindowTask);
         }
         
-        private void AddDangerRewardWindowTask()
+        private void AddDeadZoneWindowTask()
         {
-            var dangerRewardWindowTask = new DangerRewardWindowTask(async () =>
+            var dangerRewardWindowTask = new DeadZoneWindowTask(async () =>
             {
                 RewardWindowCustomInfo customInfo = new RewardWindowCustomInfo(_selectedReward.Item1, _selectedReward.Item2);
             
-                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.DangerRewardWindow, true, customInfo);
+                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.DeadZoneWindow, true, customInfo);
                 ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
             });
             

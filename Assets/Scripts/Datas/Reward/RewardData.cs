@@ -15,12 +15,6 @@ namespace VertigoGames.Datas.Reward
         [Title("Weight Settings")]
         [SerializeField] private RewardWeight _rewardWeight;
         public RewardWeight RewardWeight => _rewardWeight;
-
-        public void AddCurrency(int amount)
-        {
-          
-            //CurrencyManager.Instance.AddCurrency(RewardInfo.RewardType, amount); 
-        }
     }
     
     [System.Serializable]

@@ -21,11 +21,13 @@ namespace VertigoGames.Controllers.Zone
         private List<RewardAreaItem> _rewardAreaItems = new();
         private ObjectPoolManager _objectPoolManager;
         private TaskService _taskService;
+        private CurrencyManager _currencyManager;
         
-        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
+        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService, CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;
+            _currencyManager = currencyManager;
         }
         
         public void Register()
@@ -51,9 +53,14 @@ namespace VertigoGames.Controllers.Zone
         
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
+            if (obj.RewardData.RewardInfo.RewardType == RewardType.Bomb)
+            {
+                return;
+            }
+            
             var rewardAreaTask = new RewardAreaTask(async () =>
             {
-                obj.RewardData.AddCurrency(obj.RewardAmount);
+                _currencyManager.AddCurrency(obj.RewardData.RewardInfo.RewardType, obj.RewardAmount);
                 InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
             });
             

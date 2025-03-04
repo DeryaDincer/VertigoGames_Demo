@@ -8,10 +8,10 @@ using UnityEngine.Serialization;
 
 namespace VertigoGames.Settings
 {
-    [CreateAssetMenu(fileName = "DangerRewardWindowSettings", menuName = "VertigoGames/DangerRewardWindowSettings")]
-    public class DangerRewardWindowSettings : ScriptableObject
+    [CreateAssetMenu(fileName = "DeadZoneWindowSettings", menuName = "VertigoGames/DeadZoneWindowSettings")]
+    public class DeadZoneWindowSettings : ScriptableObject
     {
-        [Title("Reward Window Animation Settings")]
+        [Title("Dead Zone Window Animation Settings")]
         [SerializeField] private float _backgroundFadeDuration = 0.1f;
         [SerializeField] private float _scaleDuration = 0.2f;
         [SerializeField] private float _rotateDuration = 0.23f;

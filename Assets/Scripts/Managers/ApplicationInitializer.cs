@@ -45,7 +45,7 @@ namespace VertigoGames.Managers
         public void Initialize()
         {
             _taskService = new();
-            _gameManager.Initialize(_objectPoolManager, _taskService);
+            _gameManager.Initialize(_objectPoolManager, _taskService, _currencyManager);
             _windowManager.Initialize(_taskService);
             _objectPoolManager.Initialize();
             _currencyManager.Initialize();

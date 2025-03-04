@@ -65,14 +65,15 @@ public enum WindowType
 {
     None,
     RewardWindow,
-    DangerRewardWindow,
+    DeadZoneWindow,
 }
 
 public enum TaskType
 {
     None,
     ShowRewardWindow = 1,
-    ZoneBar = 3,
-    RewardArea = 2,
-    InitializeWheel =4,
+    ShowDeadZoneWindow = 3,
+    RewardArea = 5,
+    ZoneBar = 7,
+    InitializeWheel =9,
 }

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using VertigoGames.Events;
+using VertigoGames.Managers;
 using VertigoGames.Settings;
 using VertigoGames.Utility;
 
 namespace VertigoGames.UI.Window
 {
-    public class DangerRewardWindowAnimationController
+    public class DeadZoneWindowAnimationController
     {
         private readonly RectTransform _cardRoot;
-        private readonly DangerRewardWindowSettings _settings;
+        private readonly DeadZoneWindowSettings _settings;
         private readonly Image _windowBackgroundImage;
 
-        public DangerRewardWindowAnimationController(
-            DangerRewardWindowSettings settings,
+        public DeadZoneWindowAnimationController(
+            DeadZoneWindowSettings settings,
             RectTransform cardRoot,
             Image windowBackgroundImage
         )
@@ -35,7 +37,7 @@ namespace VertigoGames.UI.Window
             sequence.Join(MoveCard());
             sequence.Append(RotateCardToDefaultPosition());
             sequence.AppendInterval(_settings.DelayBeforeClose);
-
+            sequence.AppendCallback(() => ObserverManager.Notify(new InputBlockerEvent(false)));
             return sequence;
         }
 
@@ -43,17 +45,17 @@ namespace VertigoGames.UI.Window
         {
             _windowBackgroundImage.SetAlpha(0);
             _cardRoot.Rotate(0, 0, _settings.InitialCardBackRotationZ);
-            _cardRoot.transform.position = new Vector3(0, _settings.InitialCardPositionY, 0); //screen heigtha gore olabilir
+            _cardRoot.transform.localPosition = new Vector3(0, _settings.InitialCardPositionY, 0); //screen heigtha gore olabilir
         }
 
         private Tween FadeInBackground()
         {
-            return _windowBackgroundImage.DOFade(_settings.BackgroundFadeDuration, _settings.BackgroundFadeDuration).SetEase(Ease.Linear);
+            return _windowBackgroundImage.DOFade(_settings.BackgroundFadeValue, _settings.BackgroundFadeDuration).SetEase(Ease.Linear);
         }
 
         private Tween MoveCard()
         {
-            return _cardRoot.DOMove(Vector3.zero, _settings.ScaleDuration).SetEase(Ease.Linear);
+            return _cardRoot.DOLocalMove(Vector3.zero, _settings.ScaleDuration).SetEase(Ease.Linear);
         }
 
         private Tween RotateCardToDefaultPosition()

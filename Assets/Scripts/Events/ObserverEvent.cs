@@ -11,22 +11,6 @@ namespace VertigoGames.Events
   
     }
 
-    // public class SpinWheelEvent : ObserverEvent
-    // {
-    //     public SpinWheelEvent() { }
-    // }
-    
-    
-    // public class OnZoneStateReadyEvent : ObserverEvent
-    // {
-    //     public ZoneData ZoneData;
-    //
-    //     public OnZoneStateReadyEvent(ZoneData zoneData)
-    //     {
-    //         ZoneData = zoneData;
-    //     }
-    // }
-    
     public class OnWheelSpinCompletedEvent : ObserverEvent
     {
         public RewardData RewardData;
@@ -38,8 +22,6 @@ namespace VertigoGames.Events
             RewardAmount = rewardAmount;
         }
     }
-    
-
     
     public class OnRewardDetermined : ObserverEvent
     {
@@ -54,6 +36,16 @@ namespace VertigoGames.Events
             CurrentZoneIndex = currentZoneIndex;
             RewardData = rewardData;
             RewardAmount = rewardAmount;
+        }
+    }
+    
+    public class OnDeadZoneReward : ObserverEvent
+    {
+        public RewardData RewardData;
+
+        public OnDeadZoneReward(RewardData rewardData)
+        {
+            RewardData = rewardData;
         }
     }
     
@@ -79,9 +71,6 @@ namespace VertigoGames.Events
     
     public class GameSessionResetEvent : ObserverEvent
     {
-        public GameSessionResetEvent()
-        {
-        }
     }
 
     public class GameSessionReviveEvent : ObserverEvent
