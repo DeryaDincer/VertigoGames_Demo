@@ -34,7 +34,7 @@ namespace VertigoGames.Controllers.Zone
 
             foreach (var zone in sortedZones)
             {
-                if (_currentZoneIndex % zone.ZoneActivationInterval == 0)
+                if ((_currentZoneIndex + 1) % zone.ZoneActivationInterval == 0)
                 {
                     return zone; 
                 }

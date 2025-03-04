@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -48,6 +49,26 @@ public class RewardWindowCustomInfo
         RewardAmount = rewardAmount;
     }
 }
+
+public class UIRewardAnimationInfo
+{
+    public RewardData RewardData;
+    public int RewardAmount;
+    public Vector3 StartAnimationTransform;
+    public Vector3 EndAnimationTransform;
+    public Action AnimationCompleteAction;
+
+    public UIRewardAnimationInfo(RewardData rewardData, int rewardAmount, Vector3 startAnimationTransform, 
+        Vector3 endAnimationTransform, Action animationCompleteAction)
+    {
+        RewardData = rewardData;
+        RewardAmount = rewardAmount;
+        StartAnimationTransform = startAnimationTransform;
+        EndAnimationTransform = endAnimationTransform;
+        AnimationCompleteAction = animationCompleteAction;
+    }
+}
+
 
 
 [System.Serializable]

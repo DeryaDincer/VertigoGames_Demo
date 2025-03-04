@@ -52,7 +52,7 @@ namespace VertigoGames.Managers
                 return;
             }
 
-            SetWindowActive(targetWindow, evt.WindowStateChangeInfo.ActiveStatus, evt.WindowStateChangeInfo.CustomData);
+            SetWindowActive(targetWindow, evt.WindowStateChangeInfo.ActiveStatus, evt.WindowStateChangeInfo.CustomInfo);
         }
 
         public Window GetWindowByType(WindowType windowType)

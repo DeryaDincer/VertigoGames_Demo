@@ -8,6 +8,7 @@ using VertigoGames.GameTasks;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
 using VertigoGames.Services;
+using VertigoGames.Utility;
 
 namespace VertigoGames.Controllers.Zone
 {
@@ -40,10 +41,9 @@ namespace VertigoGames.Controllers.Zone
         
         private void OnRewardDetermined(OnRewardDetermined obj)
         {
-            obj.RewardData.AddCurrency(obj.RewardAmount);
-            
             var rewardAreaTask = new RewardAreaTask(async () =>
             {
+                obj.RewardData.AddCurrency(obj.RewardAmount);
                 InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
             });
             
@@ -52,20 +52,41 @@ namespace VertigoGames.Controllers.Zone
 
         private async void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
         {
-            var item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
+            RewardAreaItem item = null;
+            bool containItem = false;
+            foreach (var rewardAreaItem in _rewardAreaItems)
+            {
+                if (rewardAreaItem.RewardData == rewardData)
+                {
+                    containItem = true;
+                    item = rewardAreaItem;
+                }
+            }
+
+            if (!containItem)
+            {
+                item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
+                item.transform.localScale = Vector3.zero;
+            }
+            
             item.SetItem(rewardData, rewardAmount);
             _rewardAreaItems.Add(item);
 
             await Task.Delay(100);
             
-            RewardAnimation rewardAnimation =
-                new RewardAnimation(rewardData, rewardAmount, Vector2.zero, item.transform.position, AnimationCompleted);
-            ObserverManager.Notify(new OnRewardAnimationEvent(rewardAnimation));
-      
+            UIRewardAnimationInfo uıRewardAnimationInfo =
+                new UIRewardAnimationInfo(rewardData, rewardAmount, Vector2.zero, 
+                    item.transform.position,
+                    () =>
+                    {
+                        AnimationCompleted(item, rewardData, rewardAmount);
+                    });
+            ObserverManager.Notify(new OnRewardAnimationEvent(uıRewardAnimationInfo));
         }
-
-        private void AnimationCompleted()
+        
+        private void AnimationCompleted(RewardAreaItem item , RewardData rewardData, int rewardAmount)
         {
+            item.transform.localScale = Vector3.one;
             TaskService.Instance.CompleteTask(TaskType.RewardArea);
         }
     }

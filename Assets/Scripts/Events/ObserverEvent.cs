@@ -69,11 +69,11 @@ namespace VertigoGames.Events
     
     public class OnRewardAnimationEvent : ObserverEvent
     {
-        public RewardAnimation RewardAnimation;
+        public UIRewardAnimationInfo UIRewardAnimationInfo;
 
-        public OnRewardAnimationEvent(RewardAnimation rewardAnimation)
+        public OnRewardAnimationEvent(UIRewardAnimationInfo uıRewardAnimationInfo)
         {
-            RewardAnimation = rewardAnimation;
+            UIRewardAnimationInfo = uıRewardAnimationInfo;
         }
     }
     
