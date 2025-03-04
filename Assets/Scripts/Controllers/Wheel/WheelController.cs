@@ -84,11 +84,9 @@ namespace VertigoGames.Controllers.Wheel
             
             foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
             {
-               var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
-                // WheelItem item = ObjectPoolManager.Instance.GetObjectFromPool<WheelItem>();
+               //var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
+               WheelItem item = ObjectPoolManager.Instance.GetObjectFromPool<WheelItem>(_wheelItemContainer, Vector3.one);
          
-                item.transform.SetParent(_wheelItemContainer);
-                
                 int rewardAmount = CalculateRewardAmount(rewardData);
                 item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue, _wheelSettings.WheelSlotCountValue);
                 _wheelItems.Add(item);
@@ -102,7 +100,8 @@ namespace VertigoGames.Controllers.Wheel
 
         private void DestroyAllItems()
         {
-            _wheelItems.ForEach(item => Destroy(item.gameObject));
+            _wheelItems.ForEach(item => ObjectPoolManager.Instance.ReturnToPool(item));
+           // _wheelItems.ForEach(item => Destroy(item.gameObject));
             _wheelItems.Clear(); 
         }
         

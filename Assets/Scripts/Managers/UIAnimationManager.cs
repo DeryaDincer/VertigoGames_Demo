@@ -4,6 +4,8 @@ using DG.Tweening;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Pooling;
+using VertigoGames.UI.Item.Wheel;
 using VertigoGames.Utility;
 using Random = UnityEngine.Random;
 
@@ -17,7 +19,6 @@ namespace VertigoGames.Managers
         public float spawnRadius = 40f;
 
         private const float SpawnDelayMultiplier = 0.1f; 
-        private const int RewardSpawnCount = 4; 
         private const float ZPosition = 0f; 
 
         public void Initialize()
@@ -51,13 +52,15 @@ namespace VertigoGames.Managers
 
             Sequence seq = DOTween.Sequence();
             bool completeActionInvoked = false;
-
+            rewardAmount = Math.Clamp(rewardAmount, 0, 15);
             for (int i = 0; i < rewardAmount; i++)
             {
+                UIAnimationItem reward = ObjectPoolManager.Instance.GetObjectFromPool<UIAnimationItem>(transform, Vector3.one);
+
                 Vector3 randomPosition = transform.position + Random.insideUnitSphere * spawnRadius;
                 randomPosition.z = ZPosition; 
-                UIAnimationItem reward = Instantiate(_animationItemPrefab, randomPosition, Quaternion.identity);
-                reward.transform.parent = transform;
+                reward.transform.position = randomPosition;
+                
                 reward.SetItem(rewardData);
                 _uıRewardAnimationInfo.StartAnimationTransform = randomPosition;
 
@@ -69,7 +72,8 @@ namespace VertigoGames.Managers
                         _uıRewardAnimationInfo.AnimationCompleteAction?.Invoke();
                         completeActionInvoked = true;
                     }
-                    Destroy(reward.gameObject);
+
+                    ObjectPoolManager.Instance.ReturnToPool(reward);
                 }));
             }
         }

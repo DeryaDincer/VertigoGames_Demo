@@ -39,17 +39,14 @@ namespace VertigoGames.UI.Item.Base
 
         public override void OnDeactivate()
         {
-            
-        }
+        }     
 
         public override void OnSpawn()
         {
-            transform.localScale = Vector3.one;
         }
 
         public override void OnCreated()
         {
-           
         }
     }
 }

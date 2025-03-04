@@ -7,7 +7,9 @@ using VertigoGames.Events;
 using VertigoGames.GameTasks;
 using VertigoGames.Interfaces;
 using VertigoGames.Managers;
+using VertigoGames.Pooling;
 using VertigoGames.Services;
+using VertigoGames.UI.Item.Wheel;
 using VertigoGames.Utility;
 
 namespace VertigoGames.Controllers.Zone
@@ -35,7 +37,8 @@ namespace VertigoGames.Controllers.Zone
         
         private void DestroyAllItems()
         {
-            _rewardAreaItems.ForEach(item => Destroy(item.gameObject));
+            _rewardAreaItems.ForEach(item => ObjectPoolManager.Instance.ReturnToPool(item));
+         //   _rewardAreaItems.ForEach(item => Destroy(item.gameObject));
             _rewardAreaItems.Clear(); 
         }
         
@@ -64,8 +67,9 @@ namespace VertigoGames.Controllers.Zone
             }
 
             if (!containItem)
-            {
-                item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
+            { 
+                item = ObjectPoolManager.Instance.GetObjectFromPool<RewardAreaItem>(_rewardItemContainer, Vector3.one);
+               // item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
                 item.transform.localScale = Vector3.zero;
             }
             

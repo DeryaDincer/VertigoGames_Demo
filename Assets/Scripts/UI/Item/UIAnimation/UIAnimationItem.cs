@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using VertigoGames.Datas.Reward;
+using VertigoGames.Pooling;
 using VertigoGames.Utility;
 
-public class UIAnimationItem : MonoBehaviour
+public class UIAnimationItem : PoolObject
 {
     public RewardData RewardData => _rewardData;
     public int RewardAmount => _rewardAmount;
@@ -13,7 +14,7 @@ public class UIAnimationItem : MonoBehaviour
     [SerializeField] protected Image _itemImageValue;
 
     private const float BumpDuration = 0.4f;
-    private const float PathDurationBase = 0.8f;
+    private const float PathDurationBase = 0.6f;
     private const float PathDurationMultiplier = 0.002f;
     private const float MiddlePositionYOffset = 50f;
     private const float InitialScale = 1f;
@@ -44,8 +45,7 @@ public class UIAnimationItem : MonoBehaviour
 
         Vector3 middlePosition = (startPosition + targetPosition) / 2;
         middlePosition.y += MiddlePositionYOffset;
-        float distance = Vector3.Distance(startPosition, targetPosition);
-        float duration = PathDurationBase + distance * PathDurationMultiplier;
+        float duration = PathDurationBase;
 
         Vector3[] path = { startPosition, middlePosition, targetPosition };
 
@@ -56,5 +56,20 @@ public class UIAnimationItem : MonoBehaviour
         seq.Join(transform.DOScale(TargetScale, duration).SetEase(Ease.InSine));
         seq.AppendCallback(() => onComplete?.Invoke());
         return seq;
+    }
+
+    public override void OnDeactivate()
+    {
+        
+    }
+
+    public override void OnSpawn()
+    {
+       
+    }
+
+    public override void OnCreated()
+    {
+       
     }
 }

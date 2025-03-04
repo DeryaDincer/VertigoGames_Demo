@@ -17,10 +17,12 @@ namespace VertigoGames.Controllers.Reward
             _random = new System.Random();
             
             var selectedRewards = new List<RewardData>();
-            var availableRandomRewards = zoneData.RandomRewards.ToList(); // Copy of random rewards
+            var availableRandomRewards = zoneData.RandomRewards.ToList(); 
 
             AddGuaranteedRewards(selectedRewards, zoneData.GuaranteedRewards, ref selectedRewardCount);
             AddRandomRewards(selectedRewards, availableRandomRewards, selectedRewardCount, zoneData.RewardWeight);
+
+            selectedRewards = selectedRewards.OrderBy(x => _random.Next()).ToList();
 
             return selectedRewards;
         }
