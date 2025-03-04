@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using VertigoGames.Controllers;
 using VertigoGames.Controllers.Wheel;
@@ -63,6 +64,8 @@ namespace VertigoGames.Managers
 
         public void BeginGameSession()
         {
+            ObserverManager.Notify(new InputBlockerEvent(true));
+            
             _zoneStateController.ResetZoneIndex();
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
 
@@ -75,7 +78,7 @@ namespace VertigoGames.Managers
         {
             AdvanceToNextZone(spinEvent.RewardData, spinEvent.RewardAmount);
         }
-
+        
         private void AdvanceToNextZone(RewardData rewardData, int rewardAmount)
         {
             UpdateZoneIndex();
@@ -93,9 +96,10 @@ namespace VertigoGames.Managers
             return _zoneStateController.FindCurrentZone();
         }
 
-        private void NotifyRewardAndStartTask(ZoneData zoneData, RewardData rewardData, int rewardAmount)
+        private async void NotifyRewardAndStartTask(ZoneData zoneData, RewardData rewardData, int rewardAmount)
         {
             ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
+            await Task.Delay(200);
             TaskService.Instance.StartTaskProcessing();
         }
     }

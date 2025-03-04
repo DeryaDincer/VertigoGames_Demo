@@ -25,10 +25,10 @@ namespace VertigoGames.UI.Item.Wheel
             transform.localRotation = Quaternion.Euler(0, 0, itemRotation - 90);
         }
 
-        private Vector2 CalculateItemPosition(int itemIndex, float wheelRadius, int wheelSlotCount)
+        private Vector2 CalculateItemPosition(int itemIndex, float wheelRadius, int wheelSlotCount, float startAngleOffset = 90f)
         {
             float itemAngleOffset = (360f / wheelSlotCount);
-            float itemAngle = itemIndex * itemAngleOffset; 
+            float itemAngle = itemIndex * itemAngleOffset + startAngleOffset;
             float itemRadian = itemAngle * Mathf.Deg2Rad;
 
             float itemX = Mathf.Cos(itemRadian) * wheelRadius;

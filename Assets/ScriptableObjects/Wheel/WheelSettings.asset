@@ -15,10 +15,13 @@ MonoBehaviour:
   _wheelSlotCountValue: 8
   wheelSpawnDelayBetweenItemsValueValue: 0.02
   wheelSpawnDelayValueValue: 0.1
-  _spinRotationCountValue: 3
+  _spinRotationCountValue: 4
   _spinDurationValue: 3
   _wheelRadiusValue: 205
   _spinEaseValue: 6
+  _indicatorRotationValue: -10
+  _indicatorDurationValue: 0.1
+  _indicatorEaseValue: 6
   _wheelScaleUpValue: 1.2
   _wheelBumpDurationValue: 0.25
   _wheelZoneAppearances:
