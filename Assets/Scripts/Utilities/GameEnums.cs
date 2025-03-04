@@ -64,7 +64,8 @@ public enum ZoneType
 public enum WindowType
 {
     None,
-    RewardWindow
+    RewardWindow,
+    DangerRewardWindow,
 }
 
 public enum TaskType
@@ -73,4 +74,5 @@ public enum TaskType
     ShowRewardWindow = 1,
     ZoneBar = 3,
     RewardArea = 2,
+    InitializeWheel =4,
 }

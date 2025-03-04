@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using VertigoGames.Datas.Reward;
 
 namespace VertigoGames.Utility
 {
@@ -14,13 +15,13 @@ public struct WindowStateChangeInfo
 {
     public WindowType WindowType;
     public bool ActiveStatus;
-    public object CustomData;
+    public object CustomInfo;
     
-    public WindowStateChangeInfo(WindowType windowType, bool active, object customData)
+    public WindowStateChangeInfo(WindowType windowType, bool active, object customInfo)
     {
         WindowType = windowType;
         ActiveStatus = active;
-        CustomData = customData;
+        CustomInfo = customInfo;
     }
 }
 
@@ -34,4 +35,33 @@ public class ZoneBarIndicatorInfo
         Text = text;
         Value = value;
     }
+}
+
+public class RewardWindowCustomInfo
+{
+    public RewardData RewardData;
+    public int RewardAmount;
+
+    public RewardWindowCustomInfo(RewardData rewardData, int rewardAmount)
+    {
+        RewardData = rewardData;
+        RewardAmount = rewardAmount;
+    }
+}
+
+
+[System.Serializable]
+public struct WheelZoneAppearanceInfo
+{
+    public ZoneType ZoneType;
+    public Sprite WheelBaseSprite;
+    public Sprite WheelIndicatorSprite;
+}
+
+
+[System.Serializable]
+public struct ZoneBarAppearanceInfo
+{
+    public ZoneType ZoneType;
+    public Sprite ZoneBaseSprite;
 }
