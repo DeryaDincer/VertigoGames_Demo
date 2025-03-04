@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 8606301163914380151}
   - component: {fileID: 6867229203688994088}
   m_Layer: 5
-  m_Name: ui_wheel_controller
+  m_Name: WheelController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

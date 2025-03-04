@@ -9,20 +9,6 @@ namespace VertigoGames.Settings
     [CreateAssetMenu (fileName = "WheelSettings", menuName = "VertigoGames/WheelSettings")]
     public class WheelSettings : ScriptableObject
     {
-        public int WheelSlotCountValue => _wheelSlotCountValue;
-        public float WheelSpawnDelayBetweenItemsValue => wheelSpawnDelayBetweenItemsValueValue;
-        public float WheelSpawnDelayValue => wheelSpawnDelayValueValue;
-        public int SpinRotationCountValue => _spinRotationCountValue;
-        public float WheelScaleUpValue => _wheelScaleUpValue;
-        public float WheelRadiusValue => _wheelRadiusValue;
-        public Ease SpinEaseValue => _spinEaseValue;
-        public float IndicatorRotationValue => _indicatorRotationValue;
-        public float IndicatorDurationValue => _indicatorDurationValue;
-        public Ease IndicatorEaseValue => _indicatorEaseValue;
-        public float SpinDurationValue => _spinDurationValue;
-        public float WheelBumpDurationValue => _wheelBumpDurationValue;
-        public  List<WheelZoneAppearanceInfo>  WheelZoneAppearances => _wheelZoneAppearances;
-      
         [Title("Wheel Settings")]
         
         [SerializeField] private int _wheelSlotCountValue = 8; 
@@ -54,6 +40,24 @@ namespace VertigoGames.Settings
         
         [SerializeField] private List<WheelZoneAppearanceInfo> _wheelZoneAppearances;
 
+        #region Public References
+
+        public int WheelSlotCountValue => _wheelSlotCountValue;
+        public float WheelSpawnDelayBetweenItemsValue => wheelSpawnDelayBetweenItemsValueValue;
+        public float WheelSpawnDelayValue => wheelSpawnDelayValueValue;
+        public int SpinRotationCountValue => _spinRotationCountValue;
+        public float WheelScaleUpValue => _wheelScaleUpValue;
+        public float WheelRadiusValue => _wheelRadiusValue;
+        public Ease SpinEaseValue => _spinEaseValue;
+        public float IndicatorRotationValue => _indicatorRotationValue;
+        public float IndicatorDurationValue => _indicatorDurationValue;
+        public Ease IndicatorEaseValue => _indicatorEaseValue;
+        public float SpinDurationValue => _spinDurationValue;
+        public float WheelBumpDurationValue => _wheelBumpDurationValue;
+        public  List<WheelZoneAppearanceInfo>  WheelZoneAppearances => _wheelZoneAppearances;
+
+        #endregion
+        
         public WheelZoneAppearanceInfo GetWheelZoneAppearanceByZoneType(ZoneType zoneType)
         {
             var appearance = _wheelZoneAppearances.FirstOrDefault(wza => wza.ZoneType == zoneType);

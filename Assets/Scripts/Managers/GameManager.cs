@@ -3,21 +3,25 @@ using UnityEngine;
 using VertigoGames.Controllers.Wheel;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Pooling;
 
 namespace VertigoGames.Managers
 {
-    public sealed class GameManager : MonoBehaviour, IInitializable, IRegisterable
+    public sealed class GameManager : MonoBehaviour, IRegisterable
     {
         [Header("Manager References")] 
         [SerializeField] private ZoneManager _zoneManager;
         [SerializeField] private UIAnimationManager _uiAnimationManager;
-        
+
+        private ObjectPoolManager _objectPoolManager;
         #region Initialization and Deinitialization
 
-        public void Initialize()
+        public void Initialize(ObjectPoolManager objectPoolManager)
         {
-            _zoneManager.Initialize();
-            _uiAnimationManager.Initialize();
+            _objectPoolManager = objectPoolManager;
+            
+            _zoneManager.Initialize(_objectPoolManager);
+            _uiAnimationManager.Initialize(_objectPoolManager);
         }
 
         public void Deinitialize()

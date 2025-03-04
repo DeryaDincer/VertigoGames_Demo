@@ -19,6 +19,12 @@ namespace VertigoGames.Controllers.Zone
         [SerializeField] private RewardAreaItem _rewardAreaItemPrefab;
         [SerializeField] private RectTransform _rewardItemContainer;
         private List<RewardAreaItem> _rewardAreaItems = new();
+        private ObjectPoolManager _objectPoolManager;
+        
+        public void Initialize(ObjectPoolManager objectPoolManager)
+        {
+            _objectPoolManager = objectPoolManager;
+        }
         
         public void Register()
         {
@@ -37,8 +43,7 @@ namespace VertigoGames.Controllers.Zone
         
         private void DestroyAllItems()
         {
-            _rewardAreaItems.ForEach(item => ObjectPoolManager.Instance.ReturnToPool(item));
-         //   _rewardAreaItems.ForEach(item => Destroy(item.gameObject));
+            _rewardAreaItems.ForEach(item => _objectPoolManager.ReturnToPool(item));
             _rewardAreaItems.Clear(); 
         }
         
@@ -68,8 +73,7 @@ namespace VertigoGames.Controllers.Zone
 
             if (!containItem)
             { 
-                item = ObjectPoolManager.Instance.GetObjectFromPool<RewardAreaItem>(_rewardItemContainer, Vector3.one);
-               // item = Instantiate(_rewardAreaItemPrefab, _rewardItemContainer);
+                item = _objectPoolManager.GetObjectFromPool<RewardAreaItem>(_rewardItemContainer, Vector3.one);
                 item.transform.localScale = Vector3.zero;
             }
             

@@ -7,12 +7,16 @@ using VertigoGames.Controllers.Zone;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Pooling;
 using VertigoGames.Services;
+using VertigoGames.Settings;
 
 namespace VertigoGames.Managers
 {
-    public class ZoneManager : MonoBehaviour, IInitializable, IRegisterable
+    public class ZoneManager : MonoBehaviour, IRegisterable
     {
+        [SerializeField] private GamePrefabSettings _gamePrefabSettings;
+        
         [Header("Data References")] 
         [SerializeField] private List<ZoneData> _zoneDatas;
 
@@ -20,16 +24,21 @@ namespace VertigoGames.Managers
         [SerializeField] private WheelController _wheelController;
         [SerializeField] private ZoneBarController _zoneBarController;
         [SerializeField] private RewardAreaController _rewardAreaController;
-
         private ZoneStateController _zoneStateController;
 
+
+        private ObjectPoolManager _objectPoolManager;
+        
         #region Initialization and Deinitialization
 
-        public void Initialize()
+        public void Initialize(ObjectPoolManager objectPoolManager)
         {
+            _objectPoolManager = objectPoolManager;
+           
             _zoneStateController = new ZoneStateController(_zoneDatas);
-            _wheelController.Initialize();
+            _wheelController.Initialize(objectPoolManager);
             _zoneBarController.Initialize();
+            _rewardAreaController.Initialize(objectPoolManager);
         }
 
         public void Deinitialize()

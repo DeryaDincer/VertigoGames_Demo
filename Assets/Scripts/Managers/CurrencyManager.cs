@@ -10,9 +10,6 @@ namespace VertigoGames.Managers
     {
         public static CurrencyManager Instance { get; private set; }
 
-        // public delegate void CurrencyChanged(RewardType rewardType);
-        // public static event CurrencyChanged OnCurrencyChanged;
-
         private void Awake()
         {
             if (Instance == null)

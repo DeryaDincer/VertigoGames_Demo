@@ -9,13 +9,6 @@ namespace VertigoGames.Settings
     [CreateAssetMenu(fileName = "ZoneBarSettings", menuName = "VertigoGames/ZoneBarSettings")]
     public class ZoneBarSettings : ScriptableObject
     {
-        public int InitialIndicatorCount => _initialIndicatorCount;
-        public int AverageIndicatorIndex => _averageIndicatorIndex;
-        public int SlideDistance => _slideDistance;
-        public float SlideDuration => _slideDuration;
-        public Ease SlideEase => _slideEase;
-        public List<ZoneBarAppearanceInfo> ZoneBarAppearanceInfos => _zoneBarAppearanceInfos;
-      
         [Title("Zone Bar Settings")]
         
         [SerializeField] private int _initialIndicatorCount = 10; 
@@ -31,7 +24,17 @@ namespace VertigoGames.Settings
         [Title("Zone Bar Appearance Settings")]
         
         [SerializeField] private List<ZoneBarAppearanceInfo> _zoneBarAppearanceInfos;
-        
+
+        #region Public References
+
+        public int InitialIndicatorCount => _initialIndicatorCount;
+        public int AverageIndicatorIndex => _averageIndicatorIndex;
+        public int SlideDistance => _slideDistance;
+        public float SlideDuration => _slideDuration;
+        public Ease SlideEase => _slideEase;
+
+        #endregion
+      
         public ZoneBarAppearanceInfo GetZoneBarAppearanceByZoneType(ZoneType zoneType)
         {
             var appearance = _zoneBarAppearanceInfos.FirstOrDefault(wza => wza.ZoneType == zoneType);

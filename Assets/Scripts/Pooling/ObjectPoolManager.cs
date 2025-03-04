@@ -8,21 +8,9 @@ namespace VertigoGames.Pooling
 {
     public sealed class ObjectPoolManager : MonoBehaviour,IInitializable
     {
-        public static ObjectPoolManager Instance { get; private set; }
         [SerializeField] private Transform _poolParent;
         [SerializeField] private ObjectPoolInfo[] _pools;
 
-        public ObjectPoolManager()
-        {
-            if (Instance != null)
-            {
-                Debug.Log("You are trying to create another instance of TASK HANDLER. Ignoring...");
-                return;
-            }
-
-            Instance = this;
-        }
-        
         #region Initialization and Deinitialization
         public void Initialize() => InitializeAllPools();
         
@@ -62,21 +50,6 @@ namespace VertigoGames.Pooling
             throw new System.InvalidOperationException($"No pool found for type {typeof(T)}");
         }
         
-        public T GetObjectFromPoolOld<T>() where T : PoolObject
-        {
-            foreach (var pool in _pools)
-            {
-                if (pool.ObjectPrefab is T)
-                {
-                    return pool.PooledObjects.Count == 0
-                        ? CreateNewPooledObject<T>(pool)
-                        : GetExistingPooledObject<T>(pool);
-                }
-            }
-
-            throw new System.InvalidOperationException($"No pool found for type {typeof(T)}");
-        }
-
         private T CreateNewPooledObject<T>(ObjectPoolInfo pool) where T : PoolObject
         {
             PoolObject newObject = Instantiate(pool.ObjectPrefab, _poolParent);

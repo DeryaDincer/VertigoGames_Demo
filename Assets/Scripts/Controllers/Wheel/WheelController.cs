@@ -19,7 +19,7 @@ using Random = UnityEngine.Random;
 
 namespace VertigoGames.Controllers.Wheel
 {
-    public class WheelController : MonoBehaviour , IInitializable, IRegisterable
+    public class WheelController : MonoBehaviour , IRegisterable
     {
         [SerializeField] private RectTransform _wheelContainer;
         [SerializeField] private Image _spinWheelImageValue;
@@ -36,9 +36,12 @@ namespace VertigoGames.Controllers.Wheel
         private ZoneData _zoneData;
         private int _currentZoneIndex;
         private List<WheelItem> _wheelItems = new();
+        private ObjectPoolManager _objectPoolManager;
         
-        public void Initialize()
+        public void Initialize(ObjectPoolManager objectPoolManager)
         {
+            _objectPoolManager = objectPoolManager;
+            
             _wheelAnimationController = new WheelAnimationController(_wheelContainer, _indicatorWheelImageValue.rectTransform, _wheelSettings);
             _wheelVisualController = new WheelVisualController(_spinWheelImageValue, _indicatorWheelImageValue);
             _rewardSelectController = new RewardSelectController();
@@ -84,8 +87,7 @@ namespace VertigoGames.Controllers.Wheel
             
             foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
             {
-               //var item = Instantiate(_wheelItemPrefab, _wheelItemContainer);
-               WheelItem item = ObjectPoolManager.Instance.GetObjectFromPool<WheelItem>(_wheelItemContainer, Vector3.one);
+               WheelItem item = _objectPoolManager.GetObjectFromPool<WheelItem>(_wheelItemContainer, Vector3.one);
          
                 int rewardAmount = CalculateRewardAmount(rewardData);
                 item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue, _wheelSettings.WheelSlotCountValue);
@@ -100,8 +102,7 @@ namespace VertigoGames.Controllers.Wheel
 
         private void DestroyAllItems()
         {
-            _wheelItems.ForEach(item => ObjectPoolManager.Instance.ReturnToPool(item));
-           // _wheelItems.ForEach(item => Destroy(item.gameObject));
+            _wheelItems.ForEach(item => _objectPoolManager.ReturnToPool(item));
             _wheelItems.Clear(); 
         }
         

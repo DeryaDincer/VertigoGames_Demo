@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace VertigoGames.Managers
 {
-    public class UIAnimationManager : MonoBehaviour, IInitializable, IRegisterable
+    public class UIAnimationManager : MonoBehaviour, IRegisterable
     {
         public UIAnimationItem _animationItemPrefab;
         private UIRewardAnimationInfo _uıRewardAnimationInfo;
@@ -19,10 +19,11 @@ namespace VertigoGames.Managers
         public float spawnRadius = 40f;
 
         private const float SpawnDelayMultiplier = 0.1f; 
-        private const float ZPosition = 0f; 
-
-        public void Initialize()
+        private const float ZPosition = 0f;
+        private ObjectPoolManager _objectPoolManager;
+        public void Initialize(ObjectPoolManager objectPoolManager)
         {
+            _objectPoolManager = objectPoolManager;
         }
 
         public void Deinitialize()
@@ -55,7 +56,7 @@ namespace VertigoGames.Managers
             rewardAmount = Math.Clamp(rewardAmount, 0, 15);
             for (int i = 0; i < rewardAmount; i++)
             {
-                UIAnimationItem reward = ObjectPoolManager.Instance.GetObjectFromPool<UIAnimationItem>(transform, Vector3.one);
+                UIAnimationItem reward = _objectPoolManager.GetObjectFromPool<UIAnimationItem>(transform, Vector3.one);
 
                 Vector3 randomPosition = transform.position + Random.insideUnitSphere * spawnRadius;
                 randomPosition.z = ZPosition; 
@@ -73,7 +74,7 @@ namespace VertigoGames.Managers
                         completeActionInvoked = true;
                     }
 
-                    ObjectPoolManager.Instance.ReturnToPool(reward);
+                    _objectPoolManager.ReturnToPool(reward);
                 }));
             }
         }

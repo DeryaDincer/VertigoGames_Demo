@@ -11,17 +11,6 @@ namespace VertigoGames.Settings
     [CreateAssetMenu(fileName = "RewardWindowSettings", menuName = "VertigoGames/RewardWindowSettings")]
     public class RewardWindowSettings : ScriptableObject
     {
-        public float FadeDuration => _fadeDuration;
-        public float ScaleDuration => _scaleDuration;
-        public float RotateDuration => _rotateDuration;
-        public float CardFlipDuration => _cardFlipDuration;
-        public float BumpScale => _bumpScale;
-        public float BumpDuration => _bumpDuration;
-        public float DelayBeforeClose => _delayBeforeClose;
-        public float InitialCardRotationZ => _initialCardRotationZ;
-        public float InitialCardBackRotationY => _initialCardBackRotationY;
-        public float InitialCardScale => _initialCardScale;
-
         [Title("Reward Window Animation Settings")]
         [SerializeField] private float _fadeDuration = 0.1f;
         [SerializeField] private float _scaleDuration = 0.2f;
@@ -33,5 +22,20 @@ namespace VertigoGames.Settings
         [SerializeField] private float _initialCardRotationZ = 35;
         [SerializeField] private float _initialCardBackRotationY = -65;
         [SerializeField] private float _initialCardScale = .4f;
+        
+        #region Public References
+        
+        public float FadeDuration => _fadeDuration;
+        public float ScaleDuration => _scaleDuration;
+        public float RotateDuration => _rotateDuration;
+        public float CardFlipDuration => _cardFlipDuration;
+        public float BumpScale => _bumpScale;
+        public float BumpDuration => _bumpDuration;
+        public float DelayBeforeClose => _delayBeforeClose;
+        public float InitialCardRotationZ => _initialCardRotationZ;
+        public float InitialCardBackRotationY => _initialCardBackRotationY;
+        public float InitialCardScale => _initialCardScale;
+        
+        #endregion
     }
 }
