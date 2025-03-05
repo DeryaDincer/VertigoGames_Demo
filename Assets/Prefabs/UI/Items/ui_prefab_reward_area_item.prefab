@@ -182,9 +182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5250868383664624aa469e17754242d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemRoot: {fileID: 7136484139016679795}
-  _itemImageValue: {fileID: 2568530444039022426}
-  _rewardAmountTextValue: {fileID: 6486614471507248110}
+  itemImageValue: {fileID: 2568530444039022426}
+  rewardAmountTextValue: {fileID: 6486614471507248110}
 --- !u!1 &7298259343535983008
 GameObject:
   m_ObjectHideFlags: 0
