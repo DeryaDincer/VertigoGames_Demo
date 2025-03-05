@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using VertigoGames.Controllers.Reward;
@@ -27,20 +25,19 @@ namespace VertigoGames.Controllers.Wheel
         [SerializeField] private WheelSettings wheelSettings;
 
         private (RewardData reward, int amount) _selectedReward;
+        private WheelItemController _wheelItemController;
         private WheelAnimationController _animationController;
         private WheelVisualController _visualController;
         private RewardSelectController _rewardSelectController;
         private ZoneData _currentZoneData;
         private int _currentZoneIndex;
-        private readonly List<WheelItem> _wheelItems = new();
-        private ObjectPoolManager _objectPoolManager;
         private ITaskService _taskService;
         
         public void Initialize(ObjectPoolManager poolManager, ITaskService taskService)
         {
-            _objectPoolManager = poolManager;
             _taskService = taskService;
-            
+
+            _wheelItemController = new WheelItemController(poolManager, wheelSettings, wheelContainer);
             _animationController = new WheelAnimationController(wheelContainer, indicatorImage.rectTransform, wheelItemRoot,wheelSettings);
             _visualController = new WheelVisualController(spinWheelImage, indicatorImage);
             _rewardSelectController = new RewardSelectController();
@@ -69,52 +66,34 @@ namespace VertigoGames.Controllers.Wheel
         
         private void InitializeWheelSession(ZoneData zoneData)
         {
-            ClearWheelItems();
+            _wheelItemController.ClearWheelItems();
             _animationController.ResetWheel();
             _currentZoneData = zoneData;
-            
-            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(zoneData, wheelSettings.WheelSlotCountValue);
-            StartCoroutine(SpawnWheelItemsWithAnimation(selectedRewards));
+            _currentZoneIndex = 0;
+
+            List<RewardData> selectedRewards =
+                _rewardSelectController.SelectRewards(zoneData, wheelSettings.WheelSlotCountValue);
+
+            StartCoroutine(_wheelItemController.SpawnWheelItemsWithAnimation(selectedRewards, _currentZoneIndex,
+                InitializeWheelCompleted));
             
             WheelZoneAppearanceInfo appearanceInfo = wheelSettings.GetWheelZoneAppearanceByZoneType(zoneData.ZoneType);
             _visualController.SetWheelVisual(appearanceInfo);
         } 
         
-        private IEnumerator SpawnWheelItemsWithAnimation(List<RewardData> rewards)
+        private void InitializeWheelCompleted()
         {
-            yield return new WaitForSeconds(wheelSettings.WheelSpawnDelayValue);
-            
-            foreach (var (reward, index) in rewards.Select((data, i) => (data, i)))
-            {
-               WheelItem item = _objectPoolManager.GetObjectFromPool<WheelItem>(wheelItemContainer, Vector3.one);
-                int rewardAmount = CalculateRewardAmount(reward);
-                item.SetItem(reward, rewardAmount, index, wheelSettings.WheelRadiusValue, wheelSettings.WheelSlotCountValue);
-                _wheelItems.Add(item);
-
-                yield return new WaitForSeconds(wheelSettings.WheelSpawnDelayBetweenItemsValue); 
-            }
-            
             ObserverManager.Notify(new InputBlockStateChangedEvent(false));
             _taskService.CompleteTask(TaskType.InitializeWheel);
-        }
-
-        private void ClearWheelItems()
-        {
-            _wheelItems.ForEach(item => _objectPoolManager.ReturnToPool(item));
-            _wheelItems.Clear(); 
-        }
-        
-        private int CalculateRewardAmount(RewardData reward)
-        {
-            return reward.RewardInfo.InitialRewardCount * (_currentZoneIndex + 1);
         }
         
         private void HandleWheelSpinStarted(WheelSpinStartedEvent obj)
         {
             ObserverManager.Notify(new InputBlockStateChangedEvent(true));
             int targetIndex = GetRandomRewardIndex();
-            RewardData reward = _wheelItems[targetIndex].RewardData;
-            _selectedReward = (reward, _wheelItems[targetIndex].RewardAmount);
+            
+            RewardData reward = _wheelItemController.GetWheelItem(targetIndex).RewardData;
+            _selectedReward = (reward, _wheelItemController.GetWheelItem(targetIndex).RewardAmount);
             _animationController.AnimateSpin(targetIndex, OnWheelSpinComplete);
         }
         
