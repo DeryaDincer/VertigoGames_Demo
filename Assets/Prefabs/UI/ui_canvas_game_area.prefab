@@ -276,6 +276,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheelController
       objectReference: {fileID: 0}
+    - target: {fileID: 6431948533863225573, guid: dc5416d330160474e877b4ec1b35a45a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc5416d330160474e877b4ec1b35a45a, type: 3}
 --- !u!224 &737030626869217455 stripped
@@ -293,6 +297,10 @@ PrefabInstance:
     - target: {fileID: 1357768820803080689, guid: 65eeea20b39104d7886bbd3dae48bcb3, type: 3}
       propertyPath: m_Name
       value: RewardAreaController
+      objectReference: {fileID: 0}
+    - target: {fileID: 1357768820803080689, guid: 65eeea20b39104d7886bbd3dae48bcb3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1470998782817961248, guid: 65eeea20b39104d7886bbd3dae48bcb3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -636,6 +644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ZoneBarController
       objectReference: {fileID: 0}
+    - target: {fileID: 2166452150322889871, guid: 1b779275f04dc493798fffee59cd02aa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4779264459102863116, guid: 1b779275f04dc493798fffee59cd02aa, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -737,6 +749,10 @@ PrefabInstance:
     - target: {fileID: 8036885091226912664, guid: b12c0d277ebde4a3aa287663a0a60454, type: 3}
       propertyPath: m_Name
       value: CurrencyController
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036885091226912664, guid: b12c0d277ebde4a3aa287663a0a60454, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8036885091226912665, guid: b12c0d277ebde4a3aa287663a0a60454, type: 3}
       propertyPath: m_Pivot.x

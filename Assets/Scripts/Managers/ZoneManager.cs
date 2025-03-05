@@ -19,9 +19,9 @@ namespace VertigoGames.Managers
         [Title("Data References")] 
         [SerializeField] private List<ZoneData> zoneDatas;
 
-        public WheelController _wheelController;
-        public ZoneBarController _zoneBarController;
-        public RewardAreaController _rewardAreaController;
+        private WheelController _wheelController;
+        private ZoneBarController _zoneBarController;
+        private RewardAreaController _rewardAreaController;
      
         private ZoneStateController _zoneStateController;
         private ITaskService _taskService;

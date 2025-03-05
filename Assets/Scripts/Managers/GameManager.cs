@@ -12,25 +12,23 @@ namespace VertigoGames.Managers
     {
         [Title("Manager References")] 
         [SerializeField] private ZoneManager zoneManager;
-        [SerializeField] private UIAnimationManager uiAnimationManager;
-
-        [Title("Settings References")] 
-        [SerializeField] private GamePrefabSettings gamePrefabSettings;
         
         [Title("UI References")] 
         [SerializeField] private RectTransform gameUICanvas;
+        
+        [Title("Settings References")] 
+        [SerializeField] private GamePrefabSettings gamePrefabSettings;
         
         private ObjectPoolManager _objectPoolManager;
         private ITaskService _taskService;
         
         #region Initialization and Deinitialization
-        public void Initialize(ObjectPoolManager objectPoolManager, ITaskService taskService,CurrencyManager currencyManager)
+        public void Initialize(GamePrefabSettings gamePrefabSettings, ObjectPoolManager objectPoolManager, ITaskService taskService,CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;
             
             zoneManager.Initialize(gamePrefabSettings, _objectPoolManager, _taskService, currencyManager, gameUICanvas);
-            uiAnimationManager.Initialize(_objectPoolManager);
         }
 
         public void Deinitialize() { }
@@ -40,7 +38,6 @@ namespace VertigoGames.Managers
         public void Register()
         {
             zoneManager.Register();
-            uiAnimationManager.Register();
             BeginGameSession();
 
             ObserverManager.Register<GameSessionResetEvent>(OnGameSessionReset);
@@ -49,7 +46,6 @@ namespace VertigoGames.Managers
         public void Unregister()
         {
             zoneManager.Unregister();
-            uiAnimationManager.Unregister();
 
             ObserverManager.Unregister<GameSessionResetEvent>(OnGameSessionReset);
         }

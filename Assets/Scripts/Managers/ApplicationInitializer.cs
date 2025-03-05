@@ -1,7 +1,9 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
 using VertigoGames.Services;
+using VertigoGames.Settings;
 
 namespace VertigoGames.Managers
 {
@@ -10,11 +12,16 @@ namespace VertigoGames.Managers
     /// </summary>
     public sealed class ApplicationInitializer : MonoBehaviour, IInitializable, IRegisterable
     {
-        [Header("Manager References")] 
+        [Title("Manager References")] 
         [SerializeField] private GameManager gameManager;
         [SerializeField] private WindowManager windowManager;
         [SerializeField] private ObjectPoolManager objectPoolManager;
         [SerializeField] private CurrencyManager currencyManager;
+        [SerializeField] private UIAnimationManager uiAnimationManager;
+
+        [Title("Settings References")] 
+        [SerializeField] private GamePrefabSettings gamePrefabSettings;
+        
         private ITaskService _taskService;
 
         #region Unity Lifecycle Methods
@@ -38,10 +45,11 @@ namespace VertigoGames.Managers
         {
             _taskService = new TaskService();
 
-            gameManager.Initialize(objectPoolManager, _taskService, currencyManager);
+            gameManager.Initialize(gamePrefabSettings, objectPoolManager, _taskService, currencyManager);
             windowManager.Initialize(_taskService, currencyManager);
             objectPoolManager.Initialize();
-            currencyManager.Initialize();
+            currencyManager.Initialize(gamePrefabSettings);
+            uiAnimationManager.Initialize(objectPoolManager);
         }
 
         /// <summary>
@@ -65,6 +73,7 @@ namespace VertigoGames.Managers
             gameManager.Register();
             windowManager.Register();
             currencyManager.Register();
+            uiAnimationManager.Register();
         }
 
         /// <summary>
@@ -75,6 +84,7 @@ namespace VertigoGames.Managers
             gameManager.Unregister();
             windowManager.Unregister();
             currencyManager.Unregister();
+            uiAnimationManager.Unregister();
         }
         #endregion
     }

@@ -2,24 +2,29 @@ using UnityEngine;
 using VertigoGames.Controllers.Currency;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
+using VertigoGames.Settings;
 using VertigoGames.Utility;
 
 namespace VertigoGames.Managers
 {
     public class CurrencyManager : MonoBehaviour, IRegisterable
     {
-        [SerializeField] private CurrencyController currencyController;
+        private CurrencyController _currencyController;
         
         #region Initialization and Deinitialization
-        public void Initialize() => currencyController.Initialize(this);
+        public void Initialize(GamePrefabSettings gamePrefabSettings)
+        {
+            _currencyController = Instantiate(gamePrefabSettings.CurrencyController);
+            _currencyController.Initialize(this);
+        }
 
-        public void Deinitialize() => currencyController.Deinitialize();
+        public void Deinitialize() => _currencyController.Deinitialize();
         #endregion
 
         #region Registration and Unregistration
-        public void Register() =>  currencyController.Register();
+        public void Register() =>  _currencyController.Register();
 
-        public void Unregister() => currencyController.Unregister();
+        public void Unregister() => _currencyController.Unregister();
         #endregion
 
         public void ModifyCurrency(RewardType rewardType, int amount)

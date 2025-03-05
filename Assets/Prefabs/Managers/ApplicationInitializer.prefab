@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9047843267389245351}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -48,3 +48,5 @@ MonoBehaviour:
   windowManager: {fileID: 0}
   objectPoolManager: {fileID: 0}
   currencyManager: {fileID: 0}
+  uiAnimationManager: {fileID: 0}
+  gamePrefabSettings: {fileID: 11400000, guid: 5c4070aba6c7c4efe9e4196c5e6b5a98, type: 2}
