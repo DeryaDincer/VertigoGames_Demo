@@ -23,6 +23,7 @@ namespace VertigoGames.Controllers.Wheel
         [SerializeField] private Image spinWheelImage;
         [SerializeField] private Image indicatorImage;
         [SerializeField] private RectTransform wheelItemContainer;
+        [SerializeField] private RectTransform wheelItemRoot;
         [SerializeField] private WheelSettings wheelSettings;
 
         private (RewardData reward, int amount) _selectedReward;
@@ -40,7 +41,7 @@ namespace VertigoGames.Controllers.Wheel
             _objectPoolManager = poolManager;
             _taskService = taskService;
             
-            _animationController = new WheelAnimationController(wheelContainer, indicatorImage.rectTransform, wheelSettings);
+            _animationController = new WheelAnimationController(wheelContainer, indicatorImage.rectTransform, wheelItemRoot,wheelSettings);
             _visualController = new WheelVisualController(spinWheelImage, indicatorImage);
             _rewardSelectController = new RewardSelectController();
         }

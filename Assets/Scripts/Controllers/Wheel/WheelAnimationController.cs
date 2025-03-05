@@ -9,21 +9,23 @@ namespace VertigoGames.Controllers.Wheel
 {
     public class WheelAnimationController
     {
-        private readonly RectTransform wheelTransform;
-        private readonly RectTransform indicatorTransform;
-        private readonly WheelSettings settings;
+        private readonly RectTransform _wheelTransform;
+        private readonly RectTransform _indicatorTransform;
+        private readonly RectTransform _wheelItemRoot;
+        private readonly WheelSettings _settings;
         
-        public WheelAnimationController(RectTransform wheelTransform, RectTransform indicatorTransform, WheelSettings settings)
+        public WheelAnimationController(RectTransform wheelTransform, RectTransform indicatorTransform, RectTransform wheelItemRoot, WheelSettings settings)
         {
-            this.wheelTransform = wheelTransform;
-            this.indicatorTransform = indicatorTransform;
-            this.settings = settings;
+            _wheelTransform = wheelTransform;
+            _indicatorTransform = indicatorTransform;
+            _wheelItemRoot = wheelItemRoot;
+            _settings = settings;
         }
        
         public void ResetWheel()
         {
-            wheelTransform.rotation = quaternion.identity;
-            wheelTransform.transform.DoBump(settings.WheelScaleUpValue, settings.WheelBumpDurationValue);
+            _wheelTransform.rotation = quaternion.identity;
+            _wheelItemRoot.transform.DoBump(_settings.WheelScaleUpValue, _settings.WheelBumpDurationValue);
         }
 
         public void AnimateSpin(int rewardIndex, Action onComplete)
@@ -38,13 +40,13 @@ namespace VertigoGames.Controllers.Wheel
         
         private void AnimateIndicator(int turnCount)
         {
-            indicatorTransform
-                .DORotate(new Vector3(0, 0, settings.IndicatorRotationValue), settings.IndicatorDurationValue)
+            _indicatorTransform
+                .DORotate(new Vector3(0, 0, _settings.IndicatorRotationValue), _settings.IndicatorDurationValue)
                 .SetLoops(turnCount - 1, LoopType.Yoyo)
-                .SetEase(settings.IndicatorEaseValue)
+                .SetEase(_settings.IndicatorEaseValue)
                 .OnComplete(() =>
                 {
-                    indicatorTransform.rotation = Quaternion.identity;
+                    _indicatorTransform.rotation = Quaternion.identity;
                 });
         }
 
@@ -55,19 +57,19 @@ namespace VertigoGames.Controllers.Wheel
 
         private float GetRotatePerItem()
         {
-            return (360f / settings.WheelSlotCountValue);
+            return (360f / _settings.WheelSlotCountValue);
         }
 
         private float GetTotalRotation(float targetAngle)
         {
-            return 360 * settings.SpinRotationCountValue + targetAngle;
+            return 360 * _settings.SpinRotationCountValue + targetAngle;
         }
 
         private Tween RotateWheelAsync(float totalRotation)
         {
-            return wheelTransform
-                .DORotate(new Vector3(0, 0, -totalRotation), settings.SpinDurationValue, RotateMode.FastBeyond360)
-                .SetEase(settings.SpinEaseValue)
+            return _wheelTransform
+                .DORotate(new Vector3(0, 0, -totalRotation), _settings.SpinDurationValue, RotateMode.FastBeyond360)
+                .SetEase(_settings.SpinEaseValue)
                 .SetRelative();
         }
     } 
