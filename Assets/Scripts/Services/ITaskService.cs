@@ -1,6 +1,12 @@
 using VertigoGames.GameTasks;
 
-public interface ITaskService
+namespace VertigoGames.Services
 {
-    void AddTask(ITask task);
+    public interface ITaskService
+    {
+        void StartTaskProcessing();
+        void AddTask(ITask task);
+        void CompleteTask(TaskType taskType);
+        public void ClearTasks();
+    }
 }

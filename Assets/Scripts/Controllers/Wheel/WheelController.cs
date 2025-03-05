@@ -35,9 +35,9 @@ namespace VertigoGames.Controllers.Wheel
         private int _currentZoneIndex;
         private readonly List<WheelItem> _wheelItems = new();
         private ObjectPoolManager _objectPoolManager;
-        private TaskService _taskService;
+        private ITaskService _taskService;
         
-        public void Initialize(ObjectPoolManager poolManager, TaskService taskService)
+        public void Initialize(ObjectPoolManager poolManager, ITaskService taskService)
         {
             _objectPoolManager = poolManager;
             _taskService = taskService;

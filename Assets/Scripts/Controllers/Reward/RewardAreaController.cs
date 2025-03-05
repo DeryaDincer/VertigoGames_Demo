@@ -18,10 +18,10 @@ namespace VertigoGames.Controllers.Reward
 
         private readonly List<RewardAreaItem> _rewardAreaItems = new();
         private ObjectPoolManager _objectPoolManager;
-        private TaskService _taskService;
+        private ITaskService _taskService;
         private CurrencyManager _currencyManager;
 
-        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService, CurrencyManager currencyManager)
+        public void Initialize(ObjectPoolManager objectPoolManager, ITaskService taskService, CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;

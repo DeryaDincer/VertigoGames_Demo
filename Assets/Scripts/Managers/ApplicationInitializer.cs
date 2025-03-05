@@ -15,7 +15,7 @@ namespace VertigoGames.Managers
         [SerializeField] private WindowManager windowManager;
         [SerializeField] private ObjectPoolManager objectPoolManager;
         [SerializeField] private CurrencyManager currencyManager;
-        private TaskService _taskService;
+        private ITaskService _taskService;
 
         #region Unity Lifecycle Methods
         private void Awake() =>  Initialize();
@@ -36,7 +36,8 @@ namespace VertigoGames.Managers
         /// </summary>
         public void Initialize()
         {
-            _taskService = new();
+            _taskService = new TaskService();
+
             gameManager.Initialize(objectPoolManager, _taskService, currencyManager);
             windowManager.Initialize(_taskService, currencyManager);
             objectPoolManager.Initialize();

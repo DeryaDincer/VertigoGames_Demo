@@ -14,10 +14,10 @@ namespace VertigoGames.Managers
         [SerializeField] private UIAnimationManager uiAnimationManager;
 
         private ObjectPoolManager _objectPoolManager;
-        private TaskService _taskService;
+        private ITaskService _taskService;
         
         #region Initialization and Deinitialization
-        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService,CurrencyManager currencyManager)
+        public void Initialize(ObjectPoolManager objectPoolManager, ITaskService taskService,CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;

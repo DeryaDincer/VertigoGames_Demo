@@ -8,7 +8,7 @@ using VertigoGames.Managers;
 
 namespace VertigoGames.Services
 {
-    public class TaskService
+    public class TaskService: ITaskService
     {
         private Queue<ITask> _taskQueue = new();
         private TaskType _currentCompletedTaskType;

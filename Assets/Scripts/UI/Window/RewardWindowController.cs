@@ -29,7 +29,7 @@ namespace VertigoGames.UI.Window
 
         public override WindowType WindowType => WindowType.RewardWindow;
         
-        public override void Initialize(TaskService taskService, CurrencyManager currencyManager)
+        public override void Initialize(ITaskService taskService, CurrencyManager currencyManager)
         {
             base.Initialize(taskService, currencyManager);
             _animationController = new RewardWindowAnimationController(

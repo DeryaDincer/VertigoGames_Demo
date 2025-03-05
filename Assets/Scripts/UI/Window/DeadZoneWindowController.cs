@@ -30,7 +30,7 @@ namespace VertigoGames.UI.Window
 
         public override WindowType WindowType => WindowType.DeadZoneWindow;
 
-        public override void Initialize(TaskService taskService, CurrencyManager currencyManager)
+        public override void Initialize(ITaskService taskService, CurrencyManager currencyManager)
         {
             base.Initialize(taskService, currencyManager);
             reviveGameButton.Initialize(currencyManager, deadZoneWindowSettings.ReviveGoldAmount);

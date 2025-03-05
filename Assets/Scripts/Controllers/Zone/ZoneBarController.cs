@@ -26,10 +26,10 @@ namespace VertigoGames.Controllers.Zone
         private int _slideCount = 0;
 
         private ZoneBarAnimationController _animationController;
-        private TaskService _taskService;
+        private ITaskService _taskService;
         
         #region Initialization and Deinitialization
-        public void Initialize(TaskService taskService)
+        public void Initialize(ITaskService taskService)
         {
             _taskService = taskService;
             

@@ -16,7 +16,7 @@ namespace VertigoGames.Managers
         [SerializeField] private List<Window> _windows;
         
         #region Initialization and Deinitialization
-        public void Initialize(TaskService taskService, CurrencyManager currencyManager)
+        public void Initialize(ITaskService taskService, CurrencyManager currencyManager)
         {
             _windows.ForEach(window => window.Initialize(taskService, currencyManager));
         } 

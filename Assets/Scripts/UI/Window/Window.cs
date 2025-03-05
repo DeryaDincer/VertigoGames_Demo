@@ -10,7 +10,7 @@ namespace VertigoGames.UI.Window
         public abstract WindowType WindowType { get; }
         public virtual void OnWindowActivated(object customData){ }
         public virtual void OnWindowDeactivated() { }
-        public virtual void Initialize(TaskService taskService, CurrencyManager currencyManager){ }
+        public virtual void Initialize(ITaskService taskService, CurrencyManager currencyManager){ }
         public virtual void Deinitialize(){ }
         public virtual void Register(){ }
         public virtual void Unregister(){ }

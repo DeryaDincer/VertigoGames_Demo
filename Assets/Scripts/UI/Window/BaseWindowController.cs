@@ -7,9 +7,9 @@ namespace VertigoGames.UI.Window
     public abstract class BaseWindowController : Window
     {
         protected CurrencyManager CurrencyManager;
-        private TaskService _taskService;
+        private ITaskService _taskService;
 
-        public override void Initialize(TaskService taskService, CurrencyManager currencyManager)
+        public override void Initialize(ITaskService taskService, CurrencyManager currencyManager)
         {
             base.Initialize(taskService, currencyManager);
             _taskService = taskService;
