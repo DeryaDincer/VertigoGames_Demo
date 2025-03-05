@@ -19,6 +19,8 @@ namespace VertigoGames.Managers
         [Title("Data References")] 
         [SerializeField] private List<ZoneData> zoneDatas;
 
+        [SerializeField] private DangerTypeData dangerTypeData;
+
         private WheelController _wheelController;
         private ZoneBarController _zoneBarController;
         private RewardAreaController _rewardAreaController;
@@ -88,13 +90,15 @@ namespace VertigoGames.Managers
         
         private void AdvanceToNextZone(RewardData rewardData, int rewardAmount)
         {
-            UpdateZoneIndex();
+            UpdateZoneIndex(rewardData.RewardInfo.RewardType);
             ZoneData currentZoneData = GetCurrentZoneData();
             NotifyRewardAndStartTask(currentZoneData, rewardData, rewardAmount);
         }
 
-        private void UpdateZoneIndex()
+        private void UpdateZoneIndex(RewardType rewardType)
         {
+            if(dangerTypeData.IsDangerType(rewardType)) return;
+
             _zoneStateController.UpdateCurrentZoneIndex();
         }
 
@@ -105,7 +109,7 @@ namespace VertigoGames.Managers
 
         private async void NotifyRewardAndStartTask(ZoneData zoneData, RewardData rewardData, int rewardAmount)
         {
-            if (rewardData.RewardInfo.RewardType == RewardType.Bomb)
+            if (dangerTypeData.IsDangerType(rewardData.RewardInfo.RewardType))
             {
                 ObserverManager.Notify(new DeadZoneRewardEvent());
             }

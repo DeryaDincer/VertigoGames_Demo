@@ -79,6 +79,9 @@ namespace VertigoGames.Controllers.Zone
                 _zoneIndicators[i].Value = i + 1;
                 _zoneIndicators[i].Text.text = _zoneIndicators[i].Value.ToString();
             }
+
+            SetZoneUI(ZoneType.Normal);
+            _slideCount = 0;
         }
 
         private void OnRewardDetermined(RewardDeterminedEvent obj)

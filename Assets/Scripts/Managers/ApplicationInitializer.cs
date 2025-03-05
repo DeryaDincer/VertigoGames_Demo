@@ -4,7 +4,6 @@ using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
 using VertigoGames.Services;
 using VertigoGames.Settings;
-using VertigoGames.Utility;
 
 namespace VertigoGames.Managers
 {

@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewardItemContainer: {fileID: 8535201931008885428}
+  dangerTypeData: {fileID: 11400000, guid: 3a3cbd6006e624b17a6fcf98c9a8d344, type: 2}
 --- !u!1 &5799647603529877566
 GameObject:
   m_ObjectHideFlags: 0

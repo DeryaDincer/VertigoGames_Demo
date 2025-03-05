@@ -644,25 +644,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1345381860}
     - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
-      propertyPath: _zoneManager
-      value: 
-      objectReference: {fileID: 1345381860}
-    - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
       propertyPath: gameUICanvas
       value: 
       objectReference: {fileID: 336917993}
-    - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
-      propertyPath: gamePrefabSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: 5c4070aba6c7c4efe9e4196c5e6b5a98, type: 2}
-    - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
-      propertyPath: uiAnimationManager
-      value: 
-      objectReference: {fileID: 1453079185}
-    - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
-      propertyPath: _uiAnimationManager
-      value: 
-      objectReference: {fileID: 1453079185}
     - target: {fileID: 2643846163470256374, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -767,14 +751,6 @@ PrefabInstance:
     - target: {fileID: 2898705663976271761, guid: 91d6d72ee43a04e09b58d2e4cb21cc3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2898705663976271790, guid: 91d6d72ee43a04e09b58d2e4cb21cc3b, type: 3}
-      propertyPath: currencyController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2898705663976271790, guid: 91d6d72ee43a04e09b58d2e4cb21cc3b, type: 3}
-      propertyPath: _currencyController
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91d6d72ee43a04e09b58d2e4cb21cc3b, type: 3}
@@ -1124,34 +1100,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: _wheelController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: _zoneBarController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: zoneDatas.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: _rewardAreaController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: zoneDatas.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 79562a97abdd94fb0aea01d22e6b4e7a, type: 2}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: zoneDatas.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: c715f828f2d494103969d421799ad8e1, type: 2}
-    - target: {fileID: 7944869674066327196, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
-      propertyPath: zoneDatas.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 94ef60b36abe64238a7520b0d9f3008a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
 --- !u!1001 &8817584826009869021

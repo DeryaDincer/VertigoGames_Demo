@@ -14,7 +14,8 @@ namespace VertigoGames.UI.Item.Base
 
         [SerializeField] protected Image itemImageValue;
         [SerializeField] protected TextMeshProUGUI rewardAmountTextValue;
-
+        [SerializeField] protected DangerTypeData dangerTypeData;
+        
         private RewardData _rewardData;
         private int _rewardAmount;
 
@@ -27,6 +28,12 @@ namespace VertigoGames.UI.Item.Base
 
         public virtual void SetRewardAmount(int rewardAmount)
         {
+            if (dangerTypeData.IsDangerType(RewardData.RewardInfo.RewardType))
+            {
+                rewardAmountTextValue.text = "";
+                return;
+            }
+            
             _rewardAmount = rewardAmount;
             rewardAmountTextValue.text = "x" + _rewardAmount;
         }

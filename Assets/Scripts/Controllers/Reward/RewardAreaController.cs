@@ -15,7 +15,8 @@ namespace VertigoGames.Controllers.Reward
     public class RewardAreaController : MonoBehaviour, IRegisterable
     {
         [SerializeField] private RectTransform rewardItemContainer;
-
+        [SerializeField] private DangerTypeData dangerTypeData;
+        
         private readonly List<RewardAreaItem> _rewardAreaItems = new();
         private ObjectPoolManager _objectPoolManager;
         private ITaskService _taskService;
@@ -49,9 +50,12 @@ namespace VertigoGames.Controllers.Reward
         private void HandleRewardDetermined(RewardDeterminedEvent rewardEvent)
         {
             RewardType rewardType = rewardEvent.RewardData.RewardInfo.RewardType;
-            if (rewardType == RewardType.Bomb)
+           
+            if (dangerTypeData.IsDangerType(rewardType))
+            {
                 return;
-
+            }
+            
             var rewardTask = new RewardAreaTask(async () =>
             {
                 int startAmount =  _currencyManager.GetCurrencyAmount(rewardType);
