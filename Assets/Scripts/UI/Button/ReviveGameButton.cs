@@ -5,20 +5,19 @@ using VertigoGames.Managers;
 
 namespace VertigoGames.UI.Button
 {
-    public class ReviveGameButton : MonoBehaviour
+    public class ReviveGameButton : BaseButton
     {
         [SerializeField] private TextMeshProUGUI _reviveButtonText;
-        private UnityEngine.UI.Button _button => GetComponent<UnityEngine.UI.Button>();
         private CurrencyManager _currencyManager;
         private int _goldAmount;
         private readonly string _buttonString = "\nREVIVE";
         
-        private void OnValidate()
+        protected override void OnButtonClicked()
         {
-            _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(ClickButton);
+            ObserverManager.Notify(new GameSessionRevivedEvent());
+            _currencyManager.ModifyCurrency(RewardType.Gold, -_goldAmount);
         }
-
+        
         public void Initialize(CurrencyManager currencyManager, int goldAmount)
         {
             _currencyManager = currencyManager;
@@ -28,12 +27,6 @@ namespace VertigoGames.UI.Button
         public void SetReviveGoldAmount(int amount, string textString)
         {
             _reviveButtonText.text =  textString + amount + _buttonString;
-        }
-        
-        private void ClickButton()
-        {
-            ObserverManager.Notify(new GameSessionRevivedEvent());
-            _currencyManager.ModifyCurrency(RewardType.Gold, -_goldAmount);
         }
     }
 }

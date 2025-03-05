@@ -8,6 +8,11 @@ namespace VertigoGames.Events
     }
 
     #region Gameplay Events
+    public class WheelSpinStartedEvent : ObserverEvent
+    {
+       
+    }
+    
     public class WheelSpinCompletedEvent : ObserverEvent
     {
         public readonly RewardData RewardData;

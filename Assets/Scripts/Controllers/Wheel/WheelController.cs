@@ -12,7 +12,6 @@ using VertigoGames.Managers;
 using VertigoGames.Pooling;
 using VertigoGames.Services;
 using VertigoGames.Settings;
-using VertigoGames.UI.Button;
 using VertigoGames.UI.Item.Wheel;
 using Random = UnityEngine.Random;
 
@@ -25,7 +24,6 @@ namespace VertigoGames.Controllers.Wheel
         [SerializeField] private Image indicatorImage;
         [SerializeField] private RectTransform wheelItemContainer;
         [SerializeField] private WheelSettings wheelSettings;
-        [SerializeField] private SpinButton spinButton;
 
         private (RewardData reward, int amount) _selectedReward;
         private WheelAnimationController _animationController;
@@ -45,19 +43,19 @@ namespace VertigoGames.Controllers.Wheel
             _animationController = new WheelAnimationController(wheelContainer, indicatorImage.rectTransform, wheelSettings);
             _visualController = new WheelVisualController(spinWheelImage, indicatorImage);
             _rewardSelectController = new RewardSelectController();
-            SpinButton twst = spinButton;
-            spinButton.SetWheelController(this);
         }
 
         #region Registration and Unregistration
         public void Register()
         {
+            ObserverManager.Register<WheelSpinStartedEvent>(HandleWheelSpinStarted);
             ObserverManager.Register<RewardDeterminedEvent>(HandleRewardDetermined);
             ObserverManager.Register<DeadZoneRewardEvent>(HandleDeadZoneReward);
         }
 
         public void Unregister()
         {
+            ObserverManager.Unregister<WheelSpinStartedEvent>(HandleWheelSpinStarted);
             ObserverManager.Unregister<RewardDeterminedEvent>(HandleRewardDetermined);
             ObserverManager.Unregister<DeadZoneRewardEvent>(HandleDeadZoneReward);
         }
@@ -110,7 +108,7 @@ namespace VertigoGames.Controllers.Wheel
             return reward.RewardInfo.InitialRewardCount * (_currentZoneIndex + 1);
         }
         
-        public void SpinWheel()
+        private void HandleWheelSpinStarted(WheelSpinStartedEvent obj)
         {
             ObserverManager.Notify(new InputBlockStateChangedEvent(true));
             int targetIndex = GetRandomRewardIndex();
