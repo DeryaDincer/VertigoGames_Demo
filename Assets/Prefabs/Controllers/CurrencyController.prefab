@@ -394,4 +394,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1cd5af3fd406436fbdea39ae02be138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinCurrencyTextValue: {fileID: 8036885090695429555}
+  coinCurrencyTextValue: {fileID: 8036885090695429555}
