@@ -37,5 +37,10 @@ namespace VertigoGames.Settings
             var appearance = _zoneBarAppearanceInfos.FirstOrDefault(wza => wza.ZoneType == zoneType);
             return appearance;
         }
+
+        public ZoneType GetInitialZoneType()
+        {
+            return ZoneType.Normal;
+        }
     }
 }

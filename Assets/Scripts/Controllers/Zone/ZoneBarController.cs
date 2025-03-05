@@ -23,7 +23,6 @@ namespace VertigoGames.Controllers.Zone
 
         private readonly List<ZoneBarIndicatorInfo> _zoneIndicators = new();
         private float _initialPositionX;
-        private int _slideCount = 0;
 
         private ZoneBarAnimationController _animationController;
         private ITaskService _taskService;
@@ -80,8 +79,8 @@ namespace VertigoGames.Controllers.Zone
                 _zoneIndicators[i].Text.text = _zoneIndicators[i].Value.ToString();
             }
 
-            SetZoneUI(ZoneType.Normal);
-            _slideCount = 0;
+            SetZoneUI(zoneBarSettings.GetInitialZoneType());
+            _animationController.ResetBarData();
         }
 
         private void OnRewardDetermined(RewardDeterminedEvent obj)
@@ -97,15 +96,12 @@ namespace VertigoGames.Controllers.Zone
 
         private void SlideToNextZone()
         {
-            _animationController.SlideToNextZone(() =>
+            _animationController.SlideToNextZone((bool shouldResetPosition) =>
             {
-                if (_slideCount >= zoneBarSettings.AverageIndicatorIndex)
+                if (shouldResetPosition)
                 {
                     UpdateZoneIndicators();
-                    _animationController.ResetPosition();
                 }
-
-                _slideCount++;
 
                 _taskService.CompleteTask(TaskType.ZoneBar);
             });

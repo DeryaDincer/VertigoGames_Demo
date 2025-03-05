@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemImageValue: {fileID: 2568530444039022426}
   rewardAmountTextValue: {fileID: 6486614471507248110}
+  dangerTypeData: {fileID: 11400000, guid: 3a3cbd6006e624b17a6fcf98c9a8d344, type: 2}
 --- !u!1 &8427378015782001570
 GameObject:
   m_ObjectHideFlags: 0
