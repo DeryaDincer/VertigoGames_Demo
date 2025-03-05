@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using VertigoGames.Controllers.Reward;
 using VertigoGames.Controllers.Wheel;
@@ -15,25 +16,30 @@ namespace VertigoGames.Managers
 {
     public class ZoneManager : MonoBehaviour, IRegisterable
     {
-        [SerializeField] private GamePrefabSettings _gamePrefabSettings;
-        
-        [Header("Data References")] 
-        [SerializeField] private List<ZoneData> _zoneDatas;
+        [Title("Data References")] 
+        [SerializeField] private List<ZoneData> zoneDatas;
 
-        [Header("Controller References")] 
-        [SerializeField] private WheelController _wheelController;
-        [SerializeField] private ZoneBarController _zoneBarController;
-        [SerializeField] private RewardAreaController _rewardAreaController;
+        public WheelController _wheelController;
+        public ZoneBarController _zoneBarController;
+        public RewardAreaController _rewardAreaController;
      
         private ZoneStateController _zoneStateController;
         private ITaskService _taskService;
         
         #region Initialization and Deinitialization
-        public void Initialize(ObjectPoolManager objectPoolManager, ITaskService taskService, CurrencyManager currencyManager)
+        public void Initialize(GamePrefabSettings gamePrefabSettings, 
+            ObjectPoolManager objectPoolManager,
+            ITaskService taskService,
+            CurrencyManager currencyManager,
+            RectTransform gameUICanvas)
         {
+            _wheelController = Instantiate(gamePrefabSettings.WheelController, gameUICanvas);
+            _zoneBarController = Instantiate(gamePrefabSettings.ZoneBarController, gameUICanvas);
+            _rewardAreaController = Instantiate(gamePrefabSettings.RewardAreaController, gameUICanvas);
+            
             _taskService = taskService;
             
-            _zoneStateController = new ZoneStateController(_zoneDatas);
+            _zoneStateController = new ZoneStateController(zoneDatas);
             _wheelController.Initialize(objectPoolManager, taskService);
             _zoneBarController.Initialize(taskService);
             _rewardAreaController.Initialize(objectPoolManager, taskService, currencyManager);

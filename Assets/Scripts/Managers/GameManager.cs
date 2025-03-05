@@ -4,6 +4,7 @@ using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
 using VertigoGames.Services;
+using VertigoGames.Settings;
 
 namespace VertigoGames.Managers
 {
@@ -13,6 +14,12 @@ namespace VertigoGames.Managers
         [SerializeField] private ZoneManager zoneManager;
         [SerializeField] private UIAnimationManager uiAnimationManager;
 
+        [Title("Settings References")] 
+        [SerializeField] private GamePrefabSettings gamePrefabSettings;
+        
+        [Title("UI References")] 
+        [SerializeField] private RectTransform gameUICanvas;
+        
         private ObjectPoolManager _objectPoolManager;
         private ITaskService _taskService;
         
@@ -22,7 +29,7 @@ namespace VertigoGames.Managers
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;
             
-            zoneManager.Initialize(_objectPoolManager, _taskService, currencyManager);
+            zoneManager.Initialize(gamePrefabSettings, _objectPoolManager, _taskService, currencyManager, gameUICanvas);
             uiAnimationManager.Initialize(_objectPoolManager);
         }
 

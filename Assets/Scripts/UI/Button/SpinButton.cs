@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using VertigoGames.Controllers.Wheel;
-using VertigoGames.Events;
-using VertigoGames.Managers;
 
 namespace VertigoGames.UI.Button
 {
@@ -13,6 +8,14 @@ namespace VertigoGames.UI.Button
         private UnityEngine.UI.Button _button => GetComponent<UnityEngine.UI.Button>();
         private WheelController _wheelController;
         private void OnValidate()
+        {
+            Debug.LogError("OnValidate");
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(ClickButton);
+        }
+
+        
+        private void OnEnable()
         {
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(ClickButton);

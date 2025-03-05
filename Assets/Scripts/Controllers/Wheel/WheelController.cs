@@ -45,6 +45,7 @@ namespace VertigoGames.Controllers.Wheel
             _animationController = new WheelAnimationController(wheelContainer, indicatorImage.rectTransform, wheelSettings);
             _visualController = new WheelVisualController(spinWheelImage, indicatorImage);
             _rewardSelectController = new RewardSelectController();
+            SpinButton twst = spinButton;
             spinButton.SetWheelController(this);
         }
 
