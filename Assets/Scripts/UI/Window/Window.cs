@@ -1,20 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VertigoGames.Interfaces;
+using VertigoGames.Managers;
 using VertigoGames.Services;
-using VertigoGames.UI.Window;
-
 
 namespace VertigoGames.UI.Window
 {
     public abstract class Window : MonoBehaviour, IWindow, IRegisterable
     {
         public abstract WindowType WindowType { get; }
-
         public virtual void OnWindowActivated(object customData){ }
         public virtual void OnWindowDeactivated() { }
-        public virtual void Initialize(TaskService taskService){ }
+        public virtual void Initialize(TaskService taskService, CurrencyManager currencyManager){ }
         public virtual void Deinitialize(){ }
         public virtual void Register(){ }
         public virtual void Unregister(){ }
@@ -26,7 +22,6 @@ namespace VertigoGames.UI.Window
             if (isOpen)
             {
                 OnWindowActivated(customData);
-               
             }
             else
             {

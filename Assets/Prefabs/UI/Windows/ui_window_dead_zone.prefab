@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c64c5e807ab134178a798e3aeaf4f298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _reviveButtonText: {fileID: 4005398964723162950}
 --- !u!1 &1298037907533662098
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,7 +747,7 @@ GameObject:
   - component: {fileID: 2671430153805072176}
   - component: {fileID: 3892896251746748690}
   m_Layer: 5
-  m_Name: ui_window_backgorund
+  m_Name: ui_window_backgorund_value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -898,7 +899,7 @@ GameObject:
   - component: {fileID: 463851148402344518}
   - component: {fileID: 4005398964723162950}
   m_Layer: 5
-  m_Name: ui_button_text
+  m_Name: ui_button_text_value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -952,7 +953,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: REVIVE
+  m_text: ' <sprite name="UI_icon_gold">70\n REVIVE'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
@@ -979,7 +980,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 42.6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -991,7 +992,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -15
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -1488,8 +1489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0460b0bff42d44b3099597020cd51367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rewardIcon: {fileID: 3103545586889988685}
-  _cardRoot: {fileID: 4134346598274875075}
-  _windowBackgroundImage: {fileID: 3892896251746748690}
-  _deadZoneInfoTextValue: {fileID: 6600707467179920514}
+  rewardIcon: {fileID: 3103545586889988685}
+  cardRoot: {fileID: 4134346598274875075}
+  windowBackgroundImage: {fileID: 3892896251746748690}
+  deadZoneInfoText: {fileID: 6600707467179920514}
   deadZoneWindowSettings: {fileID: 11400000, guid: 1f1bed75c01fe4b8f82641313cf21208, type: 2}
+  reviveGameButton: {fileID: 5684182899793729276}

@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace VertigoGames.Settings
 {
@@ -24,7 +19,6 @@ namespace VertigoGames.Settings
         [SerializeField] private float _initialCardScale = .4f;
         
         #region Public References
-        
         public float FadeDuration => _fadeDuration;
         public float ScaleDuration => _scaleDuration;
         public float RotateDuration => _rotateDuration;
@@ -35,7 +29,6 @@ namespace VertigoGames.Settings
         public float InitialCardRotationZ => _initialCardRotationZ;
         public float InitialCardBackRotationY => _initialCardBackRotationY;
         public float InitialCardScale => _initialCardScale;
-        
         #endregion
     }
 }

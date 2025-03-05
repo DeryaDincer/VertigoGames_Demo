@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,39 +14,32 @@ namespace VertigoGames.Managers
     public class WindowManager : MonoBehaviour, IRegisterable
     {
         [SerializeField] private List<Window> _windows;
-        private TaskService _taskService;
         
         #region Initialization and Deinitialization
-
-        public void Initialize(TaskService taskService)
+        public void Initialize(TaskService taskService, CurrencyManager currencyManager)
         {
-            _taskService = taskService;
-            _windows.ForEach(window => window.Initialize(taskService));
+            _windows.ForEach(window => window.Initialize(taskService, currencyManager));
         } 
 
         public void Deinitialize() => _windows.ForEach(window => window.Deinitialize());
-
         #endregion
 
         #region Registration and Unregistration
-
         public void Register()
         {
             _windows.ForEach(window => window.Register());
-            ObserverManager.Register<WindowStateChangeEvent>(OnWindowActivationRequested);
+            ObserverManager.Register<WindowStateChangedEvent>(OnWindowActivationRequested);
         }
 
         public void Unregister()
         {
             _windows.ForEach(window => window.Unregister());
-            ObserverManager.Unregister<WindowStateChangeEvent>(OnWindowActivationRequested);
+            ObserverManager.Unregister<WindowStateChangedEvent>(OnWindowActivationRequested);
         }
-
         #endregion
 
         #region Window Navigation
-
-        private void OnWindowActivationRequested(WindowStateChangeEvent evt)
+        private void OnWindowActivationRequested(WindowStateChangedEvent evt)
         {
             if (evt == null) return;
 
@@ -61,12 +53,12 @@ namespace VertigoGames.Managers
             SetWindowActive(targetWindow, evt.WindowStateChangeInfo.ActiveStatus, evt.WindowStateChangeInfo.CustomInfo);
         }
 
-        public Window GetWindowByType(WindowType windowType)
+        private Window GetWindowByType(WindowType windowType)
         {
             return _windows.FirstOrDefault(window => window.WindowType == windowType);
         }
 
-        public void SetWindowActive(Window window, bool isActive, object customData = null)
+        private void SetWindowActive(Window window, bool isActive, object customData = null)
         {
             if (window == null)
             {
@@ -76,7 +68,6 @@ namespace VertigoGames.Managers
 
             window.UpdateWindowVisibility(isActive, customData);
         }
-
         #endregion
     }
 }

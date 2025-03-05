@@ -152,7 +152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2996502990712511644
 RectTransform:
   m_ObjectHideFlags: 0
@@ -195,14 +195,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee78f43ef5a134b00be05cdd9493c529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rewardIcon: {fileID: 4929339923238701393}
-  _rewardTitleValue: {fileID: 4546928950609865884}
-  _rewardAmountValue: {fileID: 7506037818373891053}
-  _cardRoot: {fileID: 6204461223065480671}
-  _cardCanvasGroup: {fileID: 4311548187760176047}
-  _cardFrontValue: {fileID: 3454710613934180953}
-  _cardBackValue: {fileID: 4934651434258641823}
-  _rewardWindowSettings: {fileID: 11400000, guid: 387e80dceb3164771a40a4ee5afb8624, type: 2}
+  rewardIcon: {fileID: 4929339923238701393}
+  rewardTitleText: {fileID: 4546928950609865884}
+  rewardAmountText: {fileID: 7506037818373891053}
+  cardRoot: {fileID: 6204461223065480671}
+  cardCanvasGroup: {fileID: 4311548187760176047}
+  cardFront: {fileID: 3454710613934180953}
+  cardBack: {fileID: 4934651434258641823}
+  rewardWindowSettings: {fileID: 11400000, guid: 387e80dceb3164771a40a4ee5afb8624, type: 2}
 --- !u!1 &3741693633918342450
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,7 +37,7 @@ namespace VertigoGames.UI.Window
             sequence.Join(MoveCard());
             sequence.Append(RotateCardToDefaultPosition());
             sequence.AppendInterval(_settings.DelayBeforeClose);
-            sequence.AppendCallback(() => ObserverManager.Notify(new InputBlockerEvent(false)));
+            sequence.AppendCallback(() => ObserverManager.Notify(new InputBlockStateChangedEvent(false)));
             return sequence;
         }
 

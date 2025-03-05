@@ -1,70 +1,71 @@
 using DG.Tweening;
-using TMPro;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Managers;
 using VertigoGames.Services;
 using VertigoGames.Settings;
+using VertigoGames.UI.Button;
+using VertigoGames.Utility;
 
 namespace VertigoGames.UI.Window
 {
-    public class DeadZoneWindowController : Window
+    public class DeadZoneWindowController : BaseWindowController
     {
-        [Header("UI References")]
-        [SerializeField] private Image _rewardIcon;
-        [SerializeField] private RectTransform _cardRoot;
-        [SerializeField] private Image _windowBackgroundImage;
-        [SerializeField] private TextMeshProUGUI _deadZoneInfoTextValue;
-            
-        [Header("Dead Zone Window Settings")]
+        [Title("UI References")]
+        [SerializeField] private Image rewardIcon;
+        [SerializeField] private RectTransform cardRoot;
+        [SerializeField] private Image windowBackgroundImage;
+
+        [Title("Dead Zone Window Settings")]
         [SerializeField] private DeadZoneWindowSettings deadZoneWindowSettings;
 
-        private DangerZoneWindowCustomInfo _dangerZoneWindowCustomInfo;
+        [Title("Dead Zone Button")]
+        [SerializeField] private ReviveGameButton reviveGameButton;
+
+        private DeadZoneWindowCustomInfo _deadZoneWindowCustomInfo;
         private DeadZoneWindowAnimationController _animationController;
-        private TaskService _taskService;
+
         public override WindowType WindowType => WindowType.DeadZoneWindow;
 
-        public override void Initialize(TaskService taskService)
+        public override void Initialize(TaskService taskService, CurrencyManager currencyManager)
         {
-            base.Initialize(taskService);
-            _taskService = taskService;
-            
-            _animationController = new DeadZoneWindowAnimationController(
-                deadZoneWindowSettings,
-                _cardRoot,
-                _windowBackgroundImage);
+            base.Initialize(taskService, currencyManager);
+            reviveGameButton.Initialize(currencyManager, deadZoneWindowSettings.ReviveGoldAmount);
+            _animationController = new DeadZoneWindowAnimationController(deadZoneWindowSettings, cardRoot, windowBackgroundImage);
         }
 
+        #region IRegisterable Implementation
         public override void Register()
         {
             base.Register();
-            ObserverManager.Register<GameSessionReviveEvent>(GameSessionRevive);
-            ObserverManager.Register<GameSessionResetEvent>(GameSessionReset);
-
+            ObserverManager.Register<GameSessionRevivedEvent>(OnGameSessionRevived);
+            ObserverManager.Register<GameSessionResetEvent>(OnGameSessionReset);
         }
 
         public override void Unregister()
         {
             base.Unregister();
-            ObserverManager.Unregister<GameSessionReviveEvent>(GameSessionRevive);
-            ObserverManager.Unregister<GameSessionResetEvent>(GameSessionReset);
+            ObserverManager.Unregister<GameSessionRevivedEvent>(OnGameSessionRevived);
+            ObserverManager.Unregister<GameSessionResetEvent>(OnGameSessionReset);
         }
-        
+        #endregion
+
         public override void OnWindowActivated(object customData)
         {
             base.OnWindowActivated(customData);
-            _dangerZoneWindowCustomInfo = customData as DangerZoneWindowCustomInfo;
+            _deadZoneWindowCustomInfo = customData as DeadZoneWindowCustomInfo;
 
-            if (_dangerZoneWindowCustomInfo == null)
+            if (_deadZoneWindowCustomInfo == null)
             {
-                Debug.LogError("DaeadZoneWindowCustomData is null!");
+                Debug.LogError("[DeadZoneWindow] Custom data is null!");
                 return;
             }
 
-            SetRewardInfo(_dangerZoneWindowCustomInfo.RewardData);
+            UpdateRewardInfo(_deadZoneWindowCustomInfo.RewardData);
+            UpdateReviveButton();
             _animationController.PlayCardAnimation();
         }
 
@@ -75,27 +76,31 @@ namespace VertigoGames.UI.Window
             _animationController.ResetCardRotation();
         }
 
-        private void SetRewardInfo(RewardData rewardData)
+        private void UpdateRewardInfo(RewardData rewardData)
         {
-            _rewardIcon.sprite = rewardData.RewardInfo.Icon;
+            rewardIcon.sprite = rewardData.RewardInfo.Icon;
         }
 
-        private void GameSessionRevive(GameSessionReviveEvent obj) => CloseWindow();
+        private void UpdateReviveButton()
+        {
+            int reviveCost = deadZoneWindowSettings.ReviveGoldAmount;
+            bool hasEnoughGold = CurrencyManager.GetCurrencyAmount(RewardType.Gold) >= reviveCost;
 
-        private void GameSessionReset(GameSessionResetEvent obj) => CloseWindow();
+            reviveGameButton.SetReviveGoldAmount(reviveCost, deadZoneWindowSettings.TextGoldSpriteString);
+
+            if (hasEnoughGold)
+                reviveGameButton.Show();
+            else
+                reviveGameButton.Hide();
+        }
+
+        private void OnGameSessionRevived(GameSessionRevivedEvent eventData) => CloseWindow();
+
+        private void OnGameSessionReset(GameSessionResetEvent eventData) => CloseWindow();
 
         private void CloseWindow()
         {
-            WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo
-            {
-                WindowType = WindowType.DeadZoneWindow,
-                ActiveStatus = false,
-                CustomInfo = null
-            };
-
-            ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
-            _taskService.CompleteTask(TaskType.ShowDeadZoneWindow);
+            CloseWindowWithTask(WindowType.DeadZoneWindow, TaskType.ShowDeadZoneWindow);
         }
     }
 }
-

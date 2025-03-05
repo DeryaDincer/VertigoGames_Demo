@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using VertigoGames.Interfaces;
-
-
 namespace VertigoGames.UI.Window
 {
     public interface IWindow 
@@ -12,5 +6,4 @@ namespace VertigoGames.UI.Window
         public void OnWindowActivated(object customData);
         public void OnWindowDeactivated();
     }
-
 }
