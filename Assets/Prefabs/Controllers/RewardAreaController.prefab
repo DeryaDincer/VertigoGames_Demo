@@ -135,8 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141130f75b0394f6f9310cef7eca25bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rewardAreaItemPrefab: {fileID: 1885207711030374361, guid: b048b999493f8415fbb398a3a00051ac, type: 3}
-  _rewardItemContainer: {fileID: 8535201931008885428}
+  rewardItemContainer: {fileID: 8535201931008885428}
 --- !u!1 &5799647603529877566
 GameObject:
   m_ObjectHideFlags: 0
