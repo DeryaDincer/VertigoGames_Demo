@@ -30,12 +30,13 @@ namespace VertigoGames.Controllers.Wheel
         {
             float targetAngle = GetTargetAngle(rewardIndex);
             float totalRotation = GetTotalRotation(targetAngle);
-            int turnCount = (int)totalRotation / 45;
+            int turnCount = (int)((totalRotation - 360) / GetRotatePerItem());
 
-            AnimateIndicator(turnCount, () => RotateWheelAsync(totalRotation).OnComplete(() => onComplete?.Invoke()));
+            AnimateIndicator(turnCount);
+            RotateWheelAsync(totalRotation).OnComplete(() => onComplete?.Invoke());
         }
         
-        private void AnimateIndicator(int turnCount, Action onComplete)
+        private void AnimateIndicator(int turnCount)
         {
             indicatorTransform
                 .DORotate(new Vector3(0, 0, settings.IndicatorRotationValue), settings.IndicatorDurationValue)
@@ -44,13 +45,17 @@ namespace VertigoGames.Controllers.Wheel
                 .OnComplete(() =>
                 {
                     indicatorTransform.rotation = Quaternion.identity;
-                    onComplete?.Invoke();
                 });
         }
 
         private float GetTargetAngle(int rewardIndex)
         {
-            return rewardIndex * (360f / settings.WheelSlotCountValue);
+            return rewardIndex * GetRotatePerItem();
+        }
+
+        private float GetRotatePerItem()
+        {
+            return (360f / settings.WheelSlotCountValue);
         }
 
         private float GetTotalRotation(float targetAngle)
