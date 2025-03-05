@@ -8,7 +8,6 @@ namespace VertigoGames.Utility
     public static class Extensions
     {
         #region Component
-
         public static void Show(this Component component)
         {
             component.gameObject.SetActive(true);
@@ -18,40 +17,19 @@ namespace VertigoGames.Utility
         {
             component.gameObject.SetActive(false);
         }
-
         #endregion
 
-        #region RectTransform
-
-        public static void SetAnchorPosX(this RectTransform rectTransform, float posX)
-        {
-            Vector2 anchorPos = rectTransform.anchoredPosition;
-            anchorPos.x = posX;
-            rectTransform.anchoredPosition = anchorPos;
-        }
-
-        public static void SetAnchorPosY(this RectTransform rectTransform, float posY)
-        {
-            Vector2 anchorPos = rectTransform.anchoredPosition;
-            anchorPos.y = posY;
-            rectTransform.anchoredPosition = anchorPos;
-        }
-
-        #endregion
 
         #region Image
-
         public static void SetAlpha(this Image image, float alpha)
         {
             Color color = image.color;
             color.a = alpha;
             image.color = color;
         }
-
         #endregion
         
         #region DoTween
-
         public static Tween DoBump(this Transform transform, float scaleFactor = 1.05f, float duration = 0.05f)
         {
             Vector3 scale = transform.localScale;
@@ -89,9 +67,6 @@ namespace VertigoGames.Utility
                 duration 
             ).SetId(text.transform); 
         }
-
         #endregion
-
     }
-
 }

@@ -30,7 +30,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 48488386718418166}
+  m_Father: {fileID: 11678331590874895}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -108,7 +108,6 @@ RectTransform:
   m_Children:
   - {fileID: 11678331590874895}
   - {fileID: 5948743030854725176}
-  - {fileID: 5713520593381926668}
   m_Father: {fileID: 360653462110348134}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -340,7 +339,6 @@ MonoBehaviour:
   indicatorImage: {fileID: 4021803213002690951}
   wheelItemContainer: {fileID: 198056443155232840}
   wheelSettings: {fileID: 11400000, guid: 6e9c80d4a096042f294f811b1913c479, type: 2}
-  spinButton: {fileID: 1683172210}
 --- !u!1 &8200172483555549552
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,6 +370,7 @@ RectTransform:
   m_Children:
   - {fileID: 5027312459004467772}
   - {fileID: 198056443155232840}
+  - {fileID: 5713520593381926668}
   m_Father: {fileID: 48488386718418166}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
