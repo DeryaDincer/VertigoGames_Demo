@@ -718,10 +718,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02801ba8dc88b4410b8c80d6bcf877a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameManager: {fileID: 1487944652}
-  _windowManager: {fileID: 1406076842}
-  _objectPoolManager: {fileID: 902613346}
-  _currencyManager: {fileID: 1304720032}
+  gameManager: {fileID: 1487944652}
+  windowManager: {fileID: 1406076842}
+  objectPoolManager: {fileID: 902613346}
+  currencyManager: {fileID: 1304720032}
 --- !u!1 &1279555907
 GameObject:
   m_ObjectHideFlags: 0
