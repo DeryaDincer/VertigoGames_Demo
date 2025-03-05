@@ -9,7 +9,6 @@ namespace VertigoGames.UI.Button
         private WheelController _wheelController;
         private void OnValidate()
         {
-            Debug.LogError("OnValidate");
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(ClickButton);
         }

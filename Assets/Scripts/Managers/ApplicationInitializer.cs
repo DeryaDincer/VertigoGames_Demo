@@ -4,6 +4,7 @@ using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
 using VertigoGames.Services;
 using VertigoGames.Settings;
+using VertigoGames.Utility;
 
 namespace VertigoGames.Managers
 {
@@ -43,8 +44,10 @@ namespace VertigoGames.Managers
         /// </summary>
         public void Initialize()
         {
-            _taskService = new TaskService();
+            PlayerPrefs.DeleteAll();
 
+            _taskService = new TaskService();
+            
             gameManager.Initialize(gamePrefabSettings, objectPoolManager, _taskService, currencyManager);
             windowManager.Initialize(_taskService, currencyManager);
             objectPoolManager.Initialize();

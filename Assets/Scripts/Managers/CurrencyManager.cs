@@ -14,6 +14,7 @@ namespace VertigoGames.Managers
         #region Initialization and Deinitialization
         public void Initialize(GamePrefabSettings gamePrefabSettings)
         {
+            ModifyCurrency(RewardType.Gold, 100);
             _currencyController = Instantiate(gamePrefabSettings.CurrencyController);
             _currencyController.Initialize(this);
         }

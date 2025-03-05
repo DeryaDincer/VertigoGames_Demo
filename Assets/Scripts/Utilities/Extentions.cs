@@ -1,4 +1,5 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,6 +74,20 @@ namespace VertigoGames.Utility
             seq.Append(transform.DOScale(scale * scaleFactor, duration));
 
             return seq;
+        }
+        
+        public static Tween DoCount(this TextMeshProUGUI text, int startAmount, int endAmount, float duration = .5f)
+        {
+            int currentAmount = startAmount;
+            return DOTween.To(
+                () => currentAmount, 
+                x => {
+                    currentAmount = x;
+                    text.text = currentAmount.ToString();
+                },
+                endAmount, 
+                duration 
+            ).SetId(text.transform); 
         }
 
         #endregion

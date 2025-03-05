@@ -1,5 +1,7 @@
+using DG.Tweening;
 using VertigoGames.Datas.Reward;
 using VertigoGames.UI.Item.Base;
+using VertigoGames.Utility;
 
 namespace VertigoGames.UI.Item.Reward
 {
@@ -11,11 +13,10 @@ namespace VertigoGames.UI.Item.Reward
             SetItemSprite();
         }
         
-        public virtual void SetRewardAmount(int startRewardAmount, int endRewardAmount)
+        public virtual void SetRewardAmountWithAnimation(int startRewardAmount, int addRewardAmount)
         {
-            
-           // int rewardAmount
-          //  _rewardAmountTextValue.text = "x" + rewardAmount;
+            DOTween.Kill(rewardAmountTextValue.transform);
+            rewardAmountTextValue.DoCount(startRewardAmount, (startRewardAmount + addRewardAmount));
         }
     }
 }

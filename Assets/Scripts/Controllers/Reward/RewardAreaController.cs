@@ -48,19 +48,21 @@ namespace VertigoGames.Controllers.Reward
 
         private void HandleRewardDetermined(RewardDeterminedEvent rewardEvent)
         {
-            if (rewardEvent.RewardData.RewardInfo.RewardType == RewardType.Bomb)
+            RewardType rewardType = rewardEvent.RewardData.RewardInfo.RewardType;
+            if (rewardType == RewardType.Bomb)
                 return;
 
             var rewardTask = new RewardAreaTask(async () =>
             {
-                _currencyManager.ModifyCurrency(rewardEvent.RewardData.RewardInfo.RewardType, rewardEvent.RewardAmount);
-                await CreateOrUpdateRewardItemAsync(rewardEvent.RewardData, rewardEvent.RewardAmount);
+                int startAmount =  _currencyManager.GetCurrencyAmount(rewardType);
+                _currencyManager.ModifyCurrency(rewardType, rewardEvent.RewardAmount);
+                await CreateOrUpdateRewardItemAsync(rewardEvent.RewardData, rewardEvent.RewardAmount, startAmount);
             });
 
             _taskService.AddTask(rewardTask);
         }
 
-        private async Task CreateOrUpdateRewardItemAsync(RewardData rewardData, int rewardAmount)
+        private async Task CreateOrUpdateRewardItemAsync(RewardData rewardData, int rewardAmount,int startAmount)
         {
             var item = GetOrCreateRewardItem(rewardData);
             item.SetItem(rewardData);
@@ -68,7 +70,7 @@ namespace VertigoGames.Controllers.Reward
 
             await Task.Delay(100);
 
-            NotifyAnimationStarted(rewardData, rewardAmount, item);
+            NotifyAnimationStarted(rewardData, rewardAmount, item, startAmount);
         }
 
         private RewardAreaItem GetOrCreateRewardItem(RewardData rewardData)
@@ -84,14 +86,16 @@ namespace VertigoGames.Controllers.Reward
             return newItem;
         }
 
-        private void NotifyAnimationStarted(RewardData rewardData, int rewardAmount, RewardAreaItem item)
+        private void NotifyAnimationStarted(RewardData rewardData, int rewardAmount, RewardAreaItem item, int startAmount)
         {
-            var animationInfo = new UIRewardAnimationInfo(rewardData, rewardAmount, Vector2.zero, item.transform.position, () => OnAnimationComplete(item));
+            var animationInfo = new UIRewardAnimationInfo(rewardData, rewardAmount, Vector2.zero, item.transform.position, 
+                () => OnAnimationComplete(item, rewardAmount, startAmount));
             ObserverManager.Notify(new RewardAnimationStartedEvent(animationInfo));
         }
 
-        private void OnAnimationComplete(RewardAreaItem item)
+        private void OnAnimationComplete(RewardAreaItem item, int rewardAmount, int startAmount)
         {
+            item.SetRewardAmountWithAnimation(startAmount, rewardAmount);
             item.transform.localScale = Vector3.one;
             _taskService.CompleteTask(TaskType.RewardArea);
         }
