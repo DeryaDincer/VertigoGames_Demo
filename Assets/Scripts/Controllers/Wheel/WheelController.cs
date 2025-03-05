@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,170 +18,157 @@ using Random = UnityEngine.Random;
 
 namespace VertigoGames.Controllers.Wheel
 {
-    public class WheelController : MonoBehaviour , IRegisterable
+    public class WheelController : MonoBehaviour, IRegisterable
     {
-        [SerializeField] private RectTransform _wheelContainer;
-        [SerializeField] private Image _spinWheelImageValue;
-        [SerializeField] private Image _indicatorWheelImageValue;
-        [SerializeField] private RectTransform _wheelItemContainer;
-        [SerializeField] private WheelItem _wheelItemPrefab;
-        [SerializeField] private WheelSettings _wheelSettings;
-        [SerializeField] private SpinButton _spinButton;
+        [SerializeField] private RectTransform wheelContainer;
+        [SerializeField] private Image spinWheelImage;
+        [SerializeField] private Image indicatorImage;
+        [SerializeField] private RectTransform wheelItemContainer;
+        [SerializeField] private WheelSettings wheelSettings;
+        [SerializeField] private SpinButton spinButton;
 
-        private (RewardData, int) _selectedReward;
-        private WheelAnimationController _wheelAnimationController;
-        private WheelVisualController _wheelVisualController;
+        private (RewardData reward, int amount) _selectedReward;
+        private WheelAnimationController _animationController;
+        private WheelVisualController _visualController;
         private RewardSelectController _rewardSelectController;
-        private ZoneData _zoneData;
+        private ZoneData _currentZoneData;
         private int _currentZoneIndex;
-        private List<WheelItem> _wheelItems = new();
+        private readonly List<WheelItem> _wheelItems = new();
         private ObjectPoolManager _objectPoolManager;
         private TaskService _taskService;
         
-        public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService)
+        public void Initialize(ObjectPoolManager poolManager, TaskService taskService)
         {
-            _objectPoolManager = objectPoolManager;
+            _objectPoolManager = poolManager;
             _taskService = taskService;
             
-            _wheelAnimationController = new WheelAnimationController(_wheelContainer, _indicatorWheelImageValue.rectTransform, _wheelSettings);
-            _wheelVisualController = new WheelVisualController(_spinWheelImageValue, _indicatorWheelImageValue);
+            _animationController = new WheelAnimationController(wheelContainer, indicatorImage.rectTransform, wheelSettings);
+            _visualController = new WheelVisualController(spinWheelImage, indicatorImage);
             _rewardSelectController = new RewardSelectController();
-            _spinButton.SetWheelController(this);
+            spinButton.SetWheelController(this);
         }
 
-        public void Deinitialize()
-        {
-            
-        }
-
+        #region Registration and Unregistration
         public void Register()
         {
-            ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
-            ObserverManager.Register<OnDeadZoneReward>(OnDeadZoneReward);
+            ObserverManager.Register<RewardDeterminedEvent>(HandleRewardDetermined);
+            ObserverManager.Register<DeadZoneRewardEvent>(HandleDeadZoneReward);
         }
 
         public void Unregister()
         {
-            ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
-            ObserverManager.Unregister<OnDeadZoneReward>(OnDeadZoneReward);
+            ObserverManager.Unregister<RewardDeterminedEvent>(HandleRewardDetermined);
+            ObserverManager.Unregister<DeadZoneRewardEvent>(HandleDeadZoneReward);
         }
+        #endregion
 
         public void BeginGameSession(ZoneData zoneData)
         {
-            InitialWheelSession(zoneData);
+            InitializeWheelSession(zoneData);
         }
         
-        private void InitialWheelSession(ZoneData zoneData)
+        private void InitializeWheelSession(ZoneData zoneData)
         {
-            DestroyAllItems();
-            _wheelAnimationController.ResetWheelAnimation();
-            _zoneData = zoneData;
+            ClearWheelItems();
+            _animationController.ResetWheel();
+            _currentZoneData = zoneData;
             
-            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(_zoneData, _wheelSettings.WheelSlotCountValue);//zonemanager yapsim
-            StartCoroutine(InstantiateWheelItemsWithAnimation(selectedRewards, 0));
+            List<RewardData> selectedRewards = _rewardSelectController.SelectRewards(zoneData, wheelSettings.WheelSlotCountValue);
+            StartCoroutine(SpawnWheelItemsWithAnimation(selectedRewards));
             
-            WheelZoneAppearanceInfo wheelZoneAppearanceInfo = _wheelSettings.GetWheelZoneAppearanceByZoneType(_zoneData.ZoneType);
-            _wheelVisualController.SetWheelVisual(wheelZoneAppearanceInfo);
+            WheelZoneAppearanceInfo appearanceInfo = wheelSettings.GetWheelZoneAppearanceByZoneType(zoneData.ZoneType);
+            _visualController.SetWheelVisual(appearanceInfo);
         } 
         
-        private IEnumerator InstantiateWheelItemsWithAnimation(List<RewardData> selectedRewards, int currentZoneIndex)
+        private IEnumerator SpawnWheelItemsWithAnimation(List<RewardData> rewards)
         {
-            yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayValue);
+            yield return new WaitForSeconds(wheelSettings.WheelSpawnDelayValue);
             
-            foreach (var (rewardData, index) in selectedRewards.Select((data, i) => (data, i)))
+            foreach (var (reward, index) in rewards.Select((data, i) => (data, i)))
             {
-               WheelItem item = _objectPoolManager.GetObjectFromPool<WheelItem>(_wheelItemContainer, Vector3.one);
-         
-                int rewardAmount = CalculateRewardAmount(rewardData);
-                item.SetItem(rewardData, rewardAmount, index, _wheelSettings.WheelRadiusValue, _wheelSettings.WheelSlotCountValue);
+               WheelItem item = _objectPoolManager.GetObjectFromPool<WheelItem>(wheelItemContainer, Vector3.one);
+                int rewardAmount = CalculateRewardAmount(reward);
+                item.SetItem(reward, rewardAmount, index, wheelSettings.WheelRadiusValue, wheelSettings.WheelSlotCountValue);
                 _wheelItems.Add(item);
 
-                yield return new WaitForSeconds(_wheelSettings.WheelSpawnDelayBetweenItemsValue); 
+                yield return new WaitForSeconds(wheelSettings.WheelSpawnDelayBetweenItemsValue); 
             }
             
-            ObserverManager.Notify(new InputBlockerEvent(false));
+            ObserverManager.Notify(new InputBlockStateChangedEvent(false));
             _taskService.CompleteTask(TaskType.InitializeWheel);
         }
 
-        private void DestroyAllItems()
+        private void ClearWheelItems()
         {
             _wheelItems.ForEach(item => _objectPoolManager.ReturnToPool(item));
             _wheelItems.Clear(); 
         }
         
-        private int CalculateRewardAmount(RewardData rewardData)
+        private int CalculateRewardAmount(RewardData reward)
         {
-            return rewardData.RewardInfo.InitialRewardCount * (_currentZoneIndex + 1);
+            return reward.RewardInfo.InitialRewardCount * (_currentZoneIndex + 1);
         }
         
-        public void OnSpinWheel()
+        public void SpinWheel()
         {
-            ObserverManager.Notify(new InputBlockerEvent(true));
-            int targetRewardIndex = GetRandomItemIndex();
-            RewardData rewardData = _wheelItems[targetRewardIndex].RewardData;
-            _selectedReward = (rewardData, _wheelItems[targetRewardIndex].RewardAmount);
-            _wheelAnimationController.SpinWheel(targetRewardIndex, SpinedWheel);
+            ObserverManager.Notify(new InputBlockStateChangedEvent(true));
+            int targetIndex = GetRandomRewardIndex();
+            RewardData reward = _wheelItems[targetIndex].RewardData;
+            _selectedReward = (reward, _wheelItems[targetIndex].RewardAmount);
+            _animationController.AnimateSpin(targetIndex, OnWheelSpinComplete);
         }
         
-        private int GetRandomItemIndex()
+        private int GetRandomRewardIndex()
         {
-            return Random.Range(0, _wheelSettings.WheelSlotCountValue);
+            return Random.Range(0, wheelSettings.WheelSlotCountValue);
         }
         
-        private void SpinedWheel()
+        private void OnWheelSpinComplete()
         {
-            ObserverManager.Notify(new OnWheelSpinCompletedEvent(_selectedReward.Item1,_selectedReward.Item2));
+            ObserverManager.Notify(new WheelSpinCompletedEvent(_selectedReward.reward, _selectedReward.amount));
         }
         
-        private void OnRewardDetermined(OnRewardDetermined obj)
+        private void HandleRewardDetermined(RewardDeterminedEvent evt)
         {
-            AddRewardWindowTask();
-            AddInitializeWheelTask(obj.ZoneData);
-
-            _zoneData = obj.ZoneData;
-            _currentZoneIndex = obj.CurrentZoneIndex;
-        }
-        
-        private void OnDeadZoneReward(OnDeadZoneReward obj)
-        {
-            AddDeadZoneWindowTask();
-            AddInitializeWheelTask(_zoneData);
-        }
-        
-        private void AddRewardWindowTask()
-        {
-            var rewardWindowTask = new RewardWindowTask(async () =>
-            {
-                RewardWindowCustomInfo customInfo = new RewardWindowCustomInfo(_selectedReward.Item1, _selectedReward.Item2);
+            ScheduleRewardWindowTask();
+            ScheduleInitializeWheelTask(evt.ZoneData);
             
-                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.RewardWindow, true, customInfo);
-                ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
+            _currentZoneData = evt.ZoneData;
+            _currentZoneIndex = evt.CurrentZoneIndex;
+        }
+        
+        private void HandleDeadZoneReward(DeadZoneRewardEvent evt)
+        {
+            ScheduleDeadZoneWindowTask();
+            ScheduleInitializeWheelTask(_currentZoneData);
+        }
+        
+        private void ScheduleRewardWindowTask()
+        {
+            var task = new RewardWindowTask(async () =>
+            {
+                var info = new RewardWindowCustomInfo(_selectedReward.reward, _selectedReward.amount);
+                ObserverManager.Notify(new WindowStateChangedEvent(new WindowStateChangeInfo(WindowType.RewardWindow, true, info)));
             });
             
-            _taskService.AddTask(rewardWindowTask);
+            _taskService.AddTask(task);
         }
         
-        private void AddDeadZoneWindowTask()
+        private void ScheduleDeadZoneWindowTask()
         {
-            var dangerRewardWindowTask = new DeadZoneWindowTask(async () =>
+            var task = new DeadZoneWindowTask(async () =>
             {
-                RewardWindowCustomInfo customInfo = new RewardWindowCustomInfo(_selectedReward.Item1, _selectedReward.Item2);
-            
-                WindowStateChangeInfo windowStateChangeInfo = new WindowStateChangeInfo(WindowType.DeadZoneWindow, true, customInfo);
-                ObserverManager.Notify(new WindowStateChangeEvent(windowStateChangeInfo));
+                var info = new DeadZoneWindowCustomInfo(_selectedReward.reward);
+                ObserverManager.Notify(new WindowStateChangedEvent(new WindowStateChangeInfo(WindowType.DeadZoneWindow, true, info)));
             });
             
-            _taskService.AddTask(dangerRewardWindowTask);
+            _taskService.AddTask(task);
         }
         
-        private void AddInitializeWheelTask(ZoneData zoneData)
+        private void ScheduleInitializeWheelTask(ZoneData zoneData)
         {
-            var initializeWheelTask = new InitializeWheelTask(async () =>
-            {
-                InitialWheelSession(zoneData);
-            });
-            
-            _taskService.AddTask(initializeWheelTask);
+            var task = new InitializeWheelTask(async () => InitializeWheelSession(zoneData));
+            _taskService.AddTask(task);
         }
     }
 }

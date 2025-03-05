@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using VertigoGames.Controllers;
+using VertigoGames.Controllers.Reward;
 using VertigoGames.Controllers.Wheel;
 using VertigoGames.Controllers.Zone;
 using VertigoGames.Datas.Reward;
@@ -24,17 +24,13 @@ namespace VertigoGames.Managers
         [SerializeField] private WheelController _wheelController;
         [SerializeField] private ZoneBarController _zoneBarController;
         [SerializeField] private RewardAreaController _rewardAreaController;
+     
         private ZoneStateController _zoneStateController;
-
-
-        private ObjectPoolManager _objectPoolManager;
         private TaskService _taskService;
         
         #region Initialization and Deinitialization
-
         public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService, CurrencyManager currencyManager)
         {
-            _objectPoolManager = objectPoolManager;
             _taskService = taskService;
             
             _zoneStateController = new ZoneStateController(_zoneDatas);
@@ -42,13 +38,6 @@ namespace VertigoGames.Managers
             _zoneBarController.Initialize(taskService);
             _rewardAreaController.Initialize(objectPoolManager, taskService, currencyManager);
         }
-
-        public void Deinitialize()
-        {
-            _wheelController.Deinitialize();
-            _zoneBarController.Deinitialize();
-        }
-
         #endregion
 
         #region Registration and Unregistration
@@ -59,7 +48,7 @@ namespace VertigoGames.Managers
             _zoneBarController.Register();
             _rewardAreaController.Register();
 
-            ObserverManager.Register<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
+            ObserverManager.Register<WheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
 
         public void Unregister()
@@ -68,7 +57,7 @@ namespace VertigoGames.Managers
             _zoneBarController.Unregister();
             _rewardAreaController.Unregister();
 
-            ObserverManager.Unregister<OnWheelSpinCompletedEvent>(OnWheelSpinCompleted);
+            ObserverManager.Unregister<WheelSpinCompletedEvent>(OnWheelSpinCompleted);
         }
 
         #endregion
@@ -76,7 +65,7 @@ namespace VertigoGames.Managers
         public void BeginGameSession()
         {
             _taskService.ClearTasks();
-            ObserverManager.Notify(new InputBlockerEvent(true));
+            ObserverManager.Notify(new InputBlockStateChangedEvent(true));
             
             _zoneStateController.ResetZoneIndex();
             ZoneData zoneData = _zoneStateController.FindCurrentZone();
@@ -86,7 +75,7 @@ namespace VertigoGames.Managers
             _rewardAreaController.BeginGameSession(); 
         }
 
-        private void OnWheelSpinCompleted(OnWheelSpinCompletedEvent spinEvent)
+        private void OnWheelSpinCompleted(WheelSpinCompletedEvent spinEvent)
         {
             AdvanceToNextZone(spinEvent.RewardData, spinEvent.RewardAmount);
         }
@@ -112,11 +101,11 @@ namespace VertigoGames.Managers
         {
             if (rewardData.RewardInfo.RewardType == RewardType.Bomb)
             {
-                ObserverManager.Notify(new OnDeadZoneReward(rewardData));
+                ObserverManager.Notify(new DeadZoneRewardEvent());
             }
             else
             {
-                ObserverManager.Notify(new OnRewardDetermined(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
+                ObserverManager.Notify(new RewardDeterminedEvent(zoneData, _zoneStateController.CurrentZoneIndex, rewardData, rewardAmount));
             }
             await Task.Delay(200);
             _taskService.StartTaskProcessing();

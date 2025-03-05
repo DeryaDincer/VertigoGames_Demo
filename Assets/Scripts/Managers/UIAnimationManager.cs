@@ -5,78 +5,108 @@ using VertigoGames.Datas.Reward;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
-using VertigoGames.UI.Item.Wheel;
-using VertigoGames.Utility;
+using VertigoGames.Settings;
+using VertigoGames.UI.Item.UIAnimation;
 using Random = UnityEngine.Random;
 
 namespace VertigoGames.Managers
 {
+    /// <summary>
+    /// Manages UI animations for rewards, including spawning and animating reward items.
+    /// </summary>
     public class UIAnimationManager : MonoBehaviour, IRegisterable
     {
-        public UIAnimationItem _animationItemPrefab;
-        private UIRewardAnimationInfo _uıRewardAnimationInfo;
-        public Transform target;
-        public float spawnRadius = 40f;
-
-        private const float SpawnDelayMultiplier = 0.1f; 
-        private const float ZPosition = 0f;
+        [SerializeField] private UIAnimationSettings _animationSettings;
+        private bool _isCompleteActionInvoked;
+        private UIRewardAnimationInfo _uiRewardAnimationInfo;
         private ObjectPoolManager _objectPoolManager;
+
+
+        #region Initialization 
+
         public void Initialize(ObjectPoolManager objectPoolManager)
         {
             _objectPoolManager = objectPoolManager;
         }
 
-        public void Deinitialize()
-        {
-        }
+        #endregion
+
+        #region Registration and Unregistration
 
         public void Register()
         {
-            ObserverManager.Register<OnRewardAnimationEvent>(OnRewardAnimation);
+            ObserverManager.Register<RewardAnimationStartedEvent>(OnRewardAnimation);
         }
 
         public void Unregister()
         {
-            ObserverManager.Unregister<OnRewardAnimationEvent>(OnRewardAnimation);
+            ObserverManager.Unregister<RewardAnimationStartedEvent>(OnRewardAnimation);
         }
 
-        private void OnRewardAnimation(OnRewardAnimationEvent obj)
+        #endregion
+
+        private void OnRewardAnimation(RewardAnimationStartedEvent rewardAnimationStartedEvent)
         {
-            _uıRewardAnimationInfo = obj.UIRewardAnimationInfo;
-            target.position = _uıRewardAnimationInfo.EndAnimationTransform;
-            SpawnRewards(obj.UIRewardAnimationInfo.RewardAmount);
+            _uiRewardAnimationInfo = rewardAnimationStartedEvent.UIRewardAnimationInfo;
+            SpawnRewards(_uiRewardAnimationInfo.RewardAmount);
         }
+
+        #region Reward Spawning and Animation
 
         private void SpawnRewards(int rewardAmount)
         {
-            RewardData rewardData = _uıRewardAnimationInfo.RewardData;
+            RewardData rewardData = _uiRewardAnimationInfo.RewardData;
+            Sequence animationSequence = DOTween.Sequence();
+            _isCompleteActionInvoked = false; 
 
-            Sequence seq = DOTween.Sequence();
-            bool completeActionInvoked = false;
-            rewardAmount = Math.Clamp(rewardAmount, 0, 15);
+            rewardAmount = Math.Clamp(rewardAmount, 0, _animationSettings.MaxRewardCount);
+
             for (int i = 0; i < rewardAmount; i++)
             {
-                UIAnimationItem reward = _objectPoolManager.GetObjectFromPool<UIAnimationItem>(transform, Vector3.one);
-
-                Vector3 randomPosition = transform.position + Random.insideUnitSphere * spawnRadius;
-                randomPosition.z = ZPosition; 
-                reward.transform.position = randomPosition;
-                
-                reward.SetItem(rewardData);
-                _uıRewardAnimationInfo.StartAnimationTransform = randomPosition;
-
-                float delay = i * SpawnDelayMultiplier; 
-                seq.Join(reward.PlayAnimation(delay, randomPosition, target.position, () =>
-                {
-                    if (!completeActionInvoked)
-                    {
-                        _uıRewardAnimationInfo.AnimationCompleteAction?.Invoke();
-                        completeActionInvoked = true;
-                    }
-
-                    _objectPoolManager.ReturnToPool(reward);
-                }));
+                float delay = i * _animationSettings.SpawnDelayMultiplier;
+                SpawnAndAnimateReward(rewardData, delay, animationSequence);
             }
         }
+
+        private void SpawnAndAnimateReward(RewardData rewardData, float delay, Sequence animationSequence)
+        {
+            UIAnimationItem rewardItem = GetRewardItemFromPool();
+            Vector3 spawnPosition = GetRandomSpawnPosition();
+
+            rewardItem.transform.position = spawnPosition;
+            rewardItem.SetItem(_animationSettings, rewardData);
+            _uiRewardAnimationInfo.StartAnimationTransform = spawnPosition;
+
+            animationSequence.Join(rewardItem.PlayAnimation(delay, spawnPosition, _uiRewardAnimationInfo.EndAnimationTransform,
+                () => OnRewardAnimationComplete(rewardItem)));
+        }
+
+        private void OnRewardAnimationComplete(UIAnimationItem rewardItem)
+        {
+            if (!_isCompleteActionInvoked)
+            {
+                _uiRewardAnimationInfo.AnimationCompleteAction?.Invoke();
+                _isCompleteActionInvoked = true;
+            }
+
+            ReturnRewardItemToPool(rewardItem);
+        }
+      
+        private UIAnimationItem GetRewardItemFromPool()
+        {
+            return _objectPoolManager.GetObjectFromPool<UIAnimationItem>(transform, Vector3.one);
+        }
+
+        private Vector3 GetRandomSpawnPosition()
+        {
+            return transform.position + Random.insideUnitSphere * _animationSettings.SpawnRadius;
+        }
+
+        private void ReturnRewardItemToPool(UIAnimationItem rewardItem)
+        {
+            _objectPoolManager.ReturnToPool(rewardItem);
+        }
+
+        #endregion
     }
 }

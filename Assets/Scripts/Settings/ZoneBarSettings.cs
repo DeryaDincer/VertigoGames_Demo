@@ -18,7 +18,6 @@ namespace VertigoGames.Settings
         [Title("Zone Bar Animation Settings")]
         
         [SerializeField] private float _slideDuration = 1f;
-
         [SerializeField] private Ease _slideEase ;
         
         [Title("Zone Bar Appearance Settings")]
@@ -26,13 +25,11 @@ namespace VertigoGames.Settings
         [SerializeField] private List<ZoneBarAppearanceInfo> _zoneBarAppearanceInfos;
 
         #region Public References
-
         public int InitialIndicatorCount => _initialIndicatorCount;
         public int AverageIndicatorIndex => _averageIndicatorIndex;
         public int SlideDistance => _slideDistance;
         public float SlideDuration => _slideDuration;
         public Ease SlideEase => _slideEase;
-
         #endregion
       
         public ZoneBarAppearanceInfo GetZoneBarAppearanceByZoneType(ZoneType zoneType)
@@ -40,6 +37,5 @@ namespace VertigoGames.Settings
             var appearance = _zoneBarAppearanceInfos.FirstOrDefault(wza => wza.ZoneType == zoneType);
             return appearance;
         }
-
     }
 }

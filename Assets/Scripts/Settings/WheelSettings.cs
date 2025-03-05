@@ -41,7 +41,6 @@ namespace VertigoGames.Settings
         [SerializeField] private List<WheelZoneAppearanceInfo> _wheelZoneAppearances;
 
         #region Public References
-
         public int WheelSlotCountValue => _wheelSlotCountValue;
         public float WheelSpawnDelayBetweenItemsValue => wheelSpawnDelayBetweenItemsValueValue;
         public float WheelSpawnDelayValue => wheelSpawnDelayValueValue;
@@ -55,7 +54,6 @@ namespace VertigoGames.Settings
         public float SpinDurationValue => _spinDurationValue;
         public float WheelBumpDurationValue => _wheelBumpDurationValue;
         public  List<WheelZoneAppearanceInfo>  WheelZoneAppearances => _wheelZoneAppearances;
-
         #endregion
         
         public WheelZoneAppearanceInfo GetWheelZoneAppearanceByZoneType(ZoneType zoneType)

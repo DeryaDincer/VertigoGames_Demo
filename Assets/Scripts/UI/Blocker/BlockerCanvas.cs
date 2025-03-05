@@ -13,15 +13,15 @@ namespace VertigoGames.UI.Blocker
         private GraphicRaycaster _graphicRaycaster => GetComponent<GraphicRaycaster>();
         private void OnEnable()
         {
-            ObserverManager.Register<InputBlockerEvent>(InputBlocker);
+            ObserverManager.Register<InputBlockStateChangedEvent>(InputBlocker);
         }
 
         private void OnDisable()
         {
-            ObserverManager.Unregister<InputBlockerEvent>(InputBlocker);
+            ObserverManager.Unregister<InputBlockStateChangedEvent>(InputBlocker);
         }
 
-        private void InputBlocker(InputBlockerEvent obj)
+        private void InputBlocker(InputBlockStateChangedEvent obj)
         {
             _graphicRaycaster.enabled = obj.IsBlock;
         }

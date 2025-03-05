@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -9,20 +8,19 @@ using VertigoGames.Interfaces;
 using VertigoGames.Managers;
 using VertigoGames.Pooling;
 using VertigoGames.Services;
-using VertigoGames.UI.Item.Wheel;
-using VertigoGames.Utility;
+using VertigoGames.UI.Item.Reward;
 
-namespace VertigoGames.Controllers.Zone
+namespace VertigoGames.Controllers.Reward
 {
     public class RewardAreaController : MonoBehaviour, IRegisterable
     {
-        [SerializeField] private RewardAreaItem _rewardAreaItemPrefab;
-        [SerializeField] private RectTransform _rewardItemContainer;
-        private List<RewardAreaItem> _rewardAreaItems = new();
+        [SerializeField] private RectTransform rewardItemContainer;
+
+        private readonly List<RewardAreaItem> _rewardAreaItems = new();
         private ObjectPoolManager _objectPoolManager;
         private TaskService _taskService;
         private CurrencyManager _currencyManager;
-        
+
         public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService, CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
@@ -30,82 +28,72 @@ namespace VertigoGames.Controllers.Zone
             _currencyManager = currencyManager;
         }
         
-        public void Register()
-        {
-            ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
-        }
+        #region Registration
+        public void Register() => ObserverManager.Register<RewardDeterminedEvent>(HandleRewardDetermined);
+        public void Unregister() => ObserverManager.Unregister<RewardDeterminedEvent>(HandleRewardDetermined);
+        #endregion
 
-        public void Unregister()
-        {
-            ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
-        }
+        public void BeginGameSession() => ResetSession();
+        
+        private void ResetSession() => DestroyAllRewardItems();
 
-        public void BeginGameSession()
+        private void DestroyAllRewardItems()
         {
-            DestroyAllItems();
-        }
-        
-        private void DestroyAllItems()
-        {
-            _rewardAreaItems.ForEach(item => _objectPoolManager.ReturnToPool(item));
-            _rewardAreaItems.Clear(); 
-        }
-        
-        private void OnRewardDetermined(OnRewardDetermined obj)
-        {
-            if (obj.RewardData.RewardInfo.RewardType == RewardType.Bomb)
+            foreach (var item in _rewardAreaItems)
             {
+                _objectPoolManager.ReturnToPool(item);
+            }
+            _rewardAreaItems.Clear();
+        }
+
+        private void HandleRewardDetermined(RewardDeterminedEvent rewardEvent)
+        {
+            if (rewardEvent.RewardData.RewardInfo.RewardType == RewardType.Bomb)
                 return;
-            }
-            
-            var rewardAreaTask = new RewardAreaTask(async () =>
+
+            var rewardTask = new RewardAreaTask(async () =>
             {
-                _currencyManager.AddCurrency(obj.RewardData.RewardInfo.RewardType, obj.RewardAmount);
-                InstantiateRewardAreaItem(obj.RewardData, obj.RewardAmount);
+                _currencyManager.ModifyCurrency(rewardEvent.RewardData.RewardInfo.RewardType, rewardEvent.RewardAmount);
+                await CreateOrUpdateRewardItemAsync(rewardEvent.RewardData, rewardEvent.RewardAmount);
             });
-            
-            _taskService.AddTask(rewardAreaTask);
+
+            _taskService.AddTask(rewardTask);
         }
 
-        private async void InstantiateRewardAreaItem(RewardData rewardData, int rewardAmount)
+        private async Task CreateOrUpdateRewardItemAsync(RewardData rewardData, int rewardAmount)
         {
-            RewardAreaItem item = null;
-            bool containItem = false;
-            foreach (var rewardAreaItem in _rewardAreaItems)
-            {
-                if (rewardAreaItem.RewardData == rewardData)
-                {
-                    containItem = true;
-                    item = rewardAreaItem;
-                }
-            }
-
-            if (!containItem)
-            { 
-                item = _objectPoolManager.GetObjectFromPool<RewardAreaItem>(_rewardItemContainer, Vector3.one);
-                item.transform.localScale = Vector3.zero;
-            }
-            
-            item.SetItem(rewardData, rewardAmount);
+            var item = GetOrCreateRewardItem(rewardData);
+            item.SetItem(rewardData);
             _rewardAreaItems.Add(item);
 
             await Task.Delay(100);
-            
-            UIRewardAnimationInfo uıRewardAnimationInfo =
-                new UIRewardAnimationInfo(rewardData, rewardAmount, Vector2.zero, 
-                    item.transform.position,
-                    () =>
-                    {
-                        AnimationCompleted(item, rewardData, rewardAmount);
-                    });
-            ObserverManager.Notify(new OnRewardAnimationEvent(uıRewardAnimationInfo));
+
+            NotifyAnimationStarted(rewardData, rewardAmount, item);
         }
-        
-        private void AnimationCompleted(RewardAreaItem item , RewardData rewardData, int rewardAmount)
+
+        private RewardAreaItem GetOrCreateRewardItem(RewardData rewardData)
+        {
+            var existingItem = _rewardAreaItems.Find(item => item.RewardData.RewardInfo.RewardType == rewardData.RewardInfo.RewardType);
+            return existingItem ?? CreateNewRewardItem();
+        }
+
+        private RewardAreaItem CreateNewRewardItem()
+        {
+            var newItem = _objectPoolManager.GetObjectFromPool<RewardAreaItem>(rewardItemContainer, Vector3.one);
+            newItem.transform.localScale = Vector3.zero;
+            return newItem;
+        }
+
+        private void NotifyAnimationStarted(RewardData rewardData, int rewardAmount, RewardAreaItem item)
+        {
+            var animationInfo = new UIRewardAnimationInfo(rewardData, rewardAmount, Vector2.zero, item.transform.position, () => OnAnimationComplete(item));
+            ObserverManager.Notify(new RewardAnimationStartedEvent(animationInfo));
+        }
+
+        private void OnAnimationComplete(RewardAreaItem item)
         {
             item.transform.localScale = Vector3.one;
             _taskService.CompleteTask(TaskType.RewardArea);
         }
     }
 }
-

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using VertigoGames.Controllers.Reward;
 using VertigoGames.Controllers.Wheel;
 using VertigoGames.Controllers.Zone;
 
@@ -21,12 +20,10 @@ namespace VertigoGames.Settings
         [SerializeField] private RewardAreaController _rewardAreaController;
         
         #region Public References
-        
         public List<ZoneData> ZoneDatas => _zoneDatas;
         public WheelController WheelController => _wheelController;
         public ZoneBarController ZoneBarController => _zoneBarController;
         public RewardAreaController RewardAreaController => _rewardAreaController;
-        
         #endregion
     }
 }

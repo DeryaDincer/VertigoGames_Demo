@@ -11,30 +11,22 @@ namespace VertigoGames.Managers
     public sealed class ApplicationInitializer : MonoBehaviour, IInitializable, IRegisterable
     {
         [Header("Manager References")] 
-        [SerializeField] private GameManager _gameManager;
-        [SerializeField] private WindowManager _windowManager;
-        [SerializeField] private ObjectPoolManager _objectPoolManager;
-        [SerializeField] private CurrencyManager _currencyManager;
+        [SerializeField] private GameManager gameManager;
+        [SerializeField] private WindowManager windowManager;
+        [SerializeField] private ObjectPoolManager objectPoolManager;
+        [SerializeField] private CurrencyManager currencyManager;
         private TaskService _taskService;
 
         #region Unity Lifecycle Methods
+        private void Awake() =>  Initialize();
 
-        private void Awake()
-        {
-            Initialize();
-        }
-
-        private void OnEnable()
-        {
-            Register();
-        }
+        private void OnEnable() =>  Register();
 
         private void OnDisable()
         {
             Unregister();
             Deinitialize();
         }
-
         #endregion
 
         #region IInitializable Implementation
@@ -45,10 +37,10 @@ namespace VertigoGames.Managers
         public void Initialize()
         {
             _taskService = new();
-            _gameManager.Initialize(_objectPoolManager, _taskService, _currencyManager);
-            _windowManager.Initialize(_taskService);
-            _objectPoolManager.Initialize();
-            _currencyManager.Initialize();
+            gameManager.Initialize(objectPoolManager, _taskService, currencyManager);
+            windowManager.Initialize(_taskService, currencyManager);
+            objectPoolManager.Initialize();
+            currencyManager.Initialize();
         }
 
         /// <summary>
@@ -56,24 +48,22 @@ namespace VertigoGames.Managers
         /// </summary>
         public void Deinitialize()
         {
-            _gameManager.Deinitialize();
-            _windowManager.Deinitialize(); // Fixed: Previously was calling Initialize instead of Deinitialize
-            _objectPoolManager.Deinitialize();
-            _currencyManager.Deinitialize();
+            gameManager.Deinitialize();
+            windowManager.Deinitialize();
+            objectPoolManager.Deinitialize();
+            currencyManager.Deinitialize();
         }
-
         #endregion
 
         #region IRegisterable Implementation
-
         /// <summary>
         /// Registers the core components of the application.
         /// </summary>
         public void Register()
         {
-            _gameManager.Register();
-            _windowManager.Register();
-            _currencyManager.Register();
+            gameManager.Register();
+            windowManager.Register();
+            currencyManager.Register();
         }
 
         /// <summary>
@@ -81,11 +71,10 @@ namespace VertigoGames.Managers
         /// </summary>
         public void Unregister()
         {
-            _gameManager.Unregister();
-            _windowManager.Unregister();
-            _currencyManager.Unregister();
+            gameManager.Unregister();
+            windowManager.Unregister();
+            currencyManager.Unregister();
         }
-
         #endregion
     }
 }

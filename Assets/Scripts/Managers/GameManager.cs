@@ -1,6 +1,5 @@
-using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using VertigoGames.Controllers.Wheel;
 using VertigoGames.Events;
 using VertigoGames.Interfaces;
 using VertigoGames.Pooling;
@@ -10,37 +9,31 @@ namespace VertigoGames.Managers
 {
     public sealed class GameManager : MonoBehaviour, IRegisterable
     {
-        [Header("Manager References")] 
-        [SerializeField] private ZoneManager _zoneManager;
-        [SerializeField] private UIAnimationManager _uiAnimationManager;
+        [Title("Manager References")] 
+        [SerializeField] private ZoneManager zoneManager;
+        [SerializeField] private UIAnimationManager uiAnimationManager;
 
         private ObjectPoolManager _objectPoolManager;
         private TaskService _taskService;
+        
         #region Initialization and Deinitialization
-
         public void Initialize(ObjectPoolManager objectPoolManager, TaskService taskService,CurrencyManager currencyManager)
         {
             _objectPoolManager = objectPoolManager;
             _taskService = taskService;
             
-            _zoneManager.Initialize(_objectPoolManager, _taskService, currencyManager);
-            _uiAnimationManager.Initialize(_objectPoolManager);
+            zoneManager.Initialize(_objectPoolManager, _taskService, currencyManager);
+            uiAnimationManager.Initialize(_objectPoolManager);
         }
 
-        public void Deinitialize()
-        {
-            _zoneManager.Deinitialize();
-            _uiAnimationManager.Deinitialize();
-        }
-
+        public void Deinitialize() { }
         #endregion
 
         #region Registration and Unregistration
-
         public void Register()
         {
-            _zoneManager.Register();
-            _uiAnimationManager.Register();
+            zoneManager.Register();
+            uiAnimationManager.Register();
             BeginGameSession();
 
             ObserverManager.Register<GameSessionResetEvent>(OnGameSessionReset);
@@ -48,20 +41,17 @@ namespace VertigoGames.Managers
 
         public void Unregister()
         {
-            _zoneManager.Unregister();
-            _uiAnimationManager.Unregister();
+            zoneManager.Unregister();
+            uiAnimationManager.Unregister();
 
             ObserverManager.Unregister<GameSessionResetEvent>(OnGameSessionReset);
         }
-
         #endregion
 
         #region Game Flow
-
-        private void BeginGameSession() =>  _zoneManager.BeginGameSession();
+        private void BeginGameSession() =>  zoneManager.BeginGameSession();
        
         private void OnGameSessionReset(GameSessionResetEvent obj) =>  BeginGameSession();
-
         #endregion
     }
 }

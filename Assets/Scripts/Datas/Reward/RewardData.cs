@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using VertigoGames.Managers;
 
 namespace VertigoGames.Datas.Reward
 {
     [CreateAssetMenu (fileName = "Reward", menuName = "VertigoGames/Reward")]
     public class RewardData : ScriptableObject
     {
-        public RewardInfo RewardInfo => rewardInfo;
+        [Title("Reward Info")]
         [SerializeField] private RewardInfo rewardInfo;
-        
+
         [Title("Weight Settings")]
         [SerializeField] private RewardWeight _rewardWeight;
+       
+        public RewardInfo RewardInfo => rewardInfo;
         public RewardWeight RewardWeight => _rewardWeight;
     }
     
@@ -26,7 +25,6 @@ namespace VertigoGames.Datas.Reward
     
         [Title("Reward Calculation")] 
         public int InitialRewardCount;
-        public float RewardIncrementMultiplier;
         
         [Title("Visuals")]
         [PreviewField(Height = 100)] 

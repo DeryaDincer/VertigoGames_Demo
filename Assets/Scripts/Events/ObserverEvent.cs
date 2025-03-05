@@ -1,36 +1,33 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using VertigoGames.Datas.Reward;
 
 namespace VertigoGames.Events
 {
     public class ObserverEvent
     {
-  
+       
     }
 
-    public class OnWheelSpinCompletedEvent : ObserverEvent
+    #region Gameplay Events
+    public class WheelSpinCompletedEvent : ObserverEvent
     {
-        public RewardData RewardData;
-        public int RewardAmount;
+        public readonly RewardData RewardData;
+        public readonly int RewardAmount;
 
-        public OnWheelSpinCompletedEvent(RewardData rewardData, int rewardAmount)
+        public WheelSpinCompletedEvent(RewardData rewardData, int rewardAmount)
         {
             RewardData = rewardData;
             RewardAmount = rewardAmount;
         }
     }
     
-    public class OnRewardDetermined : ObserverEvent
+    public class RewardDeterminedEvent : ObserverEvent
     {
-        public ZoneData ZoneData;
-        public int CurrentZoneIndex;
-        public RewardData RewardData;
-        public int RewardAmount;
+        public readonly ZoneData ZoneData;
+        public readonly int CurrentZoneIndex;
+        public readonly RewardData RewardData;
+        public readonly int RewardAmount;
 
-        public OnRewardDetermined(ZoneData zoneData, int currentZoneIndex, RewardData rewardData, int rewardAmount)
+        public RewardDeterminedEvent(ZoneData zoneData, int currentZoneIndex, RewardData rewardData, int rewardAmount)
         {
             ZoneData = zoneData;
             CurrentZoneIndex = currentZoneIndex;
@@ -38,63 +35,57 @@ namespace VertigoGames.Events
             RewardAmount = rewardAmount;
         }
     }
-    
-    public class OnDeadZoneReward : ObserverEvent
-    {
-        public RewardData RewardData;
+    #endregion
 
-        public OnDeadZoneReward(RewardData rewardData)
-        {
-            RewardData = rewardData;
-        }
-    }
-    
-    public class InputBlockerEvent : ObserverEvent
-    {
-        public bool IsBlock { get; private set; }
+    #region UI Events
+    public class DeadZoneRewardEvent : ObserverEvent { }
 
-        public InputBlockerEvent(bool isBlock)
+    public class InputBlockStateChangedEvent : ObserverEvent
+    {
+        public readonly bool IsBlock;
+
+        public InputBlockStateChangedEvent(bool isBlock)
         {
             IsBlock = isBlock;
         }
     }
     
-    public class OnRewardAnimationEvent : ObserverEvent
+    public class RewardAnimationStartedEvent : ObserverEvent
     {
-        public UIRewardAnimationInfo UIRewardAnimationInfo;
+        public readonly UIRewardAnimationInfo UIRewardAnimationInfo;
 
-        public OnRewardAnimationEvent(UIRewardAnimationInfo uıRewardAnimationInfo)
+        public RewardAnimationStartedEvent(UIRewardAnimationInfo uıRewardAnimationInfo)
         {
             UIRewardAnimationInfo = uıRewardAnimationInfo;
         }
     }
     
-    public class GameSessionResetEvent : ObserverEvent
+    public class WindowStateChangedEvent : ObserverEvent
     {
-    }
+        public readonly WindowStateChangeInfo WindowStateChangeInfo;
 
-    public class GameSessionReviveEvent : ObserverEvent
-    {
-        
-    }
-    
-    public class OnCurrencyChangedEvent : ObserverEvent
-    {
-        public RewardType RewardType;
-        
-        public OnCurrencyChangedEvent(RewardType rewardType)
-        {
-            RewardType = rewardType;
-        }
-    }
-    
-    public class WindowStateChangeEvent : ObserverEvent
-    {
-        public WindowStateChangeInfo WindowStateChangeInfo { get; private set; }
-
-        public WindowStateChangeEvent(WindowStateChangeInfo windowStateChangeInfo)
+        public WindowStateChangedEvent(WindowStateChangeInfo windowStateChangeInfo)
         {
             WindowStateChangeInfo = windowStateChangeInfo;
         }
     }
+    #endregion
+
+    #region Session Events
+    public class GameSessionResetEvent : ObserverEvent { }
+
+    public class GameSessionRevivedEvent : ObserverEvent { }
+    #endregion
+
+    #region Economy Events
+    public class CurrencyChangedEvent : ObserverEvent
+    {
+        public readonly RewardType RewardType;
+        
+        public CurrencyChangedEvent(RewardType rewardType)
+        {
+            RewardType = rewardType;
+        }
+    }
+    #endregion
 }

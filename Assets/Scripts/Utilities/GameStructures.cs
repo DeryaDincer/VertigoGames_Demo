@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using VertigoGames.Datas.Reward;
@@ -50,15 +49,13 @@ public class RewardWindowCustomInfo
     }
 }
 
-public class DangerZoneWindowCustomInfo
+public class DeadZoneWindowCustomInfo
 {
     public RewardData RewardData;
-    public int RewardAmount;
 
-    public DangerZoneWindowCustomInfo(RewardData rewardData, int rewardAmount)
+    public DeadZoneWindowCustomInfo(RewardData rewardData)
     {
         RewardData = rewardData;
-        RewardAmount = rewardAmount;
     }
 }
 
@@ -84,7 +81,7 @@ public class UIRewardAnimationInfo
 
 
 
-[System.Serializable]
+[Serializable]
 public struct WheelZoneAppearanceInfo
 {
     public ZoneType ZoneType;
@@ -93,9 +90,9 @@ public struct WheelZoneAppearanceInfo
 }
 
 
-[System.Serializable]
+[Serializable]
 public struct ZoneBarAppearanceInfo
 {
     public ZoneType ZoneType;
     public Sprite ZoneBaseSprite;
-}
+} 

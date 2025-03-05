@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VertigoGames.Datas.Reward;
 using VertigoGames.UI.Item.Base;

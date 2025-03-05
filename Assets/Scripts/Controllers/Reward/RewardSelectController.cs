@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,77 +7,84 @@ namespace VertigoGames.Controllers.Reward
 {
     public class RewardSelectController
     {
-        private System.Random _random;
+        private readonly System.Random _random = new System.Random();
+        private double _desiredWeightProbability = 0.8; // %80 probability
 
-        private readonly double _desiredWeightProbability = 0.8; // Constant for 80% probability
-
-        public List<RewardData> SelectRewards(ZoneData zoneData, int selectedRewardCount)
+        public List<RewardData> SelectRewards(ZoneData zoneData, int totalRewardCount)
         {
-            _random = new System.Random();
-            
+            if (zoneData == null)
+            {
+                Debug.LogError("ZoneData is null! Cannot select rewards.");
+                return new List<RewardData>();
+            }
+
             var selectedRewards = new List<RewardData>();
-            var availableRandomRewards = zoneData.RandomRewards.ToList(); 
+            var availableRewards = zoneData.RandomRewards.ToList();
 
-            AddGuaranteedRewards(selectedRewards, zoneData.GuaranteedRewards, ref selectedRewardCount);
-            AddRandomRewards(selectedRewards, availableRandomRewards, selectedRewardCount, zoneData.RewardWeight);
+            AddGuaranteedRewards(selectedRewards, zoneData.GuaranteedRewards, ref totalRewardCount);
+            AddRandomRewards(selectedRewards, availableRewards, totalRewardCount, zoneData.RewardWeight);
 
-            selectedRewards = selectedRewards.OrderBy(x => _random.Next()).ToList();
-
-            return selectedRewards;
+            return selectedRewards.OrderBy(_ => _random.Next()).ToList();
         }
 
-        private void AddGuaranteedRewards(List<RewardData> selectedRewards, List<RewardData> guaranteedRewards, ref int selectedRewardCount)
+        private void AddGuaranteedRewards(List<RewardData> selectedRewards, List<RewardData> guaranteedRewards, ref int remainingRewardCount)
         {
+            if (guaranteedRewards == null || guaranteedRewards.Count == 0)
+                return;
+
             selectedRewards.AddRange(guaranteedRewards);
-            selectedRewardCount -= guaranteedRewards.Count;
+            remainingRewardCount -= guaranteedRewards.Count;
         }
 
-        private void AddRandomRewards(List<RewardData> selectedRewards, List<RewardData> availableRandomRewards, int count, RewardWeight rewardWeight)
+        private void AddRandomRewards(List<RewardData> selectedRewards, List<RewardData> availableRewards, int count, RewardWeight targetWeight)
         {
             for (int i = 0; i < count; i++)
             {
-                var selectedReward = SelectRandomReward(availableRandomRewards, rewardWeight);
+                var selectedReward = SelectRandomReward(availableRewards, targetWeight);
                 if (selectedReward != null)
                 {
-                    availableRandomRewards.Remove(selectedReward); // Remove the selected reward from the list
+                    availableRewards.Remove(selectedReward);
                     selectedRewards.Add(selectedReward);
                 }
                 else
                 {
-                    Debug.LogWarning("Error: No more rewards available to select.");
+                    Debug.LogWarning("No more available rewards to select.");
                     break;
                 }
             }
         }
 
-        private RewardData SelectRandomReward(List<RewardData> rewards, RewardWeight rewardWeight)
+        private RewardData SelectRandomReward(List<RewardData> rewards, RewardWeight targetWeight)
         {
+            if (rewards == null || rewards.Count == 0)
+            {
+                Debug.LogWarning("Reward list is empty, cannot select a random reward.");
+                return null;
+            }
+
             double randomValue = _random.NextDouble();
 
-            // 80% chance to select a reward with the desired weight
             if (randomValue < _desiredWeightProbability)
             {
-                var desiredRewards = rewards.Where(r => r.RewardWeight == rewardWeight).ToList();
-                var selectedReward = GetRandomRewardFromList(desiredRewards);
+                var filteredRewards = rewards.Where(r => r.RewardWeight == targetWeight).ToList();
+                var selectedReward = GetRandomReward(filteredRewards);
                 if (selectedReward != null)
-                {
                     return selectedReward;
-                }
             }
 
-            // 20% chance to select a reward from other weights
-            var otherRewards = rewards.Where(r => r.RewardWeight != rewardWeight).ToList();
-            return GetRandomRewardFromList(otherRewards);
+            var otherRewards = rewards.Where(r => r.RewardWeight != targetWeight).ToList();
+            return GetRandomReward(otherRewards);
         }
 
-        private RewardData GetRandomRewardFromList(List<RewardData> rewardList)
+        private RewardData GetRandomReward(List<RewardData> rewardList)
         {
-            if (rewardList.Any())
+            if (rewardList == null || rewardList.Count == 0)
             {
-                return rewardList[_random.Next(rewardList.Count)];
+                Debug.LogWarning("No suitable rewards found in the list.");
+                return null;
             }
-            Debug.LogWarning("Error: No suitable rewards found in the list.");
-            return null;
+
+            return rewardList[_random.Next(rewardList.Count)];
         }
     }
 }

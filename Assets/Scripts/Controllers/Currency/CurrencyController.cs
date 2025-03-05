@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using VertigoGames.Events;
@@ -9,39 +7,32 @@ namespace VertigoGames.Controllers.Currency
 {
     public class CurrencyController : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _coinCurrencyTextValue;
+        [SerializeField] private TextMeshProUGUI coinCurrencyTextValue;
         private CurrencyManager _currencyManager;
         
         #region Initialization and Deinitialization
-
         public void Initialize(CurrencyManager currencyManager)
         {
             _currencyManager = currencyManager;
             SetGoldText();
         }
 
-        public void Deinitialize()
-        {
-        }
-
+        public void Deinitialize() { }
         #endregion
 
         #region Registration and Unregistration
-
         public void Register()
         {
-            ObserverManager.Register<OnCurrencyChangedEvent>(OnCurrencyChanged);
+            ObserverManager.Register<CurrencyChangedEvent>(OnCurrencyChanged);
         }
 
         public void Unregister()
         {
-            ObserverManager.Unregister<OnCurrencyChangedEvent>(OnCurrencyChanged);
-
+            ObserverManager.Unregister<CurrencyChangedEvent>(OnCurrencyChanged);
         }
-
         #endregion
         
-        private void OnCurrencyChanged(OnCurrencyChangedEvent obj)
+        private void OnCurrencyChanged(CurrencyChangedEvent obj)
         {
             if (obj.RewardType != RewardType.Gold)
             {
@@ -53,7 +44,7 @@ namespace VertigoGames.Controllers.Currency
 
         private void SetGoldText()
         {
-            _coinCurrencyTextValue.text = _currencyManager.GetCurrencyAmount(RewardType.Gold).ToString();
+            coinCurrencyTextValue.text = _currencyManager.GetCurrencyAmount(RewardType.Gold).ToString();
         }
     }
 }

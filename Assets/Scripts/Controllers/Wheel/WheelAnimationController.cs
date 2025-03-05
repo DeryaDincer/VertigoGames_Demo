@@ -1,74 +1,69 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
 using VertigoGames.Settings;
 using VertigoGames.Utility;
-using Random = UnityEngine.Random;
 
 namespace VertigoGames.Controllers.Wheel
 {
     public class WheelAnimationController
     {
-        private RectTransform _wheelContainer;
-        private RectTransform _wheelIndicator;
-        private WheelSettings _wheelSettings;
+        private readonly RectTransform wheelTransform;
+        private readonly RectTransform indicatorTransform;
+        private readonly WheelSettings settings;
         
-        public WheelAnimationController(RectTransform wheelContainer, RectTransform wheelIndicator, WheelSettings wheelSettings)
+        public WheelAnimationController(RectTransform wheelTransform, RectTransform indicatorTransform, WheelSettings settings)
         {
-            _wheelContainer = wheelContainer;
-            _wheelIndicator = wheelIndicator;
-            _wheelSettings = wheelSettings;
+            this.wheelTransform = wheelTransform;
+            this.indicatorTransform = indicatorTransform;
+            this.settings = settings;
         }
        
-        public void ResetWheelAnimation()
+        public void ResetWheel()
         {
-            _wheelContainer.rotation = quaternion.identity;
-            _wheelContainer.transform.DoBump(_wheelSettings.WheelScaleUpValue, _wheelSettings.WheelBumpDurationValue);
-        }
-     
-        
-        public void SpinWheel(int targetRewardIndex, Action completeAction)
-        {
-            float targetAngle = CalculateTargetAngle(targetRewardIndex);
-            float totalRotation = CalculateTotalRotation(targetAngle);
-            int turnAmount = (int)totalRotation / 45;
-
-            StartIndicatorAnimation(turnAmount);
-            RotateWheel(totalRotation).OnComplete(() =>
-            {
-                completeAction.Invoke();
-            });
-        }
-        
-        private void StartIndicatorAnimation(int turnAmount)
-        {
-            _wheelIndicator.DORotate(new Vector3(0, 0, _wheelSettings.IndicatorRotationValue),
-                    _wheelSettings.IndicatorDurationValue)
-                .SetLoops(turnAmount - 1, LoopType.Yoyo)
-                .SetEase(_wheelSettings.IndicatorEaseValue)
-                .OnComplete(() => _wheelIndicator.rotation = Quaternion.identity);
-        }
-        
-        private float CalculateTargetAngle(int index)
-        {
-            return index * (360f / _wheelSettings.WheelSlotCountValue);
+            wheelTransform.rotation = quaternion.identity;
+            wheelTransform.transform.DoBump(settings.WheelScaleUpValue, settings.WheelBumpDurationValue);
         }
 
-        private float CalculateTotalRotation(float targetAngle)
+        public void AnimateSpin(int rewardIndex, Action onComplete)
         {
-            return 360 * _wheelSettings.SpinRotationCountValue + targetAngle;
+            float targetAngle = GetTargetAngle(rewardIndex);
+            float totalRotation = GetTotalRotation(targetAngle);
+            int turnCount = (int)totalRotation / 45;
+
+            AnimateIndicator(turnCount, () => RotateWheelAsync(totalRotation).OnComplete(() => onComplete?.Invoke()));
+        }
+        
+        private void AnimateIndicator(int turnCount, Action onComplete)
+        {
+            indicatorTransform
+                .DORotate(new Vector3(0, 0, settings.IndicatorRotationValue), settings.IndicatorDurationValue)
+                .SetLoops(turnCount - 1, LoopType.Yoyo)
+                .SetEase(settings.IndicatorEaseValue)
+                .OnComplete(() =>
+                {
+                    indicatorTransform.rotation = Quaternion.identity;
+                    onComplete?.Invoke();
+                });
         }
 
-        private Tween RotateWheel(float totalRotation)
+        private float GetTargetAngle(int rewardIndex)
         {
-            Tween tween = _wheelContainer.DORotate(new Vector3(0, 0, -totalRotation), _wheelSettings.SpinDurationValue, RotateMode.FastBeyond360)
-                .SetEase(_wheelSettings.SpinEaseValue)
+            return rewardIndex * (360f / settings.WheelSlotCountValue);
+        }
+
+        private float GetTotalRotation(float targetAngle)
+        {
+            return 360 * settings.SpinRotationCountValue + targetAngle;
+        }
+
+        private Tween RotateWheelAsync(float totalRotation)
+        {
+            return wheelTransform
+                .DORotate(new Vector3(0, 0, -totalRotation), settings.SpinDurationValue, RotateMode.FastBeyond360)
+                .SetEase(settings.SpinEaseValue)
                 .SetRelative();
-
-            return tween;
         }
     } 
 }

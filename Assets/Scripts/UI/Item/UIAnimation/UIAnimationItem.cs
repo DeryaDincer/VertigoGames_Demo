@@ -3,73 +3,53 @@ using UnityEngine.UI;
 using DG.Tweening;
 using VertigoGames.Datas.Reward;
 using VertigoGames.Pooling;
+using VertigoGames.Settings;
 using VertigoGames.Utility;
 
-public class UIAnimationItem : PoolObject
+namespace VertigoGames.UI.Item.UIAnimation
 {
-    public RewardData RewardData => _rewardData;
-    public int RewardAmount => _rewardAmount;
-
-    [SerializeField] protected RectTransform _itemRoot;
-    [SerializeField] protected Image _itemImageValue;
-
-    private const float BumpDuration = 0.4f;
-    private const float PathDurationBase = 0.6f;
-    private const float PathDurationMultiplier = 0.002f;
-    private const float MiddlePositionYOffset = 50f;
-    private const float InitialScale = 1f;
-    private const float TargetScale = 0.6f;
-
-    private RewardData _rewardData;
-    private int _rewardAmount;
-
-    public void SetItem(RewardData rewardData)
+    public class UIAnimationItem : PoolObject
     {
-        SetRewardData(rewardData);
-        SetItemSprite();
-    }
+        [SerializeField] protected Image itemImageValue;
 
-    public virtual void SetRewardData(RewardData rewardData)
-    {
-        _rewardData = rewardData;
-    }
+        private RewardData _rewardData;
+        private int _rewardAmount;
+        private UIAnimationSettings _animationSettings;
 
-    public virtual void SetItemSprite()
-    {
-        _itemImageValue.sprite = _rewardData.RewardInfo.Icon;
-    }
+        public override void OnDeactivate() { }
 
-    public Tween PlayAnimation(float delay, Vector3 startPosition, Vector3 targetPosition, System.Action onComplete)
-    {
-        Sequence seq = DOTween.Sequence();
+        public override void OnSpawn() { }
 
-        Vector3 middlePosition = (startPosition + targetPosition) / 2;
-        middlePosition.y += MiddlePositionYOffset;
-        float duration = PathDurationBase;
+        public override void OnCreated() { }
 
-        Vector3[] path = { startPosition, middlePosition, targetPosition };
+        public void SetItem(UIAnimationSettings animationSettings, RewardData rewardData)
+        {
+            _animationSettings = animationSettings;
+            SetRewardData(rewardData);
+            SetItemSprite();
+        }
 
-        transform.localScale = Vector3.one * InitialScale;
-        seq.AppendInterval(delay);
-        seq.Append(transform.DoBump());
-        seq.Append(transform.DOPath(path, duration, PathType.CatmullRom).SetEase(Ease.InSine));
-        seq.Join(transform.DOScale(TargetScale, duration).SetEase(Ease.InSine));
-        seq.AppendCallback(() => onComplete?.Invoke());
-        return seq;
-    }
+        protected virtual void SetRewardData(RewardData rewardData) => _rewardData = rewardData;
 
-    public override void OnDeactivate()
-    {
+        protected virtual void SetItemSprite() => itemImageValue.sprite = _rewardData.RewardInfo.Icon;
         
-    }
+        public Tween PlayAnimation(float delay, Vector3 startPosition, Vector3 targetPosition, System.Action onComplete)
+        {
+            Sequence seq = DOTween.Sequence();
 
-    public override void OnSpawn()
-    {
-       
-    }
+            Vector3 middlePosition = (startPosition + targetPosition) / 2;
+            middlePosition.y += _animationSettings.MiddlePositionYOffset;
 
-    public override void OnCreated()
-    {
-       
+            Vector3[] path = { startPosition, middlePosition, targetPosition };
+
+            seq.AppendInterval(delay);
+            seq.Append(transform.DoBump());
+            seq.Append(transform.DOPath(path, _animationSettings.PathDurationBase, PathType.CatmullRom)
+                .SetEase(Ease.InSine));
+            seq.Join(transform.DOScale(_animationSettings.TargetScale, _animationSettings.PathDurationBase)
+                .SetEase(Ease.InSine));
+            seq.AppendCallback(() => onComplete?.Invoke());
+            return seq;
+        }
     }
 }

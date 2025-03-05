@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace VertigoGames.Managers
 {
-    /// <summary>
-    /// Observer pattern implementation to manage event subscriptions and notifications.
-    /// </summary>
     public class ObserverManager
     {
         private static readonly Dictionary<Type, Action<object>> _observers = new Dictionary<Type, Action<object>>();

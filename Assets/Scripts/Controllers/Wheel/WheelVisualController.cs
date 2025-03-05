@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
-using VertigoGames.Settings;
 
 namespace VertigoGames.Controllers.Wheel
 {
     public class WheelVisualController 
     {
-        private Image _spinWheelImageValue;
-        private Image _indicatorWheelImageValue;
+        private readonly Image _spinWheelImageValue;
+        private readonly Image _indicatorWheelImageValue;
 
         public WheelVisualController(Image spinWheelImageValue, Image indicatorWheelImageValue)
         {
@@ -23,5 +19,4 @@ namespace VertigoGames.Controllers.Wheel
             _indicatorWheelImageValue.sprite = wheelZoneAppearanceInfo.WheelIndicatorSprite;
         }
     }
-
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,39 +12,23 @@ namespace VertigoGames.UI.Item.Base
         public RewardData RewardData => _rewardData;
         public int RewardAmount => _rewardAmount;
 
-        [SerializeField] protected RectTransform _itemRoot;
-        [SerializeField] protected Image _itemImageValue;
-        [SerializeField] protected TextMeshProUGUI _rewardAmountTextValue;
+        [SerializeField] protected Image itemImageValue;
+        [SerializeField] protected TextMeshProUGUI rewardAmountTextValue;
 
         private RewardData _rewardData;
         private int _rewardAmount;
 
-        public virtual void SetRewardData(RewardData rewardData)
-        {
-            _rewardData = rewardData;
-        }
-
-        public virtual void SetItemSprite()
-        {
-            _itemImageValue.sprite = _rewardData.RewardInfo.Icon;
-        }
+        public override void OnDeactivate() { }
+        public override void OnSpawn() { }
+        public override void OnCreated() { }
+        public virtual void SetRewardData(RewardData rewardData) => _rewardData = rewardData;
+       
+        public virtual void SetItemSprite() =>  itemImageValue.sprite = _rewardData.RewardInfo.Icon;
 
         public virtual void SetRewardAmount(int rewardAmount)
         {
             _rewardAmount = rewardAmount;
-            _rewardAmountTextValue.text = "x" + _rewardAmount;
-        }
-
-        public override void OnDeactivate()
-        {
-        }     
-
-        public override void OnSpawn()
-        {
-        }
-
-        public override void OnCreated()
-        {
+            rewardAmountTextValue.text = "x" + _rewardAmount;
         }
     }
 }

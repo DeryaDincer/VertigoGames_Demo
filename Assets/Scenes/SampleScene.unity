@@ -164,7 +164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4779264459102863116, guid: 1b779275f04dc493798fffee59cd02aa, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 900
+      value: 1100
       objectReference: {fileID: 0}
     - target: {fileID: 4779264459102863116, guid: 1b779275f04dc493798fffee59cd02aa, type: 3}
       propertyPath: m_SizeDelta.y
@@ -331,6 +331,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7792541117508202975, guid: 65eeea20b39104d7886bbd3dae48bcb3, type: 3}
+      propertyPath: rewardItemContainer
+      value: 
+      objectReference: {fileID: 1306474143}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65eeea20b39104d7886bbd3dae48bcb3, type: 3}
 --- !u!224 &222848971 stripped
@@ -802,6 +806,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8506d379b021e43aba7e41a3076405b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1306474143 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8535201931008885428, guid: 65eeea20b39104d7886bbd3dae48bcb3, type: 3}
+  m_PrefabInstance: {fileID: 222848970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1345381859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7944869674066327195, guid: 9a1b7bc3b81e448e6a846dbc06b83563, type: 3}
@@ -1117,9 +1126,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 1995248827}
     m_Modifications:
     - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
+      propertyPath: zoneManager
+      value: 
+      objectReference: {fileID: 1345381860}
+    - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
       propertyPath: _zoneManager
       value: 
       objectReference: {fileID: 1345381860}
+    - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
+      propertyPath: uiAnimationManager
+      value: 
+      objectReference: {fileID: 1453079185}
     - target: {fileID: 2643846163470256368, guid: ea81cefa498d94d3e9e253424d616ada, type: 3}
       propertyPath: _uiAnimationManager
       value: 
@@ -1229,6 +1246,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2898705663976271790, guid: 91d6d72ee43a04e09b58d2e4cb21cc3b, type: 3}
+      propertyPath: currencyController
+      value: 
+      objectReference: {fileID: 2008124780}
     - target: {fileID: 2898705663976271790, guid: 91d6d72ee43a04e09b58d2e4cb21cc3b, type: 3}
       propertyPath: _currencyController
       value: 
@@ -1690,8 +1711,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8036885091226912670, guid: b12c0d277ebde4a3aa287663a0a60454, type: 3}
+      propertyPath: coinCurrencyTextValue
+      value: 
+      objectReference: {fileID: 8036885090980530931}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b12c0d277ebde4a3aa287663a0a60454, type: 3}
+--- !u!114 &8036885090980530931 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8036885090695429555, guid: b12c0d277ebde4a3aa287663a0a60454, type: 3}
+  m_PrefabInstance: {fileID: 8036885090980530930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8817584826009869021
 PrefabInstance:
   m_ObjectHideFlags: 0

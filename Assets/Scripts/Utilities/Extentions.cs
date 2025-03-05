@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,7 +38,6 @@ namespace VertigoGames.Utility
 
         #endregion
 
-
         #region Image
 
         public static void SetAlpha(this Image image, float alpha)
@@ -74,20 +71,6 @@ namespace VertigoGames.Utility
             Sequence seq = DOTween.Sequence();
 
             seq.Append(transform.DOScale(scale * scaleFactor, duration));
-
-            return seq;
-        }
-
-        public static Tween DoBumpFromInitialScale(this Transform transform, float startScaleFactor = 0.4f,
-            float scaleUpFactor = 1.05f, float scaleDownFactor = 0.75f,
-            float duration = 0.5f)
-        {
-            Vector3 scale = Vector3.one;
-            transform.localScale = Vector3.one * startScaleFactor;
-            Sequence seq = DOTween.Sequence();
-
-            seq.Append(transform.DOScale(scale * scaleUpFactor, duration));
-            seq.Append(transform.DOScale(scale * scaleDownFactor, duration));
 
             return seq;
         }

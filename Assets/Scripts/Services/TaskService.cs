@@ -2,17 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 using VertigoGames.Events;
 using VertigoGames.GameTasks;
 using VertigoGames.Managers;
-using VertigoGames.Utility;
 
 namespace VertigoGames.Services
 {
-    /// <summary>
-    /// Manages the execution of tasks in a queue, ensuring they are processed in order.
-    /// </summary>
     public class TaskService
     {
         private Queue<ITask> _taskQueue = new();
@@ -42,7 +37,7 @@ namespace VertigoGames.Services
 
         private async void ProcessTaskQueueAsync()
         {
-            ObserverManager.Notify(new InputBlockerEvent(true));
+            ObserverManager.Notify(new InputBlockStateChangedEvent(true));
 
             while (_taskQueue.Count > 0)
             {
@@ -65,7 +60,7 @@ namespace VertigoGames.Services
         {
             _taskQueue.Clear();
             _isProcessing = false;
-            ObserverManager.Notify(new InputBlockerEvent(false));
+            ObserverManager.Notify(new InputBlockStateChangedEvent(false));
         }
 
         private async Task WaitUntilAsync(Func<bool> condition)

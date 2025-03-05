@@ -1,16 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using VertigoGames.Datas.Reward;
 using VertigoGames.UI.Item.Base;
 
-public class RewardAreaItem : BaseItem
+namespace VertigoGames.UI.Item.Reward
 {
-    public void SetItem(RewardData rewardData, int rewardAmount)
+    public class RewardAreaItem : BaseItem
     {
-        SetRewardData(rewardData);
-        SetItemSprite();
-        SetRewardAmount(rewardAmount);
+        public void SetItem(RewardData rewardData)
+        {
+            SetRewardData(rewardData);
+            SetItemSprite();
+        }
+        
+        public virtual void SetRewardAmount(int startRewardAmount, int endRewardAmount)
+        {
+            
+           // int rewardAmount
+          //  _rewardAmountTextValue.text = "x" + rewardAmount;
+        }
     }
-
 }
+

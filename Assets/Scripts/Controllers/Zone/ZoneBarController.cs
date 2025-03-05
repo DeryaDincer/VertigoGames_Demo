@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,23 +11,17 @@ using VertigoGames.Settings;
 
 namespace VertigoGames.Controllers.Zone
 {
-    /// <summary>
-    /// Controls the behavior of the zone bar, including initialization, animation, and updating indicators.
-    /// </summary>
     public class ZoneBarController : MonoBehaviour, IRegisterable
     {
         [Header("Settings References")]
-        [SerializeField] private ZoneBarSettings _zoneBarSettings;
+        [SerializeField] private ZoneBarSettings zoneBarSettings;
 
         [Header("UI References")]
-        [SerializeField] private TextMeshProUGUI _indicatorTextPrefab;
-        [SerializeField] private RectTransform _layoutGroupRect;
-        [SerializeField] private Image _indicatorImageValue;
+        [SerializeField] private TextMeshProUGUI indicatorTextPrefab;
+        [SerializeField] private RectTransform layoutGroupRect;
+        [SerializeField] private Image indicatorImageValue;
 
         private readonly List<ZoneBarIndicatorInfo> _zoneIndicators = new();
-        // private int _initialIndicatorCount;
-        //private int _averageIndicatorIndex;
-        // private float _slideDistance;
         private float _initialPositionX;
         private int _slideCount = 0;
 
@@ -36,7 +29,6 @@ namespace VertigoGames.Controllers.Zone
         private TaskService _taskService;
         
         #region Initialization and Deinitialization
-
         public void Initialize(TaskService taskService)
         {
             _taskService = taskService;
@@ -45,22 +37,13 @@ namespace VertigoGames.Controllers.Zone
             InitializeZoneIndicators();
             SetInitialPosition();
 
-            _animationController = new ZoneBarAnimationController(_layoutGroupRect, _zoneBarSettings);
+            _animationController = new ZoneBarAnimationController(layoutGroupRect, zoneBarSettings);
         }
-
-        public void Deinitialize()
-        {
-            
-        }
-
         #endregion
 
         #region Registration and Unregistration
-        
-        public void Register() =>  ObserverManager.Register<OnRewardDetermined>(OnRewardDetermined);
-
-        public void Unregister() => ObserverManager.Unregister<OnRewardDetermined>(OnRewardDetermined);
-        
+        public void Register() =>  ObserverManager.Register<RewardDeterminedEvent>(OnRewardDetermined);
+        public void Unregister() => ObserverManager.Unregister<RewardDeterminedEvent>(OnRewardDetermined);
         #endregion
         
         public void BeginGameSession()
@@ -71,14 +54,14 @@ namespace VertigoGames.Controllers.Zone
 
         private void CalculateSlideDistance()
         {
-            _initialPositionX = _zoneBarSettings.SlideDistance * _zoneBarSettings.AverageIndicatorIndex;
+            _initialPositionX = zoneBarSettings.SlideDistance * zoneBarSettings.AverageIndicatorIndex;
         }
 
         private void InitializeZoneIndicators()
         {
-            for (int i = 0; i < _zoneBarSettings.InitialIndicatorCount; i++)
+            for (int i = 0; i < zoneBarSettings.InitialIndicatorCount; i++)
             {
-                TextMeshProUGUI indicatorText = Instantiate(_indicatorTextPrefab, _layoutGroupRect.transform);
+                TextMeshProUGUI indicatorText = Instantiate(indicatorTextPrefab, layoutGroupRect.transform);
                 indicatorText.text = i.ToString();
                 _zoneIndicators.Add(new ZoneBarIndicatorInfo(indicatorText, i));
             }
@@ -86,7 +69,7 @@ namespace VertigoGames.Controllers.Zone
 
         private void SetInitialPosition()
         {
-            _layoutGroupRect.anchoredPosition = new Vector2(_initialPositionX, 0);
+            layoutGroupRect.anchoredPosition = new Vector2(_initialPositionX, 0);
         }
 
         private void ResetZoneIndicators()
@@ -98,7 +81,7 @@ namespace VertigoGames.Controllers.Zone
             }
         }
 
-        private void OnRewardDetermined(OnRewardDetermined obj)
+        private void OnRewardDetermined(RewardDeterminedEvent obj)
         {
             var zoneBarTask = new ZoneBarTask(async () =>
             {
@@ -113,7 +96,7 @@ namespace VertigoGames.Controllers.Zone
         {
             _animationController.SlideToNextZone(() =>
             {
-                if (_slideCount >= _zoneBarSettings.AverageIndicatorIndex)
+                if (_slideCount >= zoneBarSettings.AverageIndicatorIndex)
                 {
                     UpdateZoneIndicators();
                     _animationController.ResetPosition();
@@ -127,8 +110,8 @@ namespace VertigoGames.Controllers.Zone
 
         private void SetZoneUI(ZoneType zoneType)
         {
-            ZoneBarAppearanceInfo zoneBarAppearanceInfo = _zoneBarSettings.GetZoneBarAppearanceByZoneType(zoneType);
-            _indicatorImageValue.sprite = zoneBarAppearanceInfo.ZoneBaseSprite;
+            ZoneBarAppearanceInfo zoneBarAppearanceInfo = zoneBarSettings.GetZoneBarAppearanceByZoneType(zoneType);
+            indicatorImageValue.sprite = zoneBarAppearanceInfo.ZoneBaseSprite;
         }
 
         private void UpdateZoneIndicators()
@@ -140,4 +123,4 @@ namespace VertigoGames.Controllers.Zone
             }
         }
     }
-}
+} 
