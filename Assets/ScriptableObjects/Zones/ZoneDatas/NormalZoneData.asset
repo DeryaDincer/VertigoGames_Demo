@@ -14,14 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoneType: 0
   _zoneActivationInterval: 1
-  _guaranteedRewards: []
+  _guaranteedRewards:
+  - {fileID: 11400000, guid: e397a85b8687b477191ee3a95990ee1e, type: 2}
   _randomRewards:
+  - {fileID: 11400000, guid: 5774c85f0117a45c89cea34ef9f0be91, type: 2}
+  - {fileID: 11400000, guid: 158b607fb223a48a69f094fd0e452eb6, type: 2}
+  - {fileID: 11400000, guid: d5f7d0ad32a044fcc9105383428b0327, type: 2}
+  - {fileID: 11400000, guid: ce3330364d03c42fb99fe5dd9393c25b, type: 2}
+  - {fileID: 11400000, guid: 43994f28038d742e28aa6baa721cfc22, type: 2}
+  - {fileID: 11400000, guid: 97ddf8e89c8f44e348b8877bc31520c1, type: 2}
+  - {fileID: 11400000, guid: f3f1665b4d58b477fa08e366fa7bfe45, type: 2}
+  - {fileID: 11400000, guid: 172bf6deb07c1486cbb3851af1bad184, type: 2}
+  - {fileID: 11400000, guid: a18a658a87e9b486d9d964d5c77c7161, type: 2}
+  - {fileID: 11400000, guid: 1040796bac58342d49b7cb8be0f018a3, type: 2}
+  - {fileID: 11400000, guid: c8fe62877758847ab9dac58b562a82ab, type: 2}
+  - {fileID: 11400000, guid: d13e2dbd6e05b4fbbad19daeaa23ca93, type: 2}
   - {fileID: 11400000, guid: 15899182cace040bf9b1007c1741fe5a, type: 2}
-  - {fileID: 11400000, guid: e6dce1cf8563743f7818d28778e869a7, type: 2}
-  - {fileID: 11400000, guid: a849ca93eabcd4ba7b9bdd7ed9d1449f, type: 2}
-  - {fileID: 11400000, guid: a39d3298489424cab82129bb2cb15d0e, type: 2}
-  - {fileID: 11400000, guid: 111c78f9c952042dc9937b7b6fcc3ae8, type: 2}
-  - {fileID: 11400000, guid: 8f57396184cbc45a2bc1dbb7fd15a312, type: 2}
-  - {fileID: 11400000, guid: 41d2942cf0c214af1a0afebc44265d59, type: 2}
-  - {fileID: 11400000, guid: 992bb8c715ddc4b379e44cfa09b5fa34, type: 2}
+  - {fileID: 11400000, guid: 19affc7206fb2455cbbe075ee077846c, type: 2}
+  - {fileID: 11400000, guid: 34359dd17c55c453ba4bbb8819c5b4c5, type: 2}
+  - {fileID: 11400000, guid: 60bb1d626909443688c4d3bf0bcb5470, type: 2}
+  - {fileID: 11400000, guid: 85fcafa0dc0dc415cbea6fbfc8588df8, type: 2}
+  - {fileID: 11400000, guid: 2726f4e542e0b47fbbefbd1f90d3c51d, type: 2}
+  - {fileID: 11400000, guid: 6be4535d5dfac4346ba1ff9ff37a8e75, type: 2}
   _rewardWeight: 3
